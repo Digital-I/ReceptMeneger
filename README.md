@@ -1,12 +1,14 @@
-# Gastrobrain
+# ReceptMeneger
 
-[![codecov](https://codecov.io/gh/alemdisso/gastrobrain/graph/badge.svg)](https://codecov.io/gh/alemdisso/gastrobrain)
+**Автор:** Екатерина Медведева
+
+Курсовая работа.
 
 A personal cooking companion app that helps you plan, organize, and track your culinary journey with intelligent recommendations and comprehensive meal management.
 
 ## About
 
-Gastrobrain is a Flutter-based mobile application designed to assist home cooks in managing their recipes, planning meals, and organizing shopping. It focuses on providing a personal, workbook-like approach to recipe management with sophisticated recommendation algorithms that encourage dietary variety and help maintain cooking routines.
+ReceptMeneger is a Flutter-based mobile application designed to assist home cooks in managing their recipes, planning meals, and organizing shopping. It focuses on providing a personal, workbook-like approach to recipe management with sophisticated recommendation algorithms that encourage dietary variety and help maintain cooking routines.
 
 ## Features
 
@@ -84,13 +86,13 @@ Gastrobrain is a Flutter-based mobile application designed to assist home cooks 
 1. Clone the repository
 
    ```bash
-   git clone https://github.com/yourusername/gastrobrain.git
+   git clone https://github.com/yourusername/receptmeneger.git
    ```
 
 2. Install dependencies
 
    ```bash
-   cd gastrobrain
+   cd receptmeneger
    flutter pub get
    ```
 
@@ -147,9 +149,9 @@ xdg-open coverage/html/index.html  # Linux
 sudo apt-get install lcov
 ```
 
-**Current coverage:** [![codecov](https://codecov.io/gh/alemdisso/gastrobrain/graph/badge.svg)](https://codecov.io/gh/alemdisso/gastrobrain)
+**Current coverage:** [![codecov](https://codecov.io/gh/Ekaterina-Medvedeva/receptmeneger/graph/badge.svg)](https://codecov.io/gh/Ekaterina-Medvedeva/receptmeneger)
 
-**Full report:** [Codecov Dashboard](https://codecov.io/gh/alemdisso/gastrobrain)
+**Full report:** [Codecov Dashboard](https://codecov.io/gh/Ekaterina-Medvedeva/receptmeneger)
 
 ## Project Structure
 
@@ -176,15 +178,12 @@ docs/                     # Documentation
 ├── architecture/         # System architecture & design
 ├── design/               # Visual identity, design tokens, UX
 ├── testing/              # Testing guides & resources
-├── workflows/            # Development processes
-├── planning/             # Milestones, sprints, feature specs
-├── issues/               # Issue-level analysis & roadmaps
-└── archive/              # Historical documents
+└── workflows/            # Development processes
 ```
 
 ## Development Status
 
-**Current Version: v0.1.7** - UI Polish & Design System
+**Current Version: v1.0.0**
 
 ### Major Achievements
 
@@ -223,14 +222,13 @@ docs/                     # Documentation
 ## Documentation
 
 - [**Documentation Index**](docs/README.md) - Complete documentation index and quick links
-- [**Codebase Overview**](docs/architecture/Gastrobrain-Codebase-Overview.md) - Architecture and patterns
+- [**Codebase Overview**](docs/architecture/ReceptMeneger-Codebase-Overview.md) - Architecture and patterns
 - [**Recommendation Engine**](docs/architecture/RECOMMENDATION_ENGINE.md) - Complete guide to the recommendation system
 - [**Design System**](docs/design/) - Visual identity, design tokens, theme usage, component patterns
 - [**Testing Guides**](docs/testing/) - Dialog testing, edge case testing, and test patterns
 - [**Issue Workflow**](docs/workflows/ISSUE_WORKFLOW.md) - Development workflow and Git Flow practices
 - [**Release Workflow**](docs/workflows/RELEASE_WORKFLOW.md) - Release process and versioning
 - [**L10N Protocol**](docs/workflows/L10N_PROTOCOL.md) - Localization guidelines
-- [**Changelog**](CHANGELOG.md) - Release notes and version history
 
 ## Contributing
 
@@ -242,13 +240,11 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Acknowledgments
 
-- Inspired by home cooking experiences during COVID-19 lockdown
-- Built with assistance from Anthropic's Claude AI
-- Special thanks to all home cooks who inspired this project
+- Курсовая работа по разработке мобильного приложения.
 
-## Contact
+## Author / Контакт
 
-For questions or feedback, please open an issue in the repository.
+**Екатерина Медведева** — [ketrin.medvegonok@gmail.com](mailto:ketrin.medvegonok@gmail.com)
 
 ---
 

@@ -12,9 +12,9 @@
 /// - Recipe loading failure handling
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/meal.dart';
-import 'package:gastrobrain/models/frequency_type.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/meal.dart';
+import 'package:receptmeneger/models/frequency_type.dart';
 import '../mocks/mock_database_helper.dart';
 
 void main() {

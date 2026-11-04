@@ -1,8 +1,8 @@
 // test/edge_cases/boundary_conditions/rating_difficulty_boundary_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/frequency_type.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/frequency_type.dart';
 
 /// Tests for rating and difficulty boundary conditions.
 ///

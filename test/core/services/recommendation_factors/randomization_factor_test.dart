@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/core/services/recommendation_factors/randomization_factor.dart';
-import 'package:gastrobrain/utils/id_generator.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/core/services/recommendation_factors/randomization_factor.dart';
+import 'package:receptmeneger/utils/id_generator.dart';
 
 void main() {
   group('RandomizationFactor', () {

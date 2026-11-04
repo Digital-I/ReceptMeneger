@@ -1,9 +1,9 @@
 // test/core/services/temporal_context_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/core/services/recommendation_service.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/frequency_type.dart';
+import 'package:receptmeneger/core/services/recommendation_service.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/frequency_type.dart';
 import '../../mocks/mock_database_helper.dart';
 
 void main() {

@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'package:gastrobrain/main.dart';
-import 'package:gastrobrain/database/database_helper.dart';
-import 'package:gastrobrain/core/providers/recipe_provider.dart';
-import 'package:gastrobrain/l10n/app_localizations.dart';
+import 'package:receptmeneger/main.dart';
+import 'package:receptmeneger/database/database_helper.dart';
+import 'package:receptmeneger/core/providers/recipe_provider.dart';
+import 'package:receptmeneger/l10n/app_localizations.dart';
 
 /// E2E Test Helper Methods
 ///
@@ -36,7 +36,7 @@ class E2ETestHelpers {
   /// ```
   static Future<void> launchApp(WidgetTester tester) async {
     WidgetsFlutterBinding.ensureInitialized();
-    await tester.pumpWidget(const GastrobrainApp());
+    await tester.pumpWidget(const ReceptMenegerApp());
     await tester.pumpAndSettle(appInitializationDuration);
   }
 

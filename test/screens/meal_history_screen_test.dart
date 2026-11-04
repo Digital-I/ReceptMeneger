@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/meal.dart';
-import 'package:gastrobrain/models/meal_recipe.dart';
-import 'package:gastrobrain/models/frequency_type.dart';
-import 'package:gastrobrain/screens/meal_history_screen.dart';
-import 'package:gastrobrain/screens/cook_meal_screen.dart';
-import 'package:gastrobrain/core/providers/recipe_provider.dart';
-import 'package:gastrobrain/l10n/app_localizations.dart';
-import 'package:gastrobrain/core/errors/gastrobrain_exceptions.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/meal.dart';
+import 'package:receptmeneger/models/meal_recipe.dart';
+import 'package:receptmeneger/models/frequency_type.dart';
+import 'package:receptmeneger/screens/meal_history_screen.dart';
+import 'package:receptmeneger/screens/cook_meal_screen.dart';
+import 'package:receptmeneger/core/providers/recipe_provider.dart';
+import 'package:receptmeneger/l10n/app_localizations.dart';
+import 'package:receptmeneger/core/errors/receptmeneger_exceptions.dart';
 import '../mocks/mock_database_helper.dart';
 
 /// Mock RecipeProvider for testing with call tracking
@@ -771,11 +771,11 @@ void main() {
       expect(find.text('Try Again'), findsOneWidget);
     });
 
-    testWidgets('displays error view when getMealsForRecipe throws GastrobrainException',
+    testWidgets('displays error view when getMealsForRecipe throws ReceptMenegerException',
         (WidgetTester tester) async {
-      // Configure mock to throw GastrobrainException
+      // Configure mock to throw ReceptMenegerException
       mockDbHelper.failOnOperation('getMealsForRecipe',
-          exception: const GastrobrainException('Database connection failed'));
+          exception: const ReceptMenegerException('Database connection failed'));
 
       await tester.pumpWidget(
         createTestableWidget(
@@ -956,9 +956,9 @@ void main() {
 
     testWidgets('error messages are localized in English',
         (WidgetTester tester) async {
-      // Configure mock to throw GastrobrainException
+      // Configure mock to throw ReceptMenegerException
       mockDbHelper.failOnOperation('getMealsForRecipe',
-          exception: const GastrobrainException('Test error'));
+          exception: const ReceptMenegerException('Test error'));
 
       await tester.pumpWidget(
         createTestableWidget(
@@ -981,9 +981,9 @@ void main() {
 
     testWidgets('error messages are localized in Portuguese',
         (WidgetTester tester) async {
-      // Configure mock to throw GastrobrainException
+      // Configure mock to throw ReceptMenegerException
       mockDbHelper.failOnOperation('getMealsForRecipe',
-          exception: const GastrobrainException('Erro de teste'));
+          exception: const ReceptMenegerException('Erro de teste'));
 
       await tester.pumpWidget(
         createTestableWidget(

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/recipe_recommendation.dart';
-import 'package:gastrobrain/models/frequency_type.dart';
-import 'package:gastrobrain/widgets/recipe_selection_card.dart';
-import 'package:gastrobrain/l10n/app_localizations.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/recipe_recommendation.dart';
+import 'package:receptmeneger/models/frequency_type.dart';
+import 'package:receptmeneger/widgets/recipe_selection_card.dart';
+import 'package:receptmeneger/l10n/app_localizations.dart';
 
 void main() {
   late Recipe testRecipe;

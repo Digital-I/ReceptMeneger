@@ -1,6 +1,6 @@
 // test/test_utils/test_setup.dart
 
-import 'package:gastrobrain/core/di/providers/database_provider.dart';
+import 'package:receptmeneger/core/di/providers/database_provider.dart';
 import '../mocks/mock_database_helper.dart';
 
 /// Standardized test setup utility class for database mocking.

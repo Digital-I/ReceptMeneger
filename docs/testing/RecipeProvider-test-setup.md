@@ -140,11 +140,11 @@ Here's a complete example for testing meal edit functionality with snackbar veri
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/meal.dart';
-import 'package:gastrobrain/screens/meal_history_screen.dart';
-import 'package:gastrobrain/l10n/app_localizations.dart';
-import 'package:gastrobrain/core/providers/recipe_provider.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/meal.dart';
+import 'package:receptmeneger/screens/meal_history_screen.dart';
+import 'package:receptmeneger/l10n/app_localizations.dart';
+import 'package:receptmeneger/core/providers/recipe_provider.dart';
 import 'package:provider/provider.dart';
 import '../mocks/mock_database_helper.dart';
 import '../helpers/snackbar_test_helpers.dart';
@@ -328,7 +328,7 @@ Widget createTestableWidget(Widget child) {
 Add these to your test file imports:
 
 ```dart
-import 'package:gastrobrain/core/providers/recipe_provider.dart';
+import 'package:receptmeneger/core/providers/recipe_provider.dart';
 import 'package:provider/provider.dart';
 ```
 

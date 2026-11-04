@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/frequency_type.dart';
-import 'package:gastrobrain/screens/cook_meal_screen.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/frequency_type.dart';
+import 'package:receptmeneger/screens/cook_meal_screen.dart';
 import '../test_utils/test_app_wrapper.dart';
 
 void main() {

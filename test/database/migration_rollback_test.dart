@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_print
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' hide DatabaseExecutor;
-import 'package:gastrobrain/core/migration/migration.dart';
-import 'package:gastrobrain/core/migration/migration_runner.dart';
+import 'package:receptmeneger/core/migration/migration.dart';
+import 'package:receptmeneger/core/migration/migration_runner.dart';
 
 // ── Test migrations ───────────────────────────────────────────────────────────
 

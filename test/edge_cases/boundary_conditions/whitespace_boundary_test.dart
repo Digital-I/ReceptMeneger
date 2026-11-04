@@ -1,11 +1,11 @@
 // test/edge_cases/boundary_conditions/whitespace_boundary_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/ingredient.dart';
-import 'package:gastrobrain/models/ingredient_category.dart';
-import 'package:gastrobrain/core/validators/entity_validator.dart';
-import 'package:gastrobrain/core/errors/gastrobrain_exceptions.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/ingredient.dart';
+import 'package:receptmeneger/models/ingredient_category.dart';
+import 'package:receptmeneger/core/validators/entity_validator.dart';
+import 'package:receptmeneger/core/errors/receptmeneger_exceptions.dart';
 import '../../fixtures/boundary_fixtures.dart';
 import '../../mocks/mock_database_helper.dart';
 

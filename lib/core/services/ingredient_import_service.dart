@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:sqflite/sqflite.dart';
 import '../../database/database_helper.dart';
-import '../errors/gastrobrain_exceptions.dart';
+import '../errors/receptmeneger_exceptions.dart';
 import 'ingredient_export_service.dart';
 import 'recipe_import_service.dart' show DuplicateStrategy;
 
 export 'recipe_import_service.dart' show DuplicateStrategy;
 
-/// Service for importing ingredient data from a Gastrobrain JSON export file.
+/// Service for importing ingredient data from a ReceptMeneger JSON export file.
 ///
 /// Usage (two-phase):
 /// ```dart
@@ -25,17 +25,17 @@ class IngredientImportService {
   ///
   /// Returns an [IngredientImportPreview] containing the parsed records and the
   /// set of ingredient names that already exist locally.
-  /// Throws [GastrobrainException] if the file is malformed.
+  /// Throws [ReceptMenegerException] if the file is malformed.
   Future<IngredientImportPreview> previewImport(Uint8List bytes) async {
     final List<dynamic> jsonData;
     try {
       jsonData = json.decode(utf8.decode(bytes)) as List<dynamic>;
     } catch (e) {
-      throw const GastrobrainException('Invalid JSON: could not parse file.');
+      throw const ReceptMenegerException('Invalid JSON: could not parse file.');
     }
 
     if (!IngredientExportService.validateExportStructure(jsonData)) {
-      throw const GastrobrainException(
+      throw const ReceptMenegerException(
           'Invalid format: file does not match the ingredient export structure.');
     }
 

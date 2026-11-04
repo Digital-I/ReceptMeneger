@@ -1,25 +1,25 @@
 // test/mocks/mock_database_helper.dart
 
-import 'package:gastrobrain/database/database_helper.dart';
-import 'package:gastrobrain/utils/id_generator.dart';
-import 'package:gastrobrain/models/recipe_recommendation.dart';
-import 'package:gastrobrain/models/recommendation_results.dart';
-import 'package:gastrobrain/models/protein_type.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/meal.dart';
-import 'package:gastrobrain/models/meal_recipe.dart';
-import 'package:gastrobrain/models/meal_plan.dart';
-import 'package:gastrobrain/models/meal_plan_item.dart';
-import 'package:gastrobrain/models/meal_plan_item_recipe.dart';
-import 'package:gastrobrain/models/meal_plan_item_ingredient.dart';
-import 'package:gastrobrain/models/meal_ingredient.dart';
-import 'package:gastrobrain/models/ingredient.dart';
-import 'package:gastrobrain/models/recipe_ingredient.dart';
-import 'package:gastrobrain/models/shopping_list.dart';
-import 'package:gastrobrain/models/shopping_list_item.dart';
-import 'package:gastrobrain/core/validators/entity_validator.dart';
-import 'package:gastrobrain/core/migration/migration.dart';
-import 'package:gastrobrain/core/migration/migration_runner.dart';
+import 'package:receptmeneger/database/database_helper.dart';
+import 'package:receptmeneger/utils/id_generator.dart';
+import 'package:receptmeneger/models/recipe_recommendation.dart';
+import 'package:receptmeneger/models/recommendation_results.dart';
+import 'package:receptmeneger/models/protein_type.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/meal.dart';
+import 'package:receptmeneger/models/meal_recipe.dart';
+import 'package:receptmeneger/models/meal_plan.dart';
+import 'package:receptmeneger/models/meal_plan_item.dart';
+import 'package:receptmeneger/models/meal_plan_item_recipe.dart';
+import 'package:receptmeneger/models/meal_plan_item_ingredient.dart';
+import 'package:receptmeneger/models/meal_ingredient.dart';
+import 'package:receptmeneger/models/ingredient.dart';
+import 'package:receptmeneger/models/recipe_ingredient.dart';
+import 'package:receptmeneger/models/shopping_list.dart';
+import 'package:receptmeneger/models/shopping_list_item.dart';
+import 'package:receptmeneger/core/validators/entity_validator.dart';
+import 'package:receptmeneger/core/migration/migration.dart';
+import 'package:receptmeneger/core/migration/migration_runner.dart';
 import 'package:sqflite/sqflite.dart';
 
 /// A partial mock implementation of DatabaseHelper for testing.

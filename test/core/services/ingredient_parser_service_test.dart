@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/core/services/ingredient_parser_service.dart';
-import 'package:gastrobrain/core/services/ingredient_matching_service.dart';
-import 'package:gastrobrain/models/ingredient.dart';
-import 'package:gastrobrain/models/ingredient_category.dart';
-import 'package:gastrobrain/models/measurement_unit.dart';
-import 'package:gastrobrain/l10n/app_localizations.dart';
+import 'package:receptmeneger/core/services/ingredient_parser_service.dart';
+import 'package:receptmeneger/core/services/ingredient_matching_service.dart';
+import 'package:receptmeneger/models/ingredient.dart';
+import 'package:receptmeneger/models/ingredient_category.dart';
+import 'package:receptmeneger/models/measurement_unit.dart';
+import 'package:receptmeneger/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 void main() {

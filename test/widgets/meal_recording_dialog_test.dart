@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/widgets/meal_recording_dialog.dart';
-import 'package:gastrobrain/models/recipe.dart';
+import 'package:receptmeneger/widgets/meal_recording_dialog.dart';
+import 'package:receptmeneger/models/recipe.dart';
 import '../test_utils/test_app_wrapper.dart';
 import '../test_utils/test_setup.dart';
 import '../test_utils/dialog_fixtures.dart';

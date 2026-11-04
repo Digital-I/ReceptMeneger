@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart' show SharePlus, ShareParams, XFile;
 import '../../database/database_helper.dart';
-import '../errors/gastrobrain_exceptions.dart';
+import '../errors/receptmeneger_exceptions.dart';
 import '../migration/migration.dart';
 import '../migration/tag_vocabulary_seed.dart';
 
@@ -37,7 +37,7 @@ class DatabaseBackupService {
       final jsonString = const JsonEncoder.withIndent('  ').convert(backupData);
       return await _writeAndShareBackup(jsonString);
     } catch (e) {
-      throw GastrobrainException('Failed to create backup: ${e.toString()}');
+      throw ReceptMenegerException('Failed to create backup: ${e.toString()}');
     }
   }
 
@@ -278,7 +278,7 @@ class DatabaseBackupService {
           '${timestamp.year}-${timestamp.month.toString().padLeft(2, '0')}-${timestamp.day.toString().padLeft(2, '0')}';
       final formattedTime =
           '${timestamp.hour.toString().padLeft(2, '0')}${timestamp.minute.toString().padLeft(2, '0')}${timestamp.second.toString().padLeft(2, '0')}';
-      final fileName = 'gastrobrain_backup_${formattedDate}_$formattedTime.json';
+      final fileName = 'receptmeneger_backup_${formattedDate}_$formattedTime.json';
 
       final directory = await getApplicationDocumentsDirectory();
       final file = File('${directory.path}/$fileName');
@@ -290,7 +290,7 @@ class DatabaseBackupService {
 
       return file.path;
     } catch (e) {
-      throw GastrobrainException(
+      throw ReceptMenegerException(
           'Failed to share backup: ${e.toString()}');
     }
   }
@@ -303,37 +303,37 @@ class DatabaseBackupService {
     try {
       final file = File(backupFilePath);
       if (!await file.exists()) {
-        throw GastrobrainException('Backup file not found: $backupFilePath');
+        throw ReceptMenegerException('Backup file not found: $backupFilePath');
       }
       final jsonString = await file.readAsString();
       final Map<String, dynamic> backupData = json.decode(jsonString);
       await _restoreFromJson(backupData);
-    } on GastrobrainException {
+    } on ReceptMenegerException {
       rethrow;
     } catch (e) {
-      throw GastrobrainException('Failed to restore backup: ${e.toString()}');
+      throw ReceptMenegerException('Failed to restore backup: ${e.toString()}');
     }
   }
 
   /// Restores database from backup JSON content (string).
   ///
   /// Use when file_picker returns bytes instead of a resolvable path (SAF
-  /// content URI on Android 10+). Content must be valid Gastrobrain backup JSON.
+  /// content URI on Android 10+). Content must be valid ReceptMeneger backup JSON.
   Future<void> restoreDatabaseFromString(String jsonContent) async {
     try {
       final Map<String, dynamic> backupData = json.decode(jsonContent);
       await _restoreFromJson(backupData);
-    } on GastrobrainException {
+    } on ReceptMenegerException {
       rethrow;
     } catch (e) {
-      throw GastrobrainException('Failed to restore backup: ${e.toString()}');
+      throw ReceptMenegerException('Failed to restore backup: ${e.toString()}');
     }
   }
 
   /// Validates and applies backup data inside a single database transaction.
   Future<void> _restoreFromJson(Map<String, dynamic> backupData) async {
     if (backupData['version'] == null) {
-      throw const GastrobrainException('Invalid backup file: missing version');
+      throw const ReceptMenegerException('Invalid backup file: missing version');
     }
 
     // Refuse backups stamped by a newer app schema before touching any data.

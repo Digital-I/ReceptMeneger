@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/core/theme/app_theme.dart';
-import 'package:gastrobrain/core/theme/design_tokens.dart';
+import 'package:receptmeneger/core/theme/app_theme.dart';
+import 'package:receptmeneger/core/theme/design_tokens.dart';
 
 void main() {
   group('Navigation Theme Configuration', () {

@@ -28,7 +28,7 @@ class RecentMealEntry {
   });
 }
 
-/// Main dashboard/landing screen for Gastrobrain.
+/// Main dashboard/landing screen for ReceptMeneger.
 ///
 /// Shows a hero section, quick actions, and summary cards
 /// providing an overview of the user's meal planning activity.

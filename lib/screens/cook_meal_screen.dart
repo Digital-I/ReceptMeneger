@@ -6,7 +6,7 @@ import '../models/meal_type.dart';
 import '../utils/id_generator.dart';
 import '../widgets/meal_recording_dialog.dart';
 import '../widgets/meal_type_dialog.dart';
-import '../core/errors/gastrobrain_exceptions.dart';
+import '../core/errors/receptmeneger_exceptions.dart';
 import '../core/services/snackbar_service.dart';
 import '../core/di/service_provider.dart';
 import '../core/services/meal_edit_service.dart';
@@ -119,7 +119,7 @@ class _CookMealScreenState extends State<CookMealScreen> {
       if (mounted) {
         SnackbarService.showError(context, e.message);
       }
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       if (mounted) {
         SnackbarService.showError(context, e.message);
       }

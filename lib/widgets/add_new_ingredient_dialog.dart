@@ -6,7 +6,7 @@ import '../models/measurement_unit.dart';
 import '../models/protein_type.dart';
 import '../database/database_helper.dart';
 import '../utils/id_generator.dart';
-import '../core/errors/gastrobrain_exceptions.dart';
+import '../core/errors/receptmeneger_exceptions.dart';
 import '../core/validators/entity_validator.dart';
 import '../core/services/snackbar_service.dart';
 import '../core/services/ingredient_duplicate_checker.dart';
@@ -144,7 +144,7 @@ class _AddNewIngredientDialogState extends State<AddNewIngredientDialog> {
       if (mounted) {
         SnackbarService.showError(context, e.message);
       }
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       if (mounted) {
         SnackbarService.showError(context,
             '${AppLocalizations.of(context)!.errorSavingRecipe} ${e.message}');

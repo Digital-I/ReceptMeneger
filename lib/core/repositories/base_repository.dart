@@ -1,4 +1,4 @@
-import '../errors/gastrobrain_exceptions.dart';
+import '../errors/receptmeneger_exceptions.dart';
 
 /// Base interface for all repositories providing common patterns
 abstract class BaseRepository<T> {
@@ -9,7 +9,7 @@ abstract class BaseRepository<T> {
   bool get hasData;
 
   /// Last error that occurred during operations
-  GastrobrainException? get lastError;
+  ReceptMenegerException? get lastError;
 
   /// Clears cached data and forces fresh load on next request
   void invalidateCache();
@@ -66,7 +66,7 @@ class RepositoryRegistry {
 /// Result wrapper for repository operations
 class RepositoryResult<T> {
   final T? data;
-  final GastrobrainException? error;
+  final ReceptMenegerException? error;
   final bool isLoading;
 
   const RepositoryResult._({
@@ -79,7 +79,7 @@ class RepositoryResult<T> {
   const RepositoryResult.success(T data) : this._(data: data);
 
   /// Creates an error result
-  const RepositoryResult.error(GastrobrainException error) : this._(error: error);
+  const RepositoryResult.error(ReceptMenegerException error) : this._(error: error);
 
   /// Creates a loading result
   const RepositoryResult.loading() : this._(isLoading: true);

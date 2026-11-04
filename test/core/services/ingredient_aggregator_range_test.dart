@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/core/services/ingredient_aggregator.dart';
+import 'package:receptmeneger/core/services/ingredient_aggregator.dart';
 
 void main() {
   late IngredientAggregator aggregator;

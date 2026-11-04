@@ -1,7 +1,7 @@
 // test/models/meal_modified_at_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/models/meal.dart';
+import 'package:receptmeneger/models/meal.dart';
 
 void main() {
   group('Meal modifiedAt Field Tests', () {

@@ -1,9 +1,9 @@
 // test/core/services/recommendation_multi_ingredient_integration_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/core/services/recommendation_service.dart';
-import 'package:gastrobrain/models/frequency_type.dart';
-import 'package:gastrobrain/models/protein_type.dart';
+import 'package:receptmeneger/core/services/recommendation_service.dart';
+import 'package:receptmeneger/models/frequency_type.dart';
+import 'package:receptmeneger/models/protein_type.dart';
 
 import '../../mocks/mock_database_helper.dart';
 import '../../test_utils/multi_ingredient_fixtures.dart';

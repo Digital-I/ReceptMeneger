@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import '../../models/meal_plan.dart';
 import '../../models/meal_plan_item.dart';
 import '../repositories/meal_plan_repository.dart';
-import '../errors/gastrobrain_exceptions.dart';
+import '../errors/receptmeneger_exceptions.dart';
 
 /// Provider for managing meal plan state throughout the application
 class MealPlanProvider extends ChangeNotifier {
@@ -13,14 +13,14 @@ class MealPlanProvider extends ChangeNotifier {
   List<MealPlanItem> _mealPlanItems = [];
   DateTime _currentWeekStart = _getFridayOfWeek(DateTime.now());
   bool _isLoading = false;
-  GastrobrainException? _error;
+  ReceptMenegerException? _error;
 
   // Getters for UI consumption
   MealPlan? get currentMealPlan => _currentMealPlan;
   List<MealPlanItem> get mealPlanItems => List.unmodifiable(_mealPlanItems);
   DateTime get currentWeekStart => _currentWeekStart;
   bool get isLoading => _isLoading;
-  GastrobrainException? get error => _error;
+  ReceptMenegerException? get error => _error;
   bool get hasError => _error != null;
   bool get hasData => _currentMealPlan != null || _mealPlanItems.isNotEmpty;
 
@@ -197,7 +197,7 @@ class MealPlanProvider extends ChangeNotifier {
     }
   }
 
-  void _setError(GastrobrainException error) {
+  void _setError(ReceptMenegerException error) {
     _error = error;
   }
 

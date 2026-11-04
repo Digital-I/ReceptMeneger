@@ -1,4 +1,4 @@
-# Gastrobrain Recommendation Engine
+# ReceptMeneger Recommendation Engine
 
 ## Table of Contents
 - [Overview](#overview)
@@ -13,7 +13,7 @@
 
 ## Overview
 
-The Gastrobrain recommendation system uses a weighted scoring algorithm to suggest recipes based on multiple factors. The system is designed with an extensible architecture that allows for additional factors to be added in the future.
+The ReceptMeneger recommendation system uses a weighted scoring algorithm to suggest recipes based on multiple factors. The system is designed with an extensible architecture that allows for additional factors to be added in the future.
 
 ### Key Features
 - **Multi-factor scoring**: Combines frequency, protein rotation, rating, variety, and randomization

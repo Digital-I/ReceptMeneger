@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/ingredient.dart';
-import 'package:gastrobrain/models/frequency_type.dart';
-import 'package:gastrobrain/widgets/unified_add_side_dialog.dart';
-import 'package:gastrobrain/l10n/app_localizations.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/ingredient.dart';
+import 'package:receptmeneger/models/frequency_type.dart';
+import 'package:receptmeneger/widgets/unified_add_side_dialog.dart';
+import 'package:receptmeneger/l10n/app_localizations.dart';
 
 // ── Test helpers ─────────────────────────────────────────────────────────────
 

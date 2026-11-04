@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'dart:async';
 //import 'package:uuid/uuid.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:gastrobrain/models/frequency_type.dart';
+import 'package:receptmeneger/models/frequency_type.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../utils/id_generator.dart';
@@ -25,7 +25,7 @@ import '../models/recipe_recommendation.dart';
 import '../models/recommendation_results.dart';
 import '../models/shopping_list.dart';
 import '../models/shopping_list_item.dart';
-import '../core/errors/gastrobrain_exceptions.dart';
+import '../core/errors/receptmeneger_exceptions.dart';
 import '../core/migration/migration_runner.dart';
 import '../core/migration/migration.dart';
 import '../core/migration/migrations/001_initial_schema.dart';
@@ -92,7 +92,7 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
-    String path = join(await getDatabasesPath(), 'gastrobrain.db');
+    String path = join(await getDatabasesPath(), 'receptmeneger.db');
     
     final db = await openDatabase(
       path,
@@ -929,7 +929,7 @@ class DatabaseHelper {
     }
 
     if (_migrationRunner == null) {
-      throw const GastrobrainException('Migration system not initialized');
+      throw const ReceptMenegerException('Migration system not initialized');
     }
 
     // Create a new runner with progress callbacks if provided
@@ -976,7 +976,7 @@ class DatabaseHelper {
     }
 
     if (_migrationRunner == null) {
-      throw const GastrobrainException('Migration system not initialized');
+      throw const ReceptMenegerException('Migration system not initialized');
     }
 
     // Create a new runner with progress callbacks if provided

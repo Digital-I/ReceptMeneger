@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:gastrobrain/l10n/app_localizations.dart';
-import 'package:gastrobrain/models/meal_plan_summary.dart';
-import 'package:gastrobrain/widgets/weekly_summary_widget.dart';
+import 'package:receptmeneger/l10n/app_localizations.dart';
+import 'package:receptmeneger/models/meal_plan_summary.dart';
+import 'package:receptmeneger/widgets/weekly_summary_widget.dart';
 
 void main() {
   // Reference date fixed for all tests: a Wednesday

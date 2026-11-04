@@ -1,8 +1,8 @@
 // test/core/services/recommendation_factors/variety_encouragement_multi_ingredient_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/core/services/recommendation_factors/variety_encouragement_factor.dart';
-import 'package:gastrobrain/models/protein_type.dart';
+import 'package:receptmeneger/core/services/recommendation_factors/variety_encouragement_factor.dart';
+import 'package:receptmeneger/models/protein_type.dart';
 
 import '../../../mocks/mock_database_helper.dart';
 import '../../../test_utils/multi_ingredient_fixtures.dart';

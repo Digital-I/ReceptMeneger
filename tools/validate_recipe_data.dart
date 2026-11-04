@@ -486,7 +486,7 @@ Future<void> main() async {
 
   // Find the database file
   final homeDir = Platform.environment['HOME'] ?? Platform.environment['USERPROFILE'] ?? '';
-  final dbPath = path.join(homeDir, '.local', 'share', 'gastrobrain', 'gastrobrain.db');
+  final dbPath = path.join(homeDir, '.local', 'share', 'receptmeneger', 'receptmeneger.db');
 
   if (!File(dbPath).existsSync()) {
     print('❌ Error: Database not found at: $dbPath');

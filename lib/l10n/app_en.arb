@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appTitle": "Gastrobrain",
+  "appTitle": "ReceptMeneger",
   "@appTitle": {
     "description": "The title of the application"
   },
@@ -2303,7 +2303,7 @@
   "@importRecipes": {
     "description": "Button text for importing recipes"
   },
-  "importRecipesDescription": "Import recipes from a JSON file exported by Gastrobrain.",
+  "importRecipesDescription": "Import recipes from a JSON file exported by ReceptMeneger.",
   "@importRecipesDescription": {
     "description": "Description for recipe import tool"
   },
@@ -2327,7 +2327,7 @@
   "@importIngredients": {
     "description": "Button text for importing ingredients"
   },
-  "importIngredientsDescription": "Import ingredients from a JSON file exported by Gastrobrain.",
+  "importIngredientsDescription": "Import ingredients from a JSON file exported by ReceptMeneger.",
   "@importIngredientsDescription": {
     "description": "Description for the ingredient import card"
   },

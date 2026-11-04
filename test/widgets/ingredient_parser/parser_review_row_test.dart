@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/models/ingredient.dart';
-import 'package:gastrobrain/models/ingredient_category.dart';
-import 'package:gastrobrain/models/ingredient_match.dart';
-import 'package:gastrobrain/widgets/ingredient_parser/parser_review_row.dart';
-import 'package:gastrobrain/widgets/recipe_editor/parsed_ingredient.dart';
+import 'package:receptmeneger/models/ingredient.dart';
+import 'package:receptmeneger/models/ingredient_category.dart';
+import 'package:receptmeneger/models/ingredient_match.dart';
+import 'package:receptmeneger/widgets/ingredient_parser/parser_review_row.dart';
+import 'package:receptmeneger/widgets/recipe_editor/parsed_ingredient.dart';
 import '../../test_utils/test_app_wrapper.dart';
 
 Ingredient _ingredient({String name = 'Azeite', IngredientCategory category = IngredientCategory.oil}) {

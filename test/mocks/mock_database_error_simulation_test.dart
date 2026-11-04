@@ -1,7 +1,7 @@
 // test/mocks/mock_database_error_simulation_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/models/ingredient.dart';
+import 'package:receptmeneger/models/ingredient.dart';
 import '../mocks/mock_database_helper.dart';
 
 /// Verification tests for Issue #244 - Error Simulation Support

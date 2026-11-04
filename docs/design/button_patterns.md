@@ -1,6 +1,6 @@
-# Button Patterns for Gastrobrain
+# Button Patterns for ReceptMeneger
 
-This document describes standardized button patterns used throughout Gastrobrain. All buttons follow design tokens and establish clear visual hierarchy for user actions.
+This document describes standardized button patterns used throughout ReceptMeneger. All buttons follow design tokens and establish clear visual hierarchy for user actions.
 
 ## Button Types
 
@@ -124,7 +124,7 @@ IconButton(
 
 **Example:**
 ```dart
-import 'package:gastrobrain/core/theme/button_styles.dart';
+import 'package:receptmeneger/core/theme/button_styles.dart';
 
 ElevatedButton(
   onPressed: () => _deleteRecipe(),

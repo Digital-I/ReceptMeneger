@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/models/shopping_list.dart';
-import 'package:gastrobrain/models/shopping_list_item.dart';
+import 'package:receptmeneger/models/shopping_list.dart';
+import 'package:receptmeneger/models/shopping_list_item.dart';
 import '../mocks/mock_database_helper.dart';
 
 void main() {

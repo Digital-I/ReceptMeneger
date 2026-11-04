@@ -10,8 +10,8 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:gastrobrain/core/migration/migration.dart';
-import 'package:gastrobrain/core/migration/migrations/001_initial_schema.dart';
+import 'package:receptmeneger/core/migration/migration.dart';
+import 'package:receptmeneger/core/migration/migrations/001_initial_schema.dart';
 
 Future<Database> _openDb() async {
   final db = await databaseFactoryFfi.openDatabase(inMemoryDatabasePath);

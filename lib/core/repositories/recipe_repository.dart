@@ -1,6 +1,6 @@
 import '../../models/recipe.dart';
 import '../../database/database_helper.dart';
-import '../errors/gastrobrain_exceptions.dart';
+import '../errors/receptmeneger_exceptions.dart';
 import '../di/service_provider.dart';
 import 'base_repository.dart';
 
@@ -22,7 +22,7 @@ class RecipeRepository extends BaseRepository<List<Recipe>> {
   Map<String, int> _cachedMealCounts = {};
   Map<String, DateTime?> _cachedLastCookedDates = {};
   bool _isLoading = false;
-  GastrobrainException? _lastError;
+  ReceptMenegerException? _lastError;
   DateTime? _lastCacheTime;
 
   // Cache configuration
@@ -35,7 +35,7 @@ class RecipeRepository extends BaseRepository<List<Recipe>> {
   bool get hasData => _cachedRecipes.isNotEmpty;
 
   @override
-  GastrobrainException? get lastError => _lastError;
+  ReceptMenegerException? get lastError => _lastError;
 
   /// Gets all cached recipes
   List<Recipe> get recipes => List.unmodifiable(_cachedRecipes);
@@ -91,13 +91,13 @@ class RecipeRepository extends BaseRepository<List<Recipe>> {
       _isLoading = false;
       return RepositoryResult.success(_cachedRecipes);
 
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       _isLoading = false;
       _lastError = e;
       return RepositoryResult.error(e);
     } catch (e) {
       _isLoading = false;
-      final error = GastrobrainException('Failed to load recipes: ${e.toString()}');
+      final error = ReceptMenegerException('Failed to load recipes: ${e.toString()}');
       _lastError = error;
       return RepositoryResult.error(error);
     }
@@ -129,11 +129,11 @@ class RecipeRepository extends BaseRepository<List<Recipe>> {
 
       return RepositoryResult.success(recipe);
 
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       _lastError = e;
       return RepositoryResult.error(e);
     } catch (e) {
-      final error = GastrobrainException('Failed to get recipe: ${e.toString()}');
+      final error = ReceptMenegerException('Failed to get recipe: ${e.toString()}');
       _lastError = error;
       return RepositoryResult.error(error);
     }
@@ -153,14 +153,14 @@ class RecipeRepository extends BaseRepository<List<Recipe>> {
         
         return RepositoryResult.success(recipe);
       } else {
-        throw const GastrobrainException('Failed to create recipe');
+        throw const ReceptMenegerException('Failed to create recipe');
       }
 
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       _lastError = e;
       return RepositoryResult.error(e);
     } catch (e) {
-      final error = GastrobrainException('Failed to create recipe: ${e.toString()}');
+      final error = ReceptMenegerException('Failed to create recipe: ${e.toString()}');
       _lastError = error;
       return RepositoryResult.error(error);
     }
@@ -184,11 +184,11 @@ class RecipeRepository extends BaseRepository<List<Recipe>> {
         throw NotFoundException('Recipe not found for update');
       }
 
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       _lastError = e;
       return RepositoryResult.error(e);
     } catch (e) {
-      final error = GastrobrainException('Failed to update recipe: ${e.toString()}');
+      final error = ReceptMenegerException('Failed to update recipe: ${e.toString()}');
       _lastError = error;
       return RepositoryResult.error(error);
     }
@@ -211,11 +211,11 @@ class RecipeRepository extends BaseRepository<List<Recipe>> {
         throw NotFoundException('Recipe with id $id not found');
       }
 
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       _lastError = e;
       return RepositoryResult.error(e);
     } catch (e) {
-      final error = GastrobrainException('Failed to delete recipe: ${e.toString()}');
+      final error = ReceptMenegerException('Failed to delete recipe: ${e.toString()}');
       _lastError = error;
       return RepositoryResult.error(error);
     }

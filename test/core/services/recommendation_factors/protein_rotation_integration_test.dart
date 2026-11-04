@@ -1,11 +1,11 @@
 // test/core/services/recommendation_factors/protein_rotation_factor_integration_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/core/services/recommendation_factors/protein_rotation_factor.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/meal.dart';
-import 'package:gastrobrain/models/frequency_type.dart';
-import 'package:gastrobrain/models/protein_type.dart';
+import 'package:receptmeneger/core/services/recommendation_factors/protein_rotation_factor.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/meal.dart';
+import 'package:receptmeneger/models/frequency_type.dart';
+import 'package:receptmeneger/models/protein_type.dart';
 
 import '../../../mocks/mock_database_helper.dart';
 

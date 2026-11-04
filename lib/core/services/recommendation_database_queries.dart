@@ -5,7 +5,7 @@ import '../../models/recipe.dart';
 import '../../models/protein_type.dart';
 //import '../../models/recipe_ingredient.dart';
 //import '../../models/ingredient.dart';
-import '../errors/gastrobrain_exceptions.dart';
+import '../errors/receptmeneger_exceptions.dart';
 import 'localized_error_messages.dart';
 
 /// Specialized database query methods for the recommendation engine
@@ -81,7 +81,7 @@ class RecommendationDatabaseQueries {
 
       return recipes;
     } catch (e) {
-      throw GastrobrainException(
+      throw ReceptMenegerException(
           '${LocalizedErrorMessages.getMessage('errorGettingCandidateRecipes')}: ${e.toString()}');
     }
   }
@@ -135,7 +135,7 @@ class RecommendationDatabaseQueries {
 
       return result;
     } catch (e) {
-      throw GastrobrainException(
+      throw ReceptMenegerException(
           '${LocalizedErrorMessages.getMessage('errorGettingRecipeProteinTypes')}: ${e.toString()}');
     }
   }
@@ -162,7 +162,7 @@ class RecommendationDatabaseQueries {
       // Otherwise, use the more efficient bulk query
       return await _dbHelper.getAllLastCooked();
     } catch (e) {
-      throw GastrobrainException(
+      throw ReceptMenegerException(
           '${LocalizedErrorMessages.getMessage('errorGettingLastCookedDates')}: ${e.toString()}');
     }
   }
@@ -189,7 +189,7 @@ class RecommendationDatabaseQueries {
       // Otherwise, use the more efficient bulk query
       return await _dbHelper.getAllMealCounts();
     } catch (e) {
-      throw GastrobrainException('${LocalizedErrorMessages.getMessage('errorGettingMealCounts')}: ${e.toString()}');
+      throw ReceptMenegerException('${LocalizedErrorMessages.getMessage('errorGettingMealCounts')}: ${e.toString()}');
     }
   }
 
@@ -232,7 +232,7 @@ class RecommendationDatabaseQueries {
         };
       }).toList();
     } catch (e) {
-      throw GastrobrainException(
+      throw ReceptMenegerException(
           '${LocalizedErrorMessages.getMessage('errorGettingRecipesWithStats')}: ${e.toString()}');
     }
   }
@@ -246,7 +246,7 @@ class RecommendationDatabaseQueries {
     try {
       return await _dbHelper.getRecipeTagsForScoring();
     } catch (e) {
-      throw GastrobrainException(
+      throw ReceptMenegerException(
           '${LocalizedErrorMessages.getMessage('errorGettingRecipeTagsForScoring')}: ${e.toString()}');
     }
   }
@@ -315,7 +315,7 @@ class RecommendationDatabaseQueries {
 
       return result;
     } catch (e) {
-      throw GastrobrainException('${LocalizedErrorMessages.getMessage('errorGettingRecentMeals')}: ${e.toString()}');
+      throw ReceptMenegerException('${LocalizedErrorMessages.getMessage('errorGettingRecentMeals')}: ${e.toString()}');
     }
   }
 }

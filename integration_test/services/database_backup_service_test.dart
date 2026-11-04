@@ -2,22 +2,22 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:gastrobrain/database/database_helper.dart';
-import 'package:gastrobrain/core/services/database_backup_service.dart';
-import 'package:gastrobrain/core/errors/gastrobrain_exceptions.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/ingredient.dart';
-import 'package:gastrobrain/models/meal.dart';
-import 'package:gastrobrain/models/meal_recipe.dart';
-import 'package:gastrobrain/models/meal_plan.dart';
-import 'package:gastrobrain/models/meal_plan_item.dart';
-import 'package:gastrobrain/models/meal_plan_item_recipe.dart';
-import 'package:gastrobrain/models/recipe_ingredient.dart';
-import 'package:gastrobrain/models/ingredient_category.dart';
-import 'package:gastrobrain/models/measurement_unit.dart';
-import 'package:gastrobrain/models/protein_type.dart';
-import 'package:gastrobrain/models/frequency_type.dart';
-import 'package:gastrobrain/utils/id_generator.dart';
+import 'package:receptmeneger/database/database_helper.dart';
+import 'package:receptmeneger/core/services/database_backup_service.dart';
+import 'package:receptmeneger/core/errors/receptmeneger_exceptions.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/ingredient.dart';
+import 'package:receptmeneger/models/meal.dart';
+import 'package:receptmeneger/models/meal_recipe.dart';
+import 'package:receptmeneger/models/meal_plan.dart';
+import 'package:receptmeneger/models/meal_plan_item.dart';
+import 'package:receptmeneger/models/meal_plan_item_recipe.dart';
+import 'package:receptmeneger/models/recipe_ingredient.dart';
+import 'package:receptmeneger/models/ingredient_category.dart';
+import 'package:receptmeneger/models/measurement_unit.dart';
+import 'package:receptmeneger/models/protein_type.dart';
+import 'package:receptmeneger/models/frequency_type.dart';
+import 'package:receptmeneger/utils/id_generator.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -906,7 +906,7 @@ void main() {
         // Attempt restore should throw
         expect(
           () => backupService.restoreDatabase(nonExistentPath),
-          throwsA(isA<GastrobrainException>().having(
+          throwsA(isA<ReceptMenegerException>().having(
             (e) => e.message,
             'message',
             contains('Backup file not found'),
@@ -928,7 +928,7 @@ void main() {
         // Attempt restore should throw
         await expectLater(
           backupService.restoreDatabase(malformedFile.path),
-          throwsA(isA<GastrobrainException>()),
+          throwsA(isA<ReceptMenegerException>()),
         );
 
         // Clean up
@@ -960,7 +960,7 @@ void main() {
         // Attempt restore should throw
         await expectLater(
           backupService.restoreDatabase(invalidFile.path),
-          throwsA(isA<GastrobrainException>().having(
+          throwsA(isA<ReceptMenegerException>().having(
             (e) => e.message,
             'message',
             contains('Invalid backup file: missing version'),
@@ -1051,7 +1051,7 @@ void main() {
           fail('Should have thrown an exception');
         } catch (e) {
           // Expected to fail
-          expect(e, isA<GastrobrainException>());
+          expect(e, isA<ReceptMenegerException>());
         }
 
         // Verify original data is still intact (transaction rolled back)

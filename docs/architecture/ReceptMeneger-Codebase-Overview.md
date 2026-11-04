@@ -1,8 +1,8 @@
 <!-- markdownlint-disable -->
-# Gastrobrain Codebase Overview
+# ReceptMeneger Codebase Overview
 
 ## Project Context
-Gastrobrain is a comprehensive meal planning and recipe management application built with Flutter. It provides intelligent recipe recommendations, multi-language support (English/Portuguese), and sophisticated meal planning features with multi-recipe meal support. The application uses local SQLite storage and features a pluggable recommendation engine with temporal intelligence.
+ReceptMeneger is a comprehensive meal planning and recipe management application built with Flutter. It provides intelligent recipe recommendations, multi-language support (English/Portuguese), and sophisticated meal planning features with multi-recipe meal support. The application uses local SQLite storage and features a pluggable recommendation engine with temporal intelligence.
 
 ## Core Data Models
 
@@ -126,7 +126,7 @@ All DAOs receive a `Future<Database> Function()` factory via constructor injecti
 - **SnackbarService**: Handles user notifications and feedback
 - **EntityValidator**: Validates data models and business rules
 - **LocalizedErrorMessages**: Internationalized error handling
-- **GastrobrainException**: Custom exception hierarchy
+- **ReceptMenegerException**: Custom exception hierarchy
 
 ### Provider Architecture
 - **RecipeProvider**: State management for recipe operations
@@ -355,9 +355,9 @@ TextFormField(
 - Interactive buttons in forms (save, cancel, add, remove)
 - Dynamic form sections that can be added/removed
 
-### Code Quality Watchdog
+### Code Quality Guidelines
 
-A Code Quality Watchdog (defined in `lib/CLAUDE.md` and subdirectory `CLAUDE.md` files) automatically flags threshold violations to `.github/refactoring-backlog.md`:
+Code quality thresholds are recommended for keeping the codebase maintainable:
 
 | Smell | Default Threshold | Severity |
 |-------|-------------------|----------|
@@ -366,7 +366,7 @@ A Code Quality Watchdog (defined in `lib/CLAUDE.md` and subdirectory `CLAUDE.md`
 | Method length | > 50 lines | 🟡 High |
 | Method length | > 100 lines | 🔴 Critical |
 
-Services have stricter thresholds (> 200 lines: High, > 350 lines: Critical). The backlog is reviewed during Sprint Planning as part of the 20% quality allocation.
+Services have stricter thresholds (> 200 lines: High, > 350 lines: Critical).
 
 ## Development Tools & Utilities
 

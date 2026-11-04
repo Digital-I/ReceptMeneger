@@ -36,7 +36,7 @@ Example: `260325_full_test_suite_result.log`
 
 ## When to Update Documented Counts
 
-Update the approximate counts in `docs/README.md` and `docs/architecture/Gastrobrain-Codebase-Overview.md` when:
+Update the approximate counts in `docs/README.md` and `docs/architecture/ReceptMeneger-Codebase-Overview.md` when:
 
 1. **Milestone release** — run the script and update floors if any category has grown by 20%+ since last update.
 2. **Major test phase completes** — e.g. after a dedicated testing issue adds a significant batch (50+ tests) to a single category.
@@ -48,7 +48,7 @@ You do **not** need to update docs after routine feature work that adds a handfu
 | File | Section | Notes |
 |---|---|---|
 | `docs/README.md` | Testing Documentation Hierarchy | Per-category counts with file counts |
-| `docs/architecture/Gastrobrain-Codebase-Overview.md` | Test Coverage Overview & Breakdown | Total count + per-category breakdown |
+| `docs/architecture/ReceptMeneger-Codebase-Overview.md` | Test Coverage Overview & Breakdown | Total count + per-category breakdown |
 
 ## Related Scripts and Tooling
 

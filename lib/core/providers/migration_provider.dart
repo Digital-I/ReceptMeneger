@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import '../migration/migration.dart';
-import '../errors/gastrobrain_exceptions.dart';
+import '../errors/receptmeneger_exceptions.dart';
 import '../di/service_provider.dart';
 
 /// Provider for managing database migration state and UI feedback
@@ -20,7 +20,7 @@ class MigrationProvider extends ChangeNotifier {
   String _currentStatus = '';
   double _progress = 0.0;
   List<MigrationResult> _migrationResults = [];
-  GastrobrainException? _error;
+  ReceptMenegerException? _error;
   
   // Migration history
   List<Map<String, dynamic>> _migrationHistory = [];
@@ -41,7 +41,7 @@ class MigrationProvider extends ChangeNotifier {
   List<MigrationResult> get migrationResults => List.unmodifiable(_migrationResults);
 
   /// Any error that occurred during migration
-  GastrobrainException? get error => _error;
+  ReceptMenegerException? get error => _error;
 
   /// Migration history from database
   List<Map<String, dynamic>> get migrationHistory => List.unmodifiable(_migrationHistory);
@@ -66,9 +66,9 @@ class MigrationProvider extends ChangeNotifier {
       await _loadMigrationHistory();
       notifyListeners();
     } catch (e) {
-      _error = e is GastrobrainException 
+      _error = e is ReceptMenegerException 
           ? e 
-          : GastrobrainException('Failed to initialize migration provider: ${e.toString()}');
+          : ReceptMenegerException('Failed to initialize migration provider: ${e.toString()}');
       notifyListeners();
     }
   }
@@ -86,7 +86,7 @@ class MigrationProvider extends ChangeNotifier {
   /// Run pending migrations with UI feedback
   Future<bool> runMigrations() async {
     if (_isMigrating) {
-      throw const GastrobrainException('Migration already in progress');
+      throw const ReceptMenegerException('Migration already in progress');
     }
 
     _isMigrating = true;
@@ -115,15 +115,15 @@ class MigrationProvider extends ChangeNotifier {
       } else {
         final failedCount = results.where((r) => !r.success).length;
         _currentStatus = 'Migration failed: $failedCount migration(s) failed';
-        _error = GastrobrainException('$failedCount migration(s) failed');
+        _error = ReceptMenegerException('$failedCount migration(s) failed');
       }
 
       return results.isEmpty || results.every((r) => r.success);
 
     } catch (e) {
-      _error = e is GastrobrainException 
+      _error = e is ReceptMenegerException 
           ? e 
-          : GastrobrainException('Migration failed: ${e.toString()}');
+          : ReceptMenegerException('Migration failed: ${e.toString()}');
       _currentStatus = 'Migration failed: ${_error!.message}';
       return false;
     } finally {
@@ -135,11 +135,11 @@ class MigrationProvider extends ChangeNotifier {
   /// Rollback to a specific version (USE WITH CAUTION)
   Future<bool> rollbackToVersion(int targetVersion) async {
     if (_isMigrating) {
-      throw const GastrobrainException('Migration already in progress');
+      throw const ReceptMenegerException('Migration already in progress');
     }
 
     if (targetVersion >= currentVersion) {
-      throw GastrobrainException('Target version must be less than current version ($currentVersion)');
+      throw ReceptMenegerException('Target version must be less than current version ($currentVersion)');
     }
 
     _isMigrating = true;
@@ -166,15 +166,15 @@ class MigrationProvider extends ChangeNotifier {
       } else {
         final failedCount = results.where((r) => !r.success).length;
         _currentStatus = 'Rollback failed: $failedCount rollback(s) failed';
-        _error = GastrobrainException('$failedCount rollback(s) failed');
+        _error = ReceptMenegerException('$failedCount rollback(s) failed');
       }
 
       return results.every((r) => r.success);
 
     } catch (e) {
-      _error = e is GastrobrainException 
+      _error = e is ReceptMenegerException 
           ? e 
-          : GastrobrainException('Rollback failed: ${e.toString()}');
+          : ReceptMenegerException('Rollback failed: ${e.toString()}');
       _currentStatus = 'Rollback failed: ${_error!.message}';
       return false;
     } finally {
@@ -227,9 +227,9 @@ class MigrationProvider extends ChangeNotifier {
       await _loadMigrationHistory();
       notifyListeners();
     } catch (e) {
-      _error = e is GastrobrainException 
+      _error = e is ReceptMenegerException 
           ? e 
-          : GastrobrainException('Failed to refresh migration status: ${e.toString()}');
+          : ReceptMenegerException('Failed to refresh migration status: ${e.toString()}');
       notifyListeners();
     }
   }

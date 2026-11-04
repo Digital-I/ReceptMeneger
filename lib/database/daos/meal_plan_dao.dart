@@ -5,7 +5,7 @@ import '../../models/meal_plan.dart';
 import '../../models/meal_plan_item.dart';
 import '../../models/meal_plan_item_recipe.dart';
 import '../../models/meal_plan_item_ingredient.dart';
-import '../../core/errors/gastrobrain_exceptions.dart';
+import '../../core/errors/receptmeneger_exceptions.dart';
 import '../../core/validators/entity_validator.dart';
 
 class MealPlanDao {
@@ -28,7 +28,7 @@ class MealPlanDao {
     } on ValidationException {
       rethrow;
     } catch (e) {
-      throw GastrobrainException('Failed to insert meal plan: ${e.toString()}');
+      throw ReceptMenegerException('Failed to insert meal plan: ${e.toString()}');
     }
   }
 
@@ -45,7 +45,7 @@ class MealPlanDao {
       final items = await _loadItemsForPlan(db, id);
       return MealPlan.fromMap(maps.first, items);
     } catch (e) {
-      throw GastrobrainException('Failed to get meal plan: ${e.toString()}');
+      throw ReceptMenegerException('Failed to get meal plan: ${e.toString()}');
     }
   }
 
@@ -148,7 +148,7 @@ class MealPlanDao {
     } on NotFoundException {
       rethrow;
     } catch (e) {
-      throw GastrobrainException('Failed to update meal plan: ${e.toString()}');
+      throw ReceptMenegerException('Failed to update meal plan: ${e.toString()}');
     }
   }
 
@@ -190,7 +190,7 @@ class MealPlanDao {
     } on ValidationException {
       rethrow;
     } catch (e) {
-      throw GastrobrainException('Failed to insert meal plan item: ${e.toString()}');
+      throw ReceptMenegerException('Failed to insert meal plan item: ${e.toString()}');
     }
   }
 
@@ -245,7 +245,7 @@ class MealPlanDao {
           conflictAlgorithm: ConflictAlgorithm.replace);
       return mealPlanItemRecipe.id;
     } catch (e) {
-      throw GastrobrainException('Failed to insert meal plan item recipe: ${e.toString()}');
+      throw ReceptMenegerException('Failed to insert meal plan item recipe: ${e.toString()}');
     }
   }
 
@@ -258,7 +258,7 @@ class MealPlanDao {
         whereArgs: [mealPlanItemId],
       );
     } catch (e) {
-      throw GastrobrainException('Failed to delete meal plan item recipes: ${e.toString()}');
+      throw ReceptMenegerException('Failed to delete meal plan item recipes: ${e.toString()}');
     }
   }
 
@@ -271,7 +271,7 @@ class MealPlanDao {
           conflictAlgorithm: ConflictAlgorithm.replace);
       return side.id;
     } catch (e) {
-      throw GastrobrainException('Failed to insert meal plan item ingredient: ${e.toString()}');
+      throw ReceptMenegerException('Failed to insert meal plan item ingredient: ${e.toString()}');
     }
   }
 
@@ -285,7 +285,7 @@ class MealPlanDao {
       );
       return List.generate(maps.length, (i) => MealPlanItemIngredient.fromMap(maps[i]));
     } catch (e) {
-      throw GastrobrainException('Failed to get meal plan item ingredients: ${e.toString()}');
+      throw ReceptMenegerException('Failed to get meal plan item ingredients: ${e.toString()}');
     }
   }
 
@@ -294,7 +294,7 @@ class MealPlanDao {
     try {
       return await db.delete('meal_plan_item_ingredients', where: 'id = ?', whereArgs: [id]);
     } catch (e) {
-      throw GastrobrainException('Failed to delete meal plan item ingredient: ${e.toString()}');
+      throw ReceptMenegerException('Failed to delete meal plan item ingredient: ${e.toString()}');
     }
   }
 
@@ -307,7 +307,7 @@ class MealPlanDao {
         whereArgs: [mealPlanItemId],
       );
     } catch (e) {
-      throw GastrobrainException('Failed to delete meal plan item ingredients: ${e.toString()}');
+      throw ReceptMenegerException('Failed to delete meal plan item ingredients: ${e.toString()}');
     }
   }
 

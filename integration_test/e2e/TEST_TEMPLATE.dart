@@ -5,7 +5,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:gastrobrain/database/database_helper.dart';
+import 'package:receptmeneger/database/database_helper.dart';
 import 'helpers/e2e_test_helpers.dart';
 
 /// [REPLACE WITH YOUR TEST DESCRIPTION]

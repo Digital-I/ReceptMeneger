@@ -1,13 +1,13 @@
 // test/edge_cases/error_scenarios/database_crud_failures_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/meal.dart';
-import 'package:gastrobrain/models/ingredient.dart';
-import 'package:gastrobrain/models/ingredient_category.dart';
-import 'package:gastrobrain/models/measurement_unit.dart';
-import 'package:gastrobrain/models/frequency_type.dart';
-import 'package:gastrobrain/utils/id_generator.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/meal.dart';
+import 'package:receptmeneger/models/ingredient.dart';
+import 'package:receptmeneger/models/ingredient_category.dart';
+import 'package:receptmeneger/models/measurement_unit.dart';
+import 'package:receptmeneger/models/frequency_type.dart';
+import 'package:receptmeneger/utils/id_generator.dart';
 import '../../mocks/mock_database_helper.dart';
 import '../../helpers/error_injection_helpers.dart';
 import '../../helpers/edge_case_test_helpers.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/models/frequency_type.dart';
+import 'package:receptmeneger/models/frequency_type.dart';
 
 void main() {
   group('FrequencyType', () {

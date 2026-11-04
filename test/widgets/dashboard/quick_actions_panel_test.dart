@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:gastrobrain/l10n/app_localizations.dart';
-import 'package:gastrobrain/widgets/dashboard/quick_actions_panel.dart';
+import 'package:receptmeneger/l10n/app_localizations.dart';
+import 'package:receptmeneger/widgets/dashboard/quick_actions_panel.dart';
 
 Widget _buildPanel({
   VoidCallback? onPlanToday,

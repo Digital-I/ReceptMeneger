@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "gastrobrain" "\0"
+            VALUE "FileDescription", "receptmeneger" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "gastrobrain" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "gastrobrain.exe" "\0"
-            VALUE "ProductName", "gastrobrain" "\0"
+            VALUE "InternalName", "receptmeneger" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 Ekaterina Medvedeva. All rights reserved." "\0"
+            VALUE "OriginalFilename", "receptmeneger.exe" "\0"
+            VALUE "ProductName", "receptmeneger" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

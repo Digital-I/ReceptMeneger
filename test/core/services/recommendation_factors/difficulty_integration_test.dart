@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/core/services/recommendation_service.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/frequency_type.dart';
-//import 'package:gastrobrain/models/protein_type.dart';
-import 'package:gastrobrain/utils/id_generator.dart';
+import 'package:receptmeneger/core/services/recommendation_service.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/frequency_type.dart';
+//import 'package:receptmeneger/models/protein_type.dart';
+import 'package:receptmeneger/utils/id_generator.dart';
 
 import '../../../mocks/mock_database_helper.dart';
 

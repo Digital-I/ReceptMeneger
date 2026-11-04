@@ -1,6 +1,6 @@
 // lib/core/validators/entity_validator.dart
 
-import '../errors/gastrobrain_exceptions.dart';
+import '../errors/receptmeneger_exceptions.dart';
 import '../../models/meal_plan_item.dart';
 import '../../models/meal_plan_item_recipe.dart';
 import '../../models/ingredient_category.dart';

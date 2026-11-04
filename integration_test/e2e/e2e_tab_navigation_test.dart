@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:gastrobrain/main.dart';
+import 'package:receptmeneger/main.dart';
 
 /// Simple Tab Navigation
 ///
@@ -17,7 +17,7 @@ void main() {
         (WidgetTester tester) async {
       // SETUP: Launch the app
       WidgetsFlutterBinding.ensureInitialized();
-      await tester.pumpWidget(const GastrobrainApp());
+      await tester.pumpWidget(const ReceptMenegerApp());
       await tester.pumpAndSettle(const Duration(seconds: 10));
 
       // VERIFY: We start on Recipes tab (index 0)
@@ -60,7 +60,7 @@ void main() {
         (WidgetTester tester) async {
       // SETUP: Launch the app
       WidgetsFlutterBinding.ensureInitialized();
-      await tester.pumpWidget(const GastrobrainApp());
+      await tester.pumpWidget(const ReceptMenegerApp());
       await tester.pumpAndSettle(const Duration(seconds: 10));
 
       // Find the Content tab by its key (added in #134 nav restructuring)
@@ -79,7 +79,7 @@ void main() {
         (WidgetTester tester) async {
       // SETUP: Launch the app
       WidgetsFlutterBinding.ensureInitialized();
-      await tester.pumpWidget(const GastrobrainApp());
+      await tester.pumpWidget(const ReceptMenegerApp());
       await tester.pumpAndSettle(const Duration(seconds: 10));
 
       // Find the Dashboard tab by its key (added in #134 nav restructuring)

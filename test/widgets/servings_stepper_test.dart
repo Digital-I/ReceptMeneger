@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/widgets/servings_stepper.dart';
+import 'package:receptmeneger/widgets/servings_stepper.dart';
 import '../test_utils/test_app_wrapper.dart';
 
 void main() {

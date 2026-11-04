@@ -1,7 +1,7 @@
 // test/models/meal_recipe_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/models/meal_recipe.dart';
+import 'package:receptmeneger/models/meal_recipe.dart';
 
 void main() {
   group('MealRecipe', () {

@@ -1,10 +1,10 @@
 // test/core/services/recommendation_factors/user_feedback_factor_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/core/services/recommendation_factors/user_feedback_factor.dart';
-import 'package:gastrobrain/core/services/recommendation_service.dart';
-import 'package:gastrobrain/utils/id_generator.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/core/services/recommendation_factors/user_feedback_factor.dart';
+import 'package:receptmeneger/core/services/recommendation_service.dart';
+import 'package:receptmeneger/utils/id_generator.dart';
 import '../../../mocks/mock_database_helper.dart';
 
 void main() {

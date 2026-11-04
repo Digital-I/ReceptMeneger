@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# count-tests.sh — Gastrobrain test suite counter
+# count-tests.sh — ReceptMeneger test suite counter
 #
 # Usage:
 #   bash scripts/count-tests.sh          # static count + parse latest logs
@@ -68,7 +68,7 @@ latest_log() {
 
 echo ""
 echo "═══════════════════════════════════════════════════════"
-echo "  Gastrobrain Test Suite — Static Count"
+echo "  ReceptMeneger Test Suite — Static Count"
 echo "  $(date '+%Y-%m-%d %H:%M')"
 echo "═══════════════════════════════════════════════════════"
 echo ""

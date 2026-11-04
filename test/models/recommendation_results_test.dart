@@ -1,10 +1,10 @@
 // test/core/models/recommendation_results_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/models/recipe_recommendation.dart';
-import 'package:gastrobrain/models/recommendation_results.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/frequency_type.dart';
+import 'package:receptmeneger/models/recipe_recommendation.dart';
+import 'package:receptmeneger/models/recommendation_results.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/frequency_type.dart';
 
 import '../mocks/mock_database_helper.dart';
 

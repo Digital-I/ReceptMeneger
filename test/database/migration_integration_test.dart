@@ -1,18 +1,18 @@
 // ignore_for_file: avoid_print
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' hide DatabaseExecutor;
-import 'package:gastrobrain/core/migration/migration.dart';
-import 'package:gastrobrain/core/migration/migration_runner.dart';
-import 'package:gastrobrain/core/migration/migrations/001_initial_schema.dart';
-import 'package:gastrobrain/core/migration/migrations/003_add_marinating_time.dart';
-import 'package:gastrobrain/core/migration/migrations/004_add_recipe_story.dart';
-import 'package:gastrobrain/core/migration/migrations/005_add_tags.dart';
-import 'package:gastrobrain/core/migration/migrations/006_add_meal_role_food_type.dart';
-import 'package:gastrobrain/core/migration/migrations/007_migrate_category_to_tags.dart';
-import 'package:gastrobrain/core/migration/migrations/008_add_sauce_food_type.dart';
-import 'package:gastrobrain/core/migration/migrations/009_drop_recipe_category.dart';
-import 'package:gastrobrain/core/migration/migrations/010_add_quantity_max.dart';
-import 'package:gastrobrain/core/migration/migrations/011_add_shopping_list_quantity_max.dart';
+import 'package:receptmeneger/core/migration/migration.dart';
+import 'package:receptmeneger/core/migration/migration_runner.dart';
+import 'package:receptmeneger/core/migration/migrations/001_initial_schema.dart';
+import 'package:receptmeneger/core/migration/migrations/003_add_marinating_time.dart';
+import 'package:receptmeneger/core/migration/migrations/004_add_recipe_story.dart';
+import 'package:receptmeneger/core/migration/migrations/005_add_tags.dart';
+import 'package:receptmeneger/core/migration/migrations/006_add_meal_role_food_type.dart';
+import 'package:receptmeneger/core/migration/migrations/007_migrate_category_to_tags.dart';
+import 'package:receptmeneger/core/migration/migrations/008_add_sauce_food_type.dart';
+import 'package:receptmeneger/core/migration/migrations/009_drop_recipe_category.dart';
+import 'package:receptmeneger/core/migration/migrations/010_add_quantity_max.dart';
+import 'package:receptmeneger/core/migration/migrations/011_add_shopping_list_quantity_max.dart';
 
 // A deliberately broken migration used only to verify runner failure reporting.
 class _BrokenMigration extends Migration {
