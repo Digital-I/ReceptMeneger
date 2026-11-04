@@ -4,7 +4,7 @@ import 'package:sqflite/sqflite.dart';
 import '../../models/meal.dart';
 import '../../models/meal_recipe.dart';
 import '../../models/meal_ingredient.dart';
-import '../../core/errors/gastrobrain_exceptions.dart';
+import '../../core/errors/receptmeneger_exceptions.dart';
 
 class MealDao {
   final Future<Database> Function() _getDb;
@@ -115,7 +115,7 @@ class MealDao {
           conflictAlgorithm: ConflictAlgorithm.replace);
       return mealRecipe.id;
     } catch (e) {
-      throw GastrobrainException('Failed to insert meal recipe: ${e.toString()}');
+      throw ReceptMenegerException('Failed to insert meal recipe: ${e.toString()}');
     }
   }
 
@@ -129,7 +129,7 @@ class MealDao {
       );
       return List.generate(maps.length, (i) => MealRecipe.fromMap(maps[i]));
     } catch (e) {
-      throw GastrobrainException('Failed to get meal recipes: ${e.toString()}');
+      throw ReceptMenegerException('Failed to get meal recipes: ${e.toString()}');
     }
   }
 
@@ -161,7 +161,7 @@ class MealDao {
         return await db.delete('meal_recipes', where: 'meal_id = ?', whereArgs: [mealId]);
       }
     } catch (e) {
-      throw GastrobrainException('Failed to delete meal recipes: ${e.toString()}');
+      throw ReceptMenegerException('Failed to delete meal recipes: ${e.toString()}');
     }
   }
 
@@ -199,7 +199,7 @@ class MealDao {
       return mealRecipe.id;
     } catch (e) {
       if (e is NotFoundException) rethrow;
-      throw GastrobrainException('Failed to add recipe to meal: ${e.toString()}');
+      throw ReceptMenegerException('Failed to add recipe to meal: ${e.toString()}');
     }
   }
 
@@ -213,7 +213,7 @@ class MealDao {
       );
       return deleted > 0;
     } catch (e) {
-      throw GastrobrainException('Failed to remove recipe from meal: ${e.toString()}');
+      throw ReceptMenegerException('Failed to remove recipe from meal: ${e.toString()}');
     }
   }
 
@@ -235,7 +235,7 @@ class MealDao {
       });
       return true;
     } catch (e) {
-      throw GastrobrainException('Failed to set primary recipe: ${e.toString()}');
+      throw ReceptMenegerException('Failed to set primary recipe: ${e.toString()}');
     }
   }
 
@@ -248,7 +248,7 @@ class MealDao {
           conflictAlgorithm: ConflictAlgorithm.replace);
       return side.id;
     } catch (e) {
-      throw GastrobrainException('Failed to insert meal ingredient: ${e.toString()}');
+      throw ReceptMenegerException('Failed to insert meal ingredient: ${e.toString()}');
     }
   }
 
@@ -262,7 +262,7 @@ class MealDao {
       );
       return List.generate(maps.length, (i) => MealIngredient.fromMap(maps[i]));
     } catch (e) {
-      throw GastrobrainException('Failed to get meal ingredients: ${e.toString()}');
+      throw ReceptMenegerException('Failed to get meal ingredients: ${e.toString()}');
     }
   }
 
@@ -271,7 +271,7 @@ class MealDao {
     try {
       return await db.delete('meal_ingredients', where: 'id = ?', whereArgs: [id]);
     } catch (e) {
-      throw GastrobrainException('Failed to delete meal ingredient: ${e.toString()}');
+      throw ReceptMenegerException('Failed to delete meal ingredient: ${e.toString()}');
     }
   }
 
@@ -280,7 +280,7 @@ class MealDao {
     try {
       return await db.delete('meal_ingredients', where: 'meal_id = ?', whereArgs: [mealId]);
     } catch (e) {
-      throw GastrobrainException('Failed to delete meal ingredients: ${e.toString()}');
+      throw ReceptMenegerException('Failed to delete meal ingredients: ${e.toString()}');
     }
   }
 

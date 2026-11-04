@@ -4,24 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:gastrobrain/core/di/providers/database_provider.dart';
-import 'package:gastrobrain/core/providers/debug_settings_provider.dart';
-import 'package:gastrobrain/core/services/recommendation_service.dart';
-import 'package:gastrobrain/core/di/service_provider.dart';
-import 'package:gastrobrain/models/frequency_type.dart';
-import 'package:gastrobrain/models/meal.dart'; // Uncomment when test #234 is enabled
-import 'package:gastrobrain/models/meal_recipe.dart'; // Uncomment when test #234 is enabled
-import 'package:gastrobrain/models/meal_plan.dart';
-import 'package:gastrobrain/models/meal_plan_item.dart';
-import 'package:gastrobrain/models/meal_plan_item_recipe.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/recipe_recommendation.dart';
-import 'package:gastrobrain/models/protein_type.dart';
-import 'package:gastrobrain/screens/weekly_plan_screen.dart';
-import 'package:gastrobrain/utils/id_generator.dart';
-import 'package:gastrobrain/l10n/app_localizations.dart';
-import 'package:gastrobrain/widgets/weekly_calendar_widget.dart';
-import 'package:gastrobrain/widgets/weekly_summary_widget.dart';
+import 'package:receptmeneger/core/di/providers/database_provider.dart';
+import 'package:receptmeneger/core/providers/debug_settings_provider.dart';
+import 'package:receptmeneger/core/services/recommendation_service.dart';
+import 'package:receptmeneger/core/di/service_provider.dart';
+import 'package:receptmeneger/models/frequency_type.dart';
+import 'package:receptmeneger/models/meal.dart'; // Uncomment when test #234 is enabled
+import 'package:receptmeneger/models/meal_recipe.dart'; // Uncomment when test #234 is enabled
+import 'package:receptmeneger/models/meal_plan.dart';
+import 'package:receptmeneger/models/meal_plan_item.dart';
+import 'package:receptmeneger/models/meal_plan_item_recipe.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/recipe_recommendation.dart';
+import 'package:receptmeneger/models/protein_type.dart';
+import 'package:receptmeneger/screens/weekly_plan_screen.dart';
+import 'package:receptmeneger/utils/id_generator.dart';
+import 'package:receptmeneger/l10n/app_localizations.dart';
+import 'package:receptmeneger/widgets/weekly_calendar_widget.dart';
+import 'package:receptmeneger/widgets/weekly_summary_widget.dart';
 import '../mocks/mock_database_helper.dart';
 
 void main() {

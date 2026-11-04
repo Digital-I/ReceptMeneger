@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'design_tokens.dart';
 
-/// Gastrobrain App Theme Configuration
+/// ReceptMeneger App Theme Configuration
 ///
 /// Centralized theme configuration implementing design tokens.
 /// Provides consistent styling across all widgets following
-/// Gastrobrain's visual identity (warm, confident, cultured, clear, rooted).
+/// ReceptMeneger's visual identity (warm, confident, cultured, clear, rooted).
 ///
 /// Reference: docs/design/visual_identity.md
 /// Design Tokens: docs/design/design_tokens.md
@@ -15,7 +15,7 @@ class AppTheme {
 
   /// Light Theme
   ///
-  /// Primary theme for Gastrobrain app implementing warm, food-inspired
+  /// Primary theme for ReceptMeneger app implementing warm, food-inspired
   /// color palette and generous spacing.
   static ThemeData get lightTheme {
     return ThemeData(

@@ -1,9 +1,9 @@
 <!-- markdownlint-disable -->
 # End-to-End Testing Best Practices
 
-**Related Issue:** [#36 Establish End-to-End Flow Testing Framework](https://github.com/alemdisso/gastrobrain/issues/36)
+**Related Issue:** [#36 Establish End-to-End Flow Testing Framework](https://github.com/Ekaterina-Medvedeva/receptmeneger/issues/36)
 
-This document outlines best practices for writing end-to-end (E2E) integration tests in Gastrobrain using Flutter's `integration_test` package.
+This document outlines best practices for writing end-to-end (E2E) integration tests in ReceptMeneger using Flutter's `integration_test` package.
 
 ---
 
@@ -39,7 +39,7 @@ E2E tests verify complete user workflows by:
 
 ## Types of Integration Tests
 
-Gastrobrain uses two types of integration tests that serve different purposes:
+ReceptMeneger uses two types of integration tests that serve different purposes:
 
 ### Service Integration Tests
 
@@ -148,7 +148,7 @@ integration_test/
 └── services/              # Service Integration Tests
     └── *_service_test.dart # Service test files
 ```
-Organized per [Issue #221](https://github.com/alemdisso/gastrobrain/issues/221).
+Organized per [Issue #221](https://github.com/Ekaterina-Medvedeva/receptmeneger/issues/221).
 
 ---
 
@@ -508,7 +508,7 @@ await tester.enterText(textFields.at(0), 'Recipe Name');
 
 ### Future Approach: Key-based Access
 
-**Will be used once [Issue #219](https://github.com/alemdisso/gastrobrain/issues/219) is complete**
+**Will be used once [Issue #219](https://github.com/Ekaterina-Medvedeva/receptmeneger/issues/219) is complete**
 
 ```dart
 final nameField = find.byKey(Key('add_recipe_name_field'));
@@ -521,7 +521,7 @@ await tester.enterText(nameField, 'Recipe Name');
 - ✅ Self-documenting test code
 
 **Requires:**
-- Adding `key:` parameter to form fields (see [Form Field Keys Standard](Gastrobrain-Codebase-Overview.md#form-field-keys))
+- Adding `key:` parameter to form fields (see [Form Field Keys Standard](ReceptMeneger-Codebase-Overview.md#form-field-keys))
 
 ### Other Strategies
 
@@ -680,7 +680,7 @@ await E2ETestHelpers.fillTextFieldByIndex(tester, 0, 'Recipe Name');  // Usually
 ```
 
 **Long-term solution:**
-- Add form field keys (see [Issue #219](https://github.com/alemdisso/gastrobrain/issues/219))
+- Add form field keys (see [Issue #219](https://github.com/Ekaterina-Medvedeva/receptmeneger/issues/219))
 - Switch to key-based access:
 ```dart
 await E2ETestHelpers.fillTextFieldByKey(
@@ -744,9 +744,9 @@ See `integration_test/e2e/TEST_TEMPLATE.dart` for a complete, documented templat
 
 ## Related Documentation
 
-- **[Form Field Keys Standard](Gastrobrain-Codebase-Overview.md#form-field-keys)** - Guidelines for adding keys to form fields
-- **[Issue #36](https://github.com/alemdisso/gastrobrain/issues/36)** - E2E testing framework implementation
-- **[Issue #219](https://github.com/alemdisso/gastrobrain/issues/219)** - Form field keys refactoring
+- **[Form Field Keys Standard](ReceptMeneger-Codebase-Overview.md#form-field-keys)** - Guidelines for adding keys to form fields
+- **[Issue #36](https://github.com/Ekaterina-Medvedeva/receptmeneger/issues/36)** - E2E testing framework implementation
+- **[Issue #219](https://github.com/Ekaterina-Medvedeva/receptmeneger/issues/219)** - Form field keys refactoring
 - **[Flutter integration_test package](https://docs.flutter.dev/testing/integration-tests)** - Official documentation
 
 ---

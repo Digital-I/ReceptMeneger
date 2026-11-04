@@ -1,7 +1,7 @@
 import '../../models/meal_plan.dart';
 import '../../models/meal_plan_item.dart';
 import '../../database/database_helper.dart';
-import '../errors/gastrobrain_exceptions.dart';
+import '../errors/receptmeneger_exceptions.dart';
 import '../di/service_provider.dart';
 import 'base_repository.dart';
 
@@ -23,7 +23,7 @@ class MealPlanRepository extends BaseRepository<List<MealPlan>> {
   Map<String, MealPlan?> _cachedMealPlansByWeek = {};
   Map<String, List<MealPlanItem>> _cachedMealPlanItems = {};
   bool _isLoading = false;
-  GastrobrainException? _lastError;
+  ReceptMenegerException? _lastError;
   DateTime? _lastCacheTime;
 
   // Cache configuration
@@ -36,7 +36,7 @@ class MealPlanRepository extends BaseRepository<List<MealPlan>> {
   bool get hasData => _cachedMealPlans.isNotEmpty;
 
   @override
-  GastrobrainException? get lastError => _lastError;
+  ReceptMenegerException? get lastError => _lastError;
 
   /// Gets all cached meal plans
   List<MealPlan> get mealPlans => List.unmodifiable(_cachedMealPlans);
@@ -64,7 +64,7 @@ class MealPlanRepository extends BaseRepository<List<MealPlan>> {
       return RepositoryResult.success(mealPlan);
 
     } catch (e) {
-      final error = GastrobrainException('Failed to load meal plan for week: ${e.toString()}');
+      final error = ReceptMenegerException('Failed to load meal plan for week: ${e.toString()}');
       _lastError = error;
       return RepositoryResult.error(error);
     } finally {
@@ -95,7 +95,7 @@ class MealPlanRepository extends BaseRepository<List<MealPlan>> {
       return RepositoryResult.success(items);
 
     } catch (e) {
-      final error = GastrobrainException('Failed to load meal plan items for date: ${e.toString()}');
+      final error = ReceptMenegerException('Failed to load meal plan items for date: ${e.toString()}');
       _lastError = error;
       return RepositoryResult.error(error);
     } finally {
@@ -133,7 +133,7 @@ class MealPlanRepository extends BaseRepository<List<MealPlan>> {
       return const RepositoryResult.success(null);
 
     } catch (e) {
-      final error = GastrobrainException('Failed to mark meal as cooked: ${e.toString()}');
+      final error = ReceptMenegerException('Failed to mark meal as cooked: ${e.toString()}');
       _lastError = error;
       return RepositoryResult.error(error);
     } finally {
@@ -156,7 +156,7 @@ class MealPlanRepository extends BaseRepository<List<MealPlan>> {
       return const RepositoryResult.success(null);
 
     } catch (e) {
-      final error = GastrobrainException('Failed to refresh meal plan data: ${e.toString()}');
+      final error = ReceptMenegerException('Failed to refresh meal plan data: ${e.toString()}');
       _lastError = error;
       return RepositoryResult.error(error);
     } finally {

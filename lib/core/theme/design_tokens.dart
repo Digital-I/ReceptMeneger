@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-/// Gastrobrain Design Tokens
+/// ReceptMeneger Design Tokens
 ///
-/// Concrete, reusable visual values that implement the Gastrobrain Visual Identity.
+/// Concrete, reusable visual values that implement the ReceptMeneger Visual Identity.
 /// These tokens should be used consistently across all UI implementation.
 ///
 /// Reference: docs/design/design_tokens.md

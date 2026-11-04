@@ -1,7 +1,7 @@
 // test/models/shopping_list_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/models/shopping_list.dart';
+import 'package:receptmeneger/models/shopping_list.dart';
 
 void main() {
   group('ShoppingList', () {

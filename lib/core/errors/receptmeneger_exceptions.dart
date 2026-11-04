@@ -1,17 +1,17 @@
-// lib/core/errors/gastrobrain_exceptions.dart
+// lib/core/errors/receptmeneger_exceptions.dart
 
-/// Base exception class for all Gastrobrain-specific exceptions
-class GastrobrainException implements Exception {
+/// Base exception class for all ReceptMeneger-specific exceptions
+class ReceptMenegerException implements Exception {
   final String message;
 
-  const GastrobrainException(this.message);
+  const ReceptMenegerException(this.message);
 
   @override
-  String toString() => 'GastrobrainException: $message';
+  String toString() => 'ReceptMenegerException: $message';
 }
 
 /// Thrown when input validation fails
-class ValidationException extends GastrobrainException {
+class ValidationException extends ReceptMenegerException {
   ValidationException(super.message);
 
   @override
@@ -19,7 +19,7 @@ class ValidationException extends GastrobrainException {
 }
 
 /// Thrown when attempting to create a duplicate entry
-class DuplicateException extends GastrobrainException {
+class DuplicateException extends ReceptMenegerException {
   DuplicateException(super.message);
 
   @override
@@ -27,7 +27,7 @@ class DuplicateException extends GastrobrainException {
 }
 
 /// Thrown when a requested resource is not found
-class NotFoundException extends GastrobrainException {
+class NotFoundException extends ReceptMenegerException {
   NotFoundException(super.message);
 
   @override
@@ -36,7 +36,7 @@ class NotFoundException extends GastrobrainException {
 
 /// Thrown when a backup file was created by a newer app version than the
 /// one attempting to restore it
-class BackupVersionException extends GastrobrainException {
+class BackupVersionException extends ReceptMenegerException {
   const BackupVersionException(super.message);
 
   @override

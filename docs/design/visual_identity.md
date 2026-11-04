@@ -1,16 +1,16 @@
-# Gastrobrain Visual Identity and Design Principles
+# ReceptMeneger Visual Identity and Design Principles
 
-> **Document Purpose:** This document defines the visual personality and core design principles that guide all UI decisions for Gastrobrain. This is the foundational document for the 0.1.7 milestone and all subsequent visual/UI work should reference this visual identity.
+> **Document Purpose:** This document defines the visual personality and core design principles that guide all UI decisions for ReceptMeneger. This is the foundational document for the 0.1.7 milestone and all subsequent visual/UI work should reference this visual identity.
 
 **Status:** Draft - Initial Definition
 **Created:** 2026-01-30
-**Issue:** [#255 - Define Gastrobrain Visual Identity and Design Principles](https://github.com/rodrigo-omena/gastrobrain/issues/255)
+**Issue:** [#255 - Define ReceptMeneger Visual Identity and Design Principles](https://github.com/rodrigo-omena/receptmeneger/issues/255)
 
 ---
 
 ## App Purpose
 
-Gastrobrain is a meal planning and recipe management application that helps users organize their cooking with intelligent recipe recommendations. Unlike generic meal planning tools, Gastrobrain embraces a **Brazilian perspective on food culture** - treating food as culture, not just fuel - with a focus on regional cuisines and the concept of "seasoning palette."
+ReceptMeneger is a meal planning and recipe management application that helps users organize their cooking with intelligent recipe recommendations. Unlike generic meal planning tools, ReceptMeneger embraces a **Brazilian perspective on food culture** - treating food as culture, not just fuel - with a focus on regional cuisines and the concept of "seasoning palette."
 
 ## Target Users
 
@@ -23,7 +23,7 @@ Gastrobrain is a meal planning and recipe management application that helps user
 
 ## Core Visual Personality Attributes
 
-Gastrobrain's visual design is guided by five core personality attributes:
+ReceptMeneger's visual design is guided by five core personality attributes:
 
 ### 1. Warm and Inviting
 
@@ -77,7 +77,7 @@ Gastrobrain's visual design is guided by five core personality attributes:
 
 ---
 
-## What Gastrobrain IS NOT
+## What ReceptMeneger IS NOT
 
 To avoid generic patterns and maintain authentic identity:
 
@@ -85,7 +85,7 @@ To avoid generic patterns and maintain authentic identity:
 This isn't another blue SaaS app or sterile productivity tool. Food deserves personality and warmth. Avoid default Material Design colors and corporate tech aesthetics.
 
 ### Not Overly Playful/Gamified
-While friendly, Gastrobrain respects users' time and serious intent. No cartoonish elements, excessive animation, or gamification badges. Food culture deserves maturity.
+While friendly, ReceptMeneger respects users' time and serious intent. No cartoonish elements, excessive animation, or gamification badges. Food culture deserves maturity.
 
 ### Not Minimalist-Cold
 Scandinavian minimalism works for some apps, but food culture needs warmth and richness. Minimal doesn't mean sterile - we choose purposeful richness over stark emptiness.
@@ -116,7 +116,7 @@ Visual respect for cooking as a cultural practice, not just sustenance. Typograp
 
 ## Long-term Vision
 
-As Gastrobrain evolves into a "food exploration platform," the visual identity should:
+As ReceptMeneger evolves into a "food exploration platform," the visual identity should:
 
 - **Support discovery** of regional Brazilian cuisines without feeling like a tourist guide
 - **Scale gracefully** to accommodate rich content (techniques, seasonings, cultural context) without feeling cluttered
@@ -128,11 +128,11 @@ As Gastrobrain evolves into a "food exploration platform," the visual identity s
 
 ## Visual Identity Statement
 
-**Gastrobrain's visual design reflects the Brazilian understanding that food is culture, not fuel.**
+**ReceptMeneger's visual design reflects the Brazilian understanding that food is culture, not fuel.**
 
 The interface balances warmth and confidence - inviting users into their personal culinary journey while projecting the authority of a trusted recommendation system. Colors draw from the rich, earthy palette of Brazilian ingredients rather than tech conventions. Typography and spacing create breathing room that respects cooking as a cultural practice.
 
-The design is organized and clear (meal planning demands it) but never cold or sterile (food culture deserves better). Every visual choice reinforces that Gastrobrain is a cultured companion for food exploration, rooted in Brazilian perspective, built with intention.
+The design is organized and clear (meal planning demands it) but never cold or sterile (food culture deserves better). Every visual choice reinforces that ReceptMeneger is a cultured companion for food exploration, rooted in Brazilian perspective, built with intention.
 
 ---
 
@@ -170,7 +170,7 @@ This visual identity should guide all future UI decisions:
 
 The visual identity is successfully applied when:
 
-- ✅ App feels distinctly "Gastrobrain" - not generic Material Design
+- ✅ App feels distinctly "ReceptMeneger" - not generic Material Design
 - ✅ Users sense warmth and cultural awareness, not cold functionality
 - ✅ Visual hierarchy guides users naturally through their tasks
 - ✅ Brazilian perspective is present but not heavy-handed

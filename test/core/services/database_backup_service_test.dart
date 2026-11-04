@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:gastrobrain/core/services/database_backup_service.dart';
-import 'package:gastrobrain/core/errors/gastrobrain_exceptions.dart';
-import 'package:gastrobrain/core/migration/migration.dart';
-import 'package:gastrobrain/core/migration/migrations/001_initial_schema.dart';
-import 'package:gastrobrain/core/migration/migrations/002_add_ingredient_aliases.dart';
-import 'package:gastrobrain/core/migration/migrations/003_add_marinating_time.dart';
-import 'package:gastrobrain/core/migration/migrations/004_add_recipe_story.dart';
-import 'package:gastrobrain/core/migration/migrations/005_add_tags.dart';
-import 'package:gastrobrain/core/migration/migrations/006_add_meal_role_food_type.dart';
-import 'package:gastrobrain/core/migration/migrations/008_add_sauce_food_type.dart';
+import 'package:receptmeneger/core/services/database_backup_service.dart';
+import 'package:receptmeneger/core/errors/receptmeneger_exceptions.dart';
+import 'package:receptmeneger/core/migration/migration.dart';
+import 'package:receptmeneger/core/migration/migrations/001_initial_schema.dart';
+import 'package:receptmeneger/core/migration/migrations/002_add_ingredient_aliases.dart';
+import 'package:receptmeneger/core/migration/migrations/003_add_marinating_time.dart';
+import 'package:receptmeneger/core/migration/migrations/004_add_recipe_story.dart';
+import 'package:receptmeneger/core/migration/migrations/005_add_tags.dart';
+import 'package:receptmeneger/core/migration/migrations/006_add_meal_role_food_type.dart';
+import 'package:receptmeneger/core/migration/migrations/008_add_sauce_food_type.dart';
 import '../../mocks/mock_database_helper.dart';
 
 String _validBackupJson({
@@ -288,14 +288,14 @@ void main() {
       expect(after, equals(before));
     });
 
-    test('throws GastrobrainException on malformed JSON', () async {
+    test('throws ReceptMenegerException on malformed JSON', () async {
       await expectLater(
         () => backupService.restoreDatabaseFromString('not valid json {{{'),
-        throwsA(isA<GastrobrainException>()),
+        throwsA(isA<ReceptMenegerException>()),
       );
     });
 
-    test('throws GastrobrainException when version field is missing', () async {
+    test('throws ReceptMenegerException when version field is missing', () async {
       final jsonWithoutVersion = jsonEncode({
         'backup_date': '2026-04-20T10:00:00.000Z',
         'ingredients': [],
@@ -307,7 +307,7 @@ void main() {
 
       await expectLater(
         () => backupService.restoreDatabaseFromString(jsonWithoutVersion),
-        throwsA(isA<GastrobrainException>()),
+        throwsA(isA<ReceptMenegerException>()),
       );
     });
   });

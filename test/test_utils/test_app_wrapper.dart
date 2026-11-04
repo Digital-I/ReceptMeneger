@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gastrobrain/l10n/app_localizations.dart';
+import 'package:receptmeneger/l10n/app_localizations.dart';
 
 /// Test utility for wrapping widgets with localization context.
 /// 

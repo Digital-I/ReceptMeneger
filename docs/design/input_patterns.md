@@ -1,6 +1,6 @@
-# Input Patterns for Gastrobrain
+# Input Patterns for ReceptMeneger
 
-This document describes standardized form input patterns used throughout Gastrobrain. All inputs follow the centralized theme configuration and design tokens, ensuring consistent visual styling without custom decoration overrides.
+This document describes standardized form input patterns used throughout ReceptMeneger. All inputs follow the centralized theme configuration and design tokens, ensuring consistent visual styling without custom decoration overrides.
 
 ## Core Principle: Theme-First Approach
 

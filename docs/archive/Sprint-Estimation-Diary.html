@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sprint Estimation Diary — Gastrobrain</title>
+<title>Sprint Estimation Diary — ReceptMeneger</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -212,7 +212,7 @@ strong{font-weight:700}
 <!-- SIDEBAR -->
 <nav class="sidebar">
   <div class="sidebar-logo">
-    <div class="app">Gastrobrain</div>
+    <div class="app">ReceptMeneger</div>
     <div class="doc">Sprint Estimation Diary</div>
   </div>
 
@@ -352,7 +352,7 @@ strong{font-weight:700}
       <div class="step-num">2</div>
       <div class="step-body">
         <h4>Fetch Issue Data</h4>
-        <p>Collect estimated points from GitHub Project #3 (source of truth): <code>gh project item-list 3 --owner alemdisso --format json --limit 100</code>. For issues not in the project board, use the sprint planning doc estimate.</p>
+        <p>Collect estimated points from GitHub Project #3 (source of truth): <code>gh project item-list 3 --owner Ekaterina-Medvedeva --format json --limit 100</code>. For issues not in the project board, use the sprint planning doc estimate.</p>
       </div>
     </li>
     <li>
@@ -1217,7 +1217,7 @@ strong{font-weight:700}
         <tr><td>#390</td><td>Meal recording dialog label overflow</td><td>UI</td><td class="num">2</td><td>✅ Done — Day 1; fixed label overflow in recipes section and time fields</td></tr>
         <tr><td>#392</td><td>Shopping dialog keyboard overflow</td><td>UI</td><td class="num">2</td><td>✅ Done — Day 1; fixed horizontal overflow + keyboard clipping in AddShoppingItemDialog</td></tr>
         <tr><td>#393</td><td>Unlocalized unit names in ingredient dialogs</td><td>i18n</td><td class="num">2</td><td>✅ Done — Day 1 fix + Day 2 test cleanup; localized unit names in ingredient dialogs</td></tr>
-        <tr><td>#391</td><td>Android nav bar insets + shared bottom sheet helper</td><td>UI / Architecture</td><td class="num">3</td><td>✅ Done — Day 2 (06-05); introduced showGastrobrainBottomSheet() + dialog_utils.dart — anchor for #396 and #397</td></tr>
+        <tr><td>#391</td><td>Android nav bar insets + shared bottom sheet helper</td><td>UI / Architecture</td><td class="num">3</td><td>✅ Done — Day 2 (06-05); introduced showReceptMenegerBottomSheet() + dialog_utils.dart — anchor for #396 and #397</td></tr>
         <tr><td>#394</td><td>RecipeSelectionCard whitespace &amp; detached button</td><td>UI / UX</td><td class="num">3</td><td>✅ Done — Day 2; compact collapsed state, anchored select button</td></tr>
         <tr><td>#395</td><td>Ingredient parser feedback, duplicates &amp; warning</td><td>UX</td><td class="num">5</td><td>✅ Done — Day 2 fix + Day 2 test cleanup (5 tests); scroll, duplicate prevention, section warning</td></tr>
         <tr><td>#396</td><td>Recipe entry hub-and-spoke redesign</td><td>UX / Architecture</td><td class="num">13</td><td>✅ Done — Day 2; stub create + per-section edit sheets (Instructions, RecipeInfo, Tags); ~4,350 lines; consumed #391's bottom sheet helper; device-tested, issues found and fixed same day</td></tr>
@@ -1345,7 +1345,7 @@ strong{font-weight:700}
       <li><strong>Pure architecture sprint is the fastest velocity profile (0.2.12: 147 pts/week)</strong> — no UI/L10N/mobile overhead; mechanically predictable with defined DAO/component boundaries. Size pure-architecture sprints at 60–80+ pts/week, not at cruising or execution mode</li>
       <li><strong>Post-crisis investigation transfers directly to planned sprint velocity (0.2.11)</strong> — emergency sprints that force deep subsystem investigation give the next planned sprint zero debugging phase on directly related issues. Same 0.10x execution profile as post-usage bugs</li>
       <li><strong>Solo estimation without Estimation Poker anchors conservative (0.2.11/0.2.12)</strong> — board estimates diverged from sprint plan by 1–8 pts per sprint; mechanical refactor tasks over-estimated by 1.5–2× without collaborative calibration. Periodically revisit board estimates or run a pre-sprint sanity check</li>
-      <li><strong>Four consecutive well-under sprints (0.2.11–0.2.14) may signal a new plateau, not just isolated accelerators.</strong> Velocity has decelerated each sprint (119 → 147 → 96 → 64.8 pts/week) but 0.2.14 is still 2.2x the 30 pts/wk cruising baseline. If 0.2.15 — a sprint without a major pattern-establishing anchor — also lands well above 30, reconsider whether cruising velocity has structurally shifted post-0.2.10 due to accumulated reusable infrastructure (IngredientParserSection, _SectionExpansion, showGastrobrainBottomSheet, hub-and-spoke screens)</li>
+      <li><strong>Four consecutive well-under sprints (0.2.11–0.2.14) may signal a new plateau, not just isolated accelerators.</strong> Velocity has decelerated each sprint (119 → 147 → 96 → 64.8 pts/week) but 0.2.14 is still 2.2x the 30 pts/wk cruising baseline. If 0.2.15 — a sprint without a major pattern-establishing anchor — also lands well above 30, reconsider whether cruising velocity has structurally shifted post-0.2.10 due to accumulated reusable infrastructure (IngredientParserSection, _SectionExpansion, showReceptMenegerBottomSheet, hub-and-spoke screens)</li>
     </ul>
   </div>
   <div class="insight-group">
@@ -1628,7 +1628,7 @@ strong{font-weight:700}
 </div><!-- /content -->
 
 <footer>
-  <p>Gastrobrain Sprint Estimation Diary &mdash; <a href="Gastrobrain-Codebase-Overview.html">Codebase Overview</a> &middot; <a href="Gastrobrain-Roadmap-Status.html">Roadmap</a></p>
+  <p>ReceptMeneger Sprint Estimation Diary &mdash; <a href="ReceptMeneger-Codebase-Overview.html">Codebase Overview</a> &middot; <a href="ReceptMeneger-Roadmap-Status.html">Roadmap</a></p>
 </footer>
 
 </div><!-- /main -->

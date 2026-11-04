@@ -1,8 +1,8 @@
 <!-- markdownlint-disable -->
-# Gastrobrain Codebase Overview
+# ReceptMeneger Codebase Overview
 
 ## Project Context
-Gastrobrain is a comprehensive meal planning and recipe management application built with Flutter. It provides intelligent recipe recommendations, multi-language support (English/Portuguese), and sophisticated meal planning features with multi-recipe meal support. The application uses local SQLite storage and features a pluggable recommendation engine with temporal intelligence.
+ReceptMeneger is a comprehensive meal planning and recipe management application built with Flutter. It provides intelligent recipe recommendations, multi-language support (English/Portuguese), and sophisticated meal planning features with multi-recipe meal support. The application uses local SQLite storage and features a pluggable recommendation engine with temporal intelligence.
 
 ## Core Data Models
 
@@ -126,7 +126,7 @@ All DAOs receive a `Future<Database> Function()` factory via constructor injecti
 - **SnackbarService**: Handles user notifications and feedback
 - **EntityValidator**: Validates data models and business rules
 - **LocalizedErrorMessages**: Internationalized error handling
-- **GastrobrainException**: Custom exception hierarchy
+- **ReceptMenegerException**: Custom exception hierarchy
 
 ### Provider Architecture
 - **RecipeProvider**: State management for recipe operations

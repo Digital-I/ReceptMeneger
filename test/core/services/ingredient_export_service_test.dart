@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/core/services/ingredient_export_service.dart';
+import 'package:receptmeneger/core/services/ingredient_export_service.dart';
 import '../../mocks/mock_database_helper.dart';
 
 void main() {

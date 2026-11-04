@@ -1,4 +1,4 @@
-# Revised Flutter Integration Testing Guidelines for Gastrobrain
+# Revised Flutter Integration Testing Guidelines for ReceptMeneger
 
 ## Core Principles
 

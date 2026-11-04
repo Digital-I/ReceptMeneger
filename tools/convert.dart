@@ -1,5 +1,5 @@
 // recipe_converter.dart
-// Convert CSV recipe data to JSON for Gastrobrain app
+// Convert CSV recipe data to JSON for ReceptMeneger app
 
 // ignore_for_file: avoid_print
 

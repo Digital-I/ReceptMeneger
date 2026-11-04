@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/core/services/ingredient_duplicate_checker.dart';
-import 'package:gastrobrain/models/ingredient.dart';
-import 'package:gastrobrain/models/ingredient_category.dart';
+import 'package:receptmeneger/core/services/ingredient_duplicate_checker.dart';
+import 'package:receptmeneger/models/ingredient.dart';
+import 'package:receptmeneger/models/ingredient_category.dart';
 
 Ingredient _ing(String id, String name, {List<String> aliases = const []}) =>
     Ingredient(id: id, name: name, category: IngredientCategory.vegetable, aliases: aliases);

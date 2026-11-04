@@ -1,4 +1,4 @@
-# Gastrobrain Code Quality Watchdog — Root Rules
+# ReceptMeneger Code Quality Watchdog — Root Rules
 
 This file governs all subdirectories under `lib/`. Subfolder `CLAUDE.md` files
 inherit these rules and only declare what differs for their context.
@@ -71,5 +71,5 @@ Use 🔴 for Critical, 🟡 for High. One line per violation.
 
 ## Integration
 
-Backlog feeds the **Refactoring Skill** (`.github/skills/gastrobrain-refactoring/SKILL.md`).
+Backlog feeds the **Refactoring Skill** (`.github/skills/receptmeneger-refactoring/SKILL.md`).
 Review `.github/refactoring-backlog.md` during Sprint Planning as part of the 20% quality allocation.

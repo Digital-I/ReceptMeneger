@@ -1,7 +1,7 @@
 import '../../models/meal.dart';
 import '../../models/meal_recipe.dart';
 import '../../database/database_helper.dart';
-import '../errors/gastrobrain_exceptions.dart';
+import '../errors/receptmeneger_exceptions.dart';
 import '../di/service_provider.dart';
 import 'base_repository.dart';
 
@@ -22,7 +22,7 @@ class MealRepository extends BaseRepository<List<Meal>> {
   List<Meal> _cachedMeals = [];
   Map<String, List<Meal>> _cachedMealsByRecipe = {};
   bool _isLoading = false;
-  GastrobrainException? _lastError;
+  ReceptMenegerException? _lastError;
   DateTime? _lastCacheTime;
 
   // Cache configuration
@@ -35,7 +35,7 @@ class MealRepository extends BaseRepository<List<Meal>> {
   bool get hasData => _cachedMeals.isNotEmpty;
 
   @override
-  GastrobrainException? get lastError => _lastError;
+  ReceptMenegerException? get lastError => _lastError;
 
   /// Gets all cached meals
   List<Meal> get meals => List.unmodifiable(_cachedMeals);
@@ -60,13 +60,13 @@ class MealRepository extends BaseRepository<List<Meal>> {
       _isLoading = false;
       return RepositoryResult.success(meals);
 
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       _isLoading = false;
       _lastError = e;
       return RepositoryResult.error(e);
     } catch (e) {
       _isLoading = false;
-      final error = GastrobrainException('Failed to load meals for recipe: ${e.toString()}');
+      final error = ReceptMenegerException('Failed to load meals for recipe: ${e.toString()}');
       _lastError = error;
       return RepositoryResult.error(error);
     }
@@ -98,11 +98,11 @@ class MealRepository extends BaseRepository<List<Meal>> {
 
       return RepositoryResult.success(meal);
 
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       _lastError = e;
       return RepositoryResult.error(e);
     } catch (e) {
-      final error = GastrobrainException('Failed to get meal: ${e.toString()}');
+      final error = ReceptMenegerException('Failed to get meal: ${e.toString()}');
       _lastError = error;
       return RepositoryResult.error(error);
     }
@@ -125,14 +125,14 @@ class MealRepository extends BaseRepository<List<Meal>> {
         
         return RepositoryResult.success(meal);
       } else {
-        throw const GastrobrainException('Failed to record meal');
+        throw const ReceptMenegerException('Failed to record meal');
       }
 
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       _lastError = e;
       return RepositoryResult.error(e);
     } catch (e) {
-      final error = GastrobrainException('Failed to record meal: ${e.toString()}');
+      final error = ReceptMenegerException('Failed to record meal: ${e.toString()}');
       _lastError = error;
       return RepositoryResult.error(error);
     }
@@ -164,11 +164,11 @@ class MealRepository extends BaseRepository<List<Meal>> {
         throw NotFoundException('Meal not found for update');
       }
 
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       _lastError = e;
       return RepositoryResult.error(e);
     } catch (e) {
-      final error = GastrobrainException('Failed to update meal: ${e.toString()}');
+      final error = ReceptMenegerException('Failed to update meal: ${e.toString()}');
       _lastError = error;
       return RepositoryResult.error(error);
     }
@@ -195,11 +195,11 @@ class MealRepository extends BaseRepository<List<Meal>> {
         throw NotFoundException('Meal with id $id not found');
       }
 
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       _lastError = e;
       return RepositoryResult.error(e);
     } catch (e) {
-      final error = GastrobrainException('Failed to delete meal: ${e.toString()}');
+      final error = ReceptMenegerException('Failed to delete meal: ${e.toString()}');
       _lastError = error;
       return RepositoryResult.error(error);
     }
@@ -213,11 +213,11 @@ class MealRepository extends BaseRepository<List<Meal>> {
       final mealRecipes = await _dbHelper.getMealRecipesForMeal(mealId);
       return RepositoryResult.success(mealRecipes);
 
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       _lastError = e;
       return RepositoryResult.error(e);
     } catch (e) {
-      final error = GastrobrainException('Failed to get meal recipes: ${e.toString()}');
+      final error = ReceptMenegerException('Failed to get meal recipes: ${e.toString()}');
       _lastError = error;
       return RepositoryResult.error(error);
     }
@@ -231,11 +231,11 @@ class MealRepository extends BaseRepository<List<Meal>> {
       await _dbHelper.insertMealRecipe(mealRecipe);
       return const RepositoryResult.success(true);
 
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       _lastError = e;
       return RepositoryResult.error(e);
     } catch (e) {
-      final error = const GastrobrainException('Failed to add meal recipe');
+      final error = const ReceptMenegerException('Failed to add meal recipe');
       _lastError = error;
       return RepositoryResult.error(error);
     }
@@ -250,14 +250,14 @@ class MealRepository extends BaseRepository<List<Meal>> {
       if (result > 0) {
         return const RepositoryResult.success(true);
       } else {
-        throw const GastrobrainException('Failed to update meal recipe');
+        throw const ReceptMenegerException('Failed to update meal recipe');
       }
 
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       _lastError = e;
       return RepositoryResult.error(e);
     } catch (e) {
-      final error = const GastrobrainException('Failed to update meal recipe');
+      final error = const ReceptMenegerException('Failed to update meal recipe');
       _lastError = error;
       return RepositoryResult.error(error);
     }
@@ -272,14 +272,14 @@ class MealRepository extends BaseRepository<List<Meal>> {
       if (result > 0) {
         return const RepositoryResult.success(true);
       } else {
-        throw const GastrobrainException('Failed to delete meal recipe');
+        throw const ReceptMenegerException('Failed to delete meal recipe');
       }
 
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       _lastError = e;
       return RepositoryResult.error(e);
     } catch (e) {
-      final error = const GastrobrainException('Failed to delete meal recipe');
+      final error = const ReceptMenegerException('Failed to delete meal recipe');
       _lastError = error;
       return RepositoryResult.error(error);
     }

@@ -6,7 +6,7 @@
 
 ## Overview
 
-This document defines the navigation patterns used in Gastrobrain. All navigation elements follow design tokens and theme configuration to ensure consistent styling across the app.
+This document defines the navigation patterns used in ReceptMeneger. All navigation elements follow design tokens and theme configuration to ensure consistent styling across the app.
 
 **Key Principle**: Navigation elements should **never use inline styling**. All appearance is controlled through `AppTheme.lightTheme` configuration.
 
@@ -16,7 +16,7 @@ This document defines the navigation patterns used in Gastrobrain. All navigatio
 
 ### Pattern
 
-The bottom navigation bar is the primary navigation element in Gastrobrain, providing access to the 4 main sections of the app.
+The bottom navigation bar is the primary navigation element in ReceptMeneger, providing access to the 4 main sections of the app.
 
 ### Implementation
 
@@ -554,7 +554,7 @@ Test navigation flows work correctly:
 
 ```dart
 testWidgets('tab navigation works', (tester) async {
-  await tester.pumpWidget(const GastrobrainApp());
+  await tester.pumpWidget(const ReceptMenegerApp());
 
   // Tap tab
   await tester.tap(find.byIcon(Icons.calendar_today));

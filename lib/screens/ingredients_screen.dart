@@ -7,7 +7,7 @@ import '../models/measurement_unit.dart';
 import '../models/protein_type.dart';
 import '../database/database_helper.dart';
 import '../widgets/add_new_ingredient_dialog.dart';
-import '../core/errors/gastrobrain_exceptions.dart';
+import '../core/errors/receptmeneger_exceptions.dart';
 import '../core/services/snackbar_service.dart';
 import '../l10n/app_localizations.dart';
 import '../screens/ingredient_detail_screen.dart';
@@ -89,7 +89,7 @@ class _IngredientsScreenState extends State<IngredientsScreen> {
           _isLoading = false;
         });
       }
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       setState(() {
         _errorMessage = '${AppLocalizations.of(context)!.errorLoadingIngredients} ${e.message}';
         _isLoading = false;
@@ -158,7 +158,7 @@ class _IngredientsScreenState extends State<IngredientsScreen> {
               context, AppLocalizations.of(context)!.ingredientDeletedSuccessfully);
           _loadIngredients();
         }
-      } on GastrobrainException catch (e) {
+      } on ReceptMenegerException catch (e) {
         if (mounted) {
           SnackbarService.showError(context, e.message);
         }

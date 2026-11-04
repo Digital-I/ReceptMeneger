@@ -1,12 +1,12 @@
 // test/test_utils/dialog_fixtures.dart
 
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/meal.dart';
-import 'package:gastrobrain/models/ingredient.dart';
-import 'package:gastrobrain/models/ingredient_category.dart';
-import 'package:gastrobrain/models/measurement_unit.dart';
-import 'package:gastrobrain/models/protein_type.dart';
-import 'package:gastrobrain/models/frequency_type.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/meal.dart';
+import 'package:receptmeneger/models/ingredient.dart';
+import 'package:receptmeneger/models/ingredient_category.dart';
+import 'package:receptmeneger/models/measurement_unit.dart';
+import 'package:receptmeneger/models/protein_type.dart';
+import 'package:receptmeneger/models/frequency_type.dart';
 
 /// Common test fixtures for dialog testing.
 ///

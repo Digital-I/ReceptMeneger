@@ -1,5 +1,5 @@
 import '../database/database_helper.dart';
-import '../core/errors/gastrobrain_exceptions.dart';
+import '../core/errors/receptmeneger_exceptions.dart';
 import '../../models/recipe.dart';
 
 /// User responses to recommendations

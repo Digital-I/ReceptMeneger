@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/widgets/edit_meal_recording_dialog.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/meal.dart';
-import 'package:gastrobrain/models/frequency_type.dart';
+import 'package:receptmeneger/widgets/edit_meal_recording_dialog.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/meal.dart';
+import 'package:receptmeneger/models/frequency_type.dart';
 import '../test_utils/test_app_wrapper.dart';
 import '../test_utils/test_setup.dart';
 import '../helpers/dialog_test_helpers.dart';

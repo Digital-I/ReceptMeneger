@@ -1,10 +1,10 @@
 // test/models/ingredient_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/models/ingredient.dart';
-import 'package:gastrobrain/models/ingredient_category.dart';
-import 'package:gastrobrain/models/measurement_unit.dart';
-import 'package:gastrobrain/models/protein_type.dart';
+import 'package:receptmeneger/models/ingredient.dart';
+import 'package:receptmeneger/models/ingredient_category.dart';
+import 'package:receptmeneger/models/measurement_unit.dart';
+import 'package:receptmeneger/models/protein_type.dart';
 
 void main() {
   group('Ingredient', () {

@@ -8,7 +8,7 @@ import '../models/ingredient_category.dart';
 import '../database/database_helper.dart';
 import 'add_new_ingredient_dialog.dart';
 import '../utils/id_generator.dart';
-import '../core/errors/gastrobrain_exceptions.dart';
+import '../core/errors/receptmeneger_exceptions.dart';
 import '../core/validators/entity_validator.dart';
 import '../core/services/snackbar_service.dart';
 import '../l10n/app_localizations.dart';
@@ -247,7 +247,7 @@ class _AddIngredientDialogState extends State<AddIngredientDialog> {
       if (mounted) {
         SnackbarService.showError(context, e.message);
       }
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       if (mounted) {
         SnackbarService.showError(
             context, 'Error adding ingredient: ${e.message}');
@@ -289,7 +289,7 @@ class _AddIngredientDialogState extends State<AddIngredientDialog> {
           _isLoading = false;
         });
       }
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       _showErrorSnackBar('Error loading ingredients: ${e.message}');
       if (mounted) {
         setState(() {

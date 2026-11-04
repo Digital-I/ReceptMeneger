@@ -12,10 +12,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/meal.dart';
-import 'package:gastrobrain/models/meal_recipe.dart';
-import 'package:gastrobrain/core/di/service_provider.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/meal.dart';
+import 'package:receptmeneger/models/meal_recipe.dart';
+import 'package:receptmeneger/core/di/service_provider.dart';
 import 'helpers/e2e_test_helpers.dart';
 
 void main() {

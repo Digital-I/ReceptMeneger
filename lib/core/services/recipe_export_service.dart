@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import '../../database/database_helper.dart';
-import '../errors/gastrobrain_exceptions.dart';
+import '../errors/receptmeneger_exceptions.dart';
 import '../repositories/tag_repository.dart';
 
 /// Service for exporting recipe data to JSON format.
@@ -75,7 +75,7 @@ class RecipeExportService {
       final jsonString = const JsonEncoder.withIndent('  ').convert(exportData);
       return await _writeJsonToFile(jsonString);
     } catch (e) {
-      throw GastrobrainException('Failed to export recipes: ${e.toString()}');
+      throw ReceptMenegerException('Failed to export recipes: ${e.toString()}');
     }
   }
 
@@ -88,7 +88,7 @@ class RecipeExportService {
       await file.writeAsString(jsonString);
       return file.path;
     } catch (e) {
-      throw GastrobrainException('Failed to write export file: ${e.toString()}');
+      throw ReceptMenegerException('Failed to write export file: ${e.toString()}');
     }
   }
 

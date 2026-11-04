@@ -1,9 +1,9 @@
 // test/edge_cases/boundary_conditions/special_characters_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/ingredient.dart';
-import 'package:gastrobrain/models/ingredient_category.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/ingredient.dart';
+import 'package:receptmeneger/models/ingredient_category.dart';
 import '../../fixtures/boundary_fixtures.dart';
 import '../../mocks/mock_database_helper.dart';
 

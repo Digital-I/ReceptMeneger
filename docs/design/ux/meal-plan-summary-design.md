@@ -793,7 +793,7 @@ Future<void> _calculateSummaryData() async {
 ### Color Palette
 
 ```dart
-// Gastrobrain "Cultured & Flavorful" colors
+// ReceptMeneger "Cultured & Flavorful" colors
 static const terracotta = Color(0xFFD4755F); // Protein bars, dividers
 static const olive = Color(0xFF6B8E23);      // Time bars
 static const cream = Color(0xFFFFF8DC);      // Card backgrounds

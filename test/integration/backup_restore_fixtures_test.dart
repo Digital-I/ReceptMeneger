@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-import 'package:gastrobrain/core/services/database_backup_service.dart';
-import 'package:gastrobrain/database/database_helper.dart';
+import 'package:receptmeneger/core/services/database_backup_service.dart';
+import 'package:receptmeneger/database/database_helper.dart';
 
 /// Restores a frozen backup fixture and checks the invariants every backup
 /// — old or new — must satisfy after a restore.

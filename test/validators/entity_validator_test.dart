@@ -1,11 +1,11 @@
 // test/validators/entity_validator_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/core/validators/entity_validator.dart';
-import 'package:gastrobrain/core/errors/gastrobrain_exceptions.dart';
-import 'package:gastrobrain/models/ingredient_category.dart';
-import 'package:gastrobrain/models/measurement_unit.dart';
-import 'package:gastrobrain/models/protein_type.dart';
+import 'package:receptmeneger/core/validators/entity_validator.dart';
+import 'package:receptmeneger/core/errors/receptmeneger_exceptions.dart';
+import 'package:receptmeneger/models/ingredient_category.dart';
+import 'package:receptmeneger/models/measurement_unit.dart';
+import 'package:receptmeneger/models/protein_type.dart';
 
 void main() {
   group('EntityValidator - ID validation', () {

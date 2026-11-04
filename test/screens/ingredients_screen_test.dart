@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:gastrobrain/models/ingredient.dart';
-import 'package:gastrobrain/models/ingredient_category.dart';
-import 'package:gastrobrain/screens/ingredients_screen.dart';
-import 'package:gastrobrain/l10n/app_localizations.dart';
+import 'package:receptmeneger/models/ingredient.dart';
+import 'package:receptmeneger/models/ingredient_category.dart';
+import 'package:receptmeneger/screens/ingredients_screen.dart';
+import 'package:receptmeneger/l10n/app_localizations.dart';
 import '../mocks/mock_database_helper.dart';
 
 Widget _buildTestApp(Widget child) {

@@ -5,7 +5,7 @@ import '../models/recipe.dart';
 import '../models/meal.dart';
 import '../models/meal_recipe.dart';
 import '../database/database_helper.dart';
-import '../core/errors/gastrobrain_exceptions.dart';
+import '../core/errors/receptmeneger_exceptions.dart';
 import '../core/providers/recipe_provider.dart';
 import '../widgets/edit_meal_recording_dialog.dart';
 import 'cook_meal_screen.dart';
@@ -69,7 +69,7 @@ class _MealHistoryScreenState extends State<MealHistoryScreen> {
         _errorMessage = e.message;
         _isLoading = false;
       });
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       setState(() {
         _errorMessage =
             '${AppLocalizations.of(context)!.errorLoadingMeals} ${e.message}';
@@ -355,7 +355,7 @@ class _MealHistoryScreenState extends State<MealHistoryScreen> {
           ),
         );
       }
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

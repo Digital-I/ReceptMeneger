@@ -1,6 +1,6 @@
 # Testing Guide
 
-This document provides guidelines for testing in the Gastrobrain Flutter application.
+This document provides guidelines for testing in the ReceptMeneger Flutter application.
 
 ## Database Mocking in Widget Tests
 

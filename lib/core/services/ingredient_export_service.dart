@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import '../../database/database_helper.dart';
-import '../errors/gastrobrain_exceptions.dart';
+import '../errors/receptmeneger_exceptions.dart';
 
 /// Service for exporting ingredient data to JSON format
 /// 
@@ -50,7 +50,7 @@ class IngredientExportService {
       
       return filePath;
     } catch (e) {
-      throw GastrobrainException('Failed to export ingredients: ${e.toString()}');
+      throw ReceptMenegerException('Failed to export ingredients: ${e.toString()}');
     }
   }
 
@@ -70,7 +70,7 @@ class IngredientExportService {
       
       return file.path;
     } catch (e) {
-      throw GastrobrainException('Failed to write export file: ${e.toString()}');
+      throw ReceptMenegerException('Failed to write export file: ${e.toString()}');
     }
   }
 

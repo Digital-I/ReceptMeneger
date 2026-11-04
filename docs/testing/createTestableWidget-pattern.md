@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `createTestableWidget()` helper function is a standard pattern used across all widget tests in the Gastrobrain project. It provides a consistent way to wrap test widgets with the necessary infrastructure for Flutter widget testing, including localization, Material Design context, and optional providers.
+The `createTestableWidget()` helper function is a standard pattern used across all widget tests in the ReceptMeneger project. It provides a consistent way to wrap test widgets with the necessary infrastructure for Flutter widget testing, including localization, Material Design context, and optional providers.
 
 ## Purpose
 

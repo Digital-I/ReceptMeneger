@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:gastrobrain/core/services/recipe_import_service.dart';
-import 'package:gastrobrain/core/migration/migration.dart';
-import 'package:gastrobrain/core/migration/migrations/001_initial_schema.dart';
-import 'package:gastrobrain/core/migration/migrations/003_add_marinating_time.dart';
-import 'package:gastrobrain/core/migration/migrations/005_add_tags.dart';
-import 'package:gastrobrain/core/migration/migrations/010_add_quantity_max.dart';
+import 'package:receptmeneger/core/services/recipe_import_service.dart';
+import 'package:receptmeneger/core/migration/migration.dart';
+import 'package:receptmeneger/core/migration/migrations/001_initial_schema.dart';
+import 'package:receptmeneger/core/migration/migrations/003_add_marinating_time.dart';
+import 'package:receptmeneger/core/migration/migrations/005_add_tags.dart';
+import 'package:receptmeneger/core/migration/migrations/010_add_quantity_max.dart';
 import '../../mocks/mock_database_helper.dart';
 
 Future<Database> _openInMemoryDb() async {

@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' hide DatabaseExecutor;
-import 'package:gastrobrain/core/migration/migration.dart';
-import 'package:gastrobrain/core/migration/migrations/001_initial_schema.dart';
-import 'package:gastrobrain/core/migration/migrations/005_add_tags.dart';
-import 'package:gastrobrain/core/migration/migrations/006_add_meal_role_food_type.dart';
-import 'package:gastrobrain/core/migration/migrations/008_add_sauce_food_type.dart';
-import 'package:gastrobrain/core/migration/tag_vocabulary_seed.dart';
-import 'package:gastrobrain/core/repositories/tag_repository.dart';
+import 'package:receptmeneger/core/migration/migration.dart';
+import 'package:receptmeneger/core/migration/migrations/001_initial_schema.dart';
+import 'package:receptmeneger/core/migration/migrations/005_add_tags.dart';
+import 'package:receptmeneger/core/migration/migrations/006_add_meal_role_food_type.dart';
+import 'package:receptmeneger/core/migration/migrations/008_add_sauce_food_type.dart';
+import 'package:receptmeneger/core/migration/tag_vocabulary_seed.dart';
+import 'package:receptmeneger/core/repositories/tag_repository.dart';
 import '../../mocks/mock_database_helper.dart';
 
 void main() {

@@ -2,14 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/screens/weekly_plan_screen.dart';
-import 'package:gastrobrain/core/di/providers/database_provider.dart';
-import 'package:gastrobrain/core/providers/recipe_provider.dart';
-import 'package:gastrobrain/core/providers/meal_provider.dart';
-import 'package:gastrobrain/core/providers/meal_plan_provider.dart';
+import 'package:receptmeneger/screens/weekly_plan_screen.dart';
+import 'package:receptmeneger/core/di/providers/database_provider.dart';
+import 'package:receptmeneger/core/providers/recipe_provider.dart';
+import 'package:receptmeneger/core/providers/meal_provider.dart';
+import 'package:receptmeneger/core/providers/meal_plan_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:gastrobrain/l10n/app_localizations.dart';
+import 'package:receptmeneger/l10n/app_localizations.dart';
 import '../../mocks/mock_database_helper.dart';
 
 /// Tests for meal planning empty state handling.

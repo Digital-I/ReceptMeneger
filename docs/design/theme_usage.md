@@ -1,16 +1,16 @@
-# Gastrobrain Theme Usage Guide
+# ReceptMeneger Theme Usage Guide
 
-> **Document Purpose:** Guide for developers on how to use the Gastrobrain theme system for consistent, maintainable UI implementation.
+> **Document Purpose:** Guide for developers on how to use the ReceptMeneger theme system for consistent, maintainable UI implementation.
 
 **Status:** Active Reference Document
 **Created:** 2026-01-30
-**Related:** [Visual Identity](visual_identity.md) | [Design Tokens](design_tokens.md) | [Issue #257](https://github.com/alemdisso/gastrobrain/issues/257)
+**Related:** [Visual Identity](visual_identity.md) | [Design Tokens](design_tokens.md) | [Issue #257](https://github.com/Ekaterina-Medvedeva/receptmeneger/issues/257)
 
 ---
 
 ## Overview
 
-Gastrobrain uses a centralized theme system built on Flutter's ThemeData and Material Design 3. This ensures all UI elements follow the visual identity (warm, confident, cultured, clear, regionally rooted) automatically.
+ReceptMeneger uses a centralized theme system built on Flutter's ThemeData and Material Design 3. This ensures all UI elements follow the visual identity (warm, confident, cultured, clear, regionally rooted) automatically.
 
 **Key Files:**
 - `lib/core/theme/design_tokens.dart` - Token constants
@@ -56,7 +56,7 @@ Container(
 **For spacing, border radius, and other non-themed values, use `DesignTokens`:**
 
 ```dart
-import 'package:gastrobrain/core/theme/design_tokens.dart';
+import 'package:receptmeneger/core/theme/design_tokens.dart';
 
 // Spacing
 Padding(
@@ -631,7 +631,7 @@ Container(
 
 ### Theme values not applying?
 
-**Issue:** Widget shows default Material colors instead of Gastrobrain theme.
+**Issue:** Widget shows default Material colors instead of ReceptMeneger theme.
 
 **Solution:** Ensure your widget is wrapped in MaterialApp with theme:
 ```dart
@@ -704,5 +704,5 @@ MaterialApp(
 ---
 
 **Last Updated:** 2026-01-30
-**Maintainer:** Gastrobrain Development Team
-**Related Issues:** [#257 - Implement ThemeData Configuration](https://github.com/alemdisso/gastrobrain/issues/257)
+**Maintainer:** ReceptMeneger Development Team
+**Related Issues:** [#257 - Implement ThemeData Configuration](https://github.com/Ekaterina-Medvedeva/receptmeneger/issues/257)

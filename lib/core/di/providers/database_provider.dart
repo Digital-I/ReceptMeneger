@@ -1,5 +1,5 @@
-import 'package:gastrobrain/database/database_helper.dart';
-import 'package:gastrobrain/core/services/database_backup_service.dart';
+import 'package:receptmeneger/database/database_helper.dart';
+import 'package:receptmeneger/core/services/database_backup_service.dart';
 
 /// Provides database access throughout the application
 class DatabaseProvider {

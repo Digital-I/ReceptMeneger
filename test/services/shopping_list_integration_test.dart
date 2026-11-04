@@ -1,9 +1,9 @@
 // test/services/shopping_list_integration_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/core/services/shopping_list_service.dart';
-import 'package:gastrobrain/models/shopping_list.dart';
-import 'package:gastrobrain/models/shopping_list_item.dart';
+import 'package:receptmeneger/core/services/shopping_list_service.dart';
+import 'package:receptmeneger/models/shopping_list.dart';
+import 'package:receptmeneger/models/shopping_list_item.dart';
 
 import '../mocks/mock_database_helper.dart';
 

@@ -8,7 +8,7 @@
 
 ## Overview
 
-This document outlines best practices for implementing test coverage reporting in Gastrobrain, tailored to our current project stage (early versions, active testing infrastructure development).
+This document outlines best practices for implementing test coverage reporting in ReceptMeneger, tailored to our current project stage (early versions, active testing infrastructure development).
 
 ## Recommended Approach
 
@@ -78,9 +78,9 @@ open coverage/html/index.html  # macOS
 # or: xdg-open coverage/html/index.html  # Linux
 ```
 
-**Current coverage:** ![codecov](https://codecov.io/gh/alemdisso/gastrobrain/branch/main/graph/badge.svg)
+**Current coverage:** ![codecov](https://codecov.io/gh/Ekaterina-Medvedeva/receptmeneger/branch/main/graph/badge.svg)
 
-**Full coverage report:** https://codecov.io/gh/alemdisso/gastrobrain
+**Full coverage report:** https://codecov.io/gh/Ekaterina-Medvedeva/receptmeneger
 ```
 
 ### 4. CI/CD Integration
@@ -128,7 +128,7 @@ jobs:
           files: ./coverage/lcov.info
           fail_ci_if_error: false  # Don't fail build on coverage upload errors
           flags: unittests
-          name: gastrobrain-coverage
+          name: receptmeneger-coverage
 ```
 
 **Setup required:**

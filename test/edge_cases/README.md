@@ -1,6 +1,6 @@
 # Edge Case Tests
 
-This directory contains comprehensive edge case tests for the Gastrobrain application, organized by category.
+This directory contains comprehensive edge case tests for the ReceptMeneger application, organized by category.
 
 ## Overview
 

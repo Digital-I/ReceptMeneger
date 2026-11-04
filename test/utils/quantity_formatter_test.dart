@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/utils/quantity_formatter.dart';
+import 'package:receptmeneger/utils/quantity_formatter.dart';
 
 void main() {
   group('QuantityFormatter', () {

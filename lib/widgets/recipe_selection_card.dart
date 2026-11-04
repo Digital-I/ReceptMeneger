@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gastrobrain/models/recipe_recommendation.dart';
+import 'package:receptmeneger/models/recipe_recommendation.dart';
 import '../l10n/app_localizations.dart';
 
 class _BadgeInfo {

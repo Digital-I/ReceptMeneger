@@ -54,8 +54,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/widgets/meal_recording_dialog.dart';
-import 'package:gastrobrain/models/recipe.dart';
+import 'package:receptmeneger/widgets/meal_recording_dialog.dart';
+import 'package:receptmeneger/models/recipe.dart';
 import '../test_utils/test_app_wrapper.dart';
 import '../test_utils/test_setup.dart';
 import '../test_utils/dialog_fixtures.dart';
@@ -77,7 +77,7 @@ void main() {
     // (width < 400px). The original fix (commit f3455ca) addressed the specific
     // 16px overflow but did not fully resolve all overflow scenarios.
     // Small portrait screens are deferred for future optimization.
-    // See: https://github.com/alemdisso/gastrobrain/issues/246
+    // See: https://github.com/Ekaterina-Medvedeva/receptmeneger/issues/246
 
     testWidgets(
         'MealRecordingDialog renders correctly in landscape orientation '

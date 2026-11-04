@@ -1,22 +1,22 @@
 import 'dart:convert';
 
-import 'package:gastrobrain/database/database_helper.dart';
-import 'package:gastrobrain/core/repositories/tag_repository.dart';
-import 'package:gastrobrain/models/frequency_type.dart';
-import 'package:gastrobrain/models/ingredient.dart';
-import 'package:gastrobrain/models/ingredient_category.dart';
-import 'package:gastrobrain/models/measurement_unit.dart';
-import 'package:gastrobrain/models/meal.dart';
-import 'package:gastrobrain/models/meal_ingredient.dart';
-import 'package:gastrobrain/models/meal_plan.dart';
-import 'package:gastrobrain/models/meal_plan_item.dart';
-import 'package:gastrobrain/models/meal_plan_item_ingredient.dart';
-import 'package:gastrobrain/models/meal_plan_item_recipe.dart';
-import 'package:gastrobrain/models/meal_recipe.dart';
-import 'package:gastrobrain/models/protein_type.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/recipe_ingredient.dart';
-import 'package:gastrobrain/utils/id_generator.dart';
+import 'package:receptmeneger/database/database_helper.dart';
+import 'package:receptmeneger/core/repositories/tag_repository.dart';
+import 'package:receptmeneger/models/frequency_type.dart';
+import 'package:receptmeneger/models/ingredient.dart';
+import 'package:receptmeneger/models/ingredient_category.dart';
+import 'package:receptmeneger/models/measurement_unit.dart';
+import 'package:receptmeneger/models/meal.dart';
+import 'package:receptmeneger/models/meal_ingredient.dart';
+import 'package:receptmeneger/models/meal_plan.dart';
+import 'package:receptmeneger/models/meal_plan_item.dart';
+import 'package:receptmeneger/models/meal_plan_item_ingredient.dart';
+import 'package:receptmeneger/models/meal_plan_item_recipe.dart';
+import 'package:receptmeneger/models/meal_recipe.dart';
+import 'package:receptmeneger/models/protein_type.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/recipe_ingredient.dart';
+import 'package:receptmeneger/utils/id_generator.dart';
 
 /// Seeds [dbHelper]'s database with one row of relational data in every
 /// table currently covered by `DatabaseBackupService`, for use by the

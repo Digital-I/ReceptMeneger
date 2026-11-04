@@ -1,4 +1,4 @@
-# Gastrobrain Code Quality Watchdog — test/
+# ReceptMeneger Code Quality Watchdog — test/
 
 Tests have different healthy patterns than production code. This file replaces
 (does not inherit) the `lib/CLAUDE.md` rules. The same blocking behavior applies:

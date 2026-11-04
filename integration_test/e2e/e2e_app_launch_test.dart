@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:gastrobrain/main.dart';
+import 'package:receptmeneger/main.dart';
 
 /// Minimal E2E Test - App Launch
 ///
@@ -19,7 +19,7 @@ void main() {
       WidgetsFlutterBinding.ensureInitialized();
 
       // SETUP: Pump the app widget into the test framework
-      await tester.pumpWidget(const GastrobrainApp());
+      await tester.pumpWidget(const ReceptMenegerApp());
 
       // Wait for the app to initialize and render
       await tester.pumpAndSettle(const Duration(seconds: 10));

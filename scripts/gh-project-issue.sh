@@ -1,5 +1,5 @@
 #!/bin/bash
-# Fetch issue data from GitHub Project #3 (Gastrobrain)
+# Fetch issue data from GitHub Project #3 (ReceptMeneger)
 #
 # Usage:
 #   ./scripts/gh-project-issue.sh <issue-number>          # all fields
@@ -8,8 +8,8 @@
 #
 # Available fields: title, status, priority, size, estimate, milestone, start date, end date
 
-OWNER="alemdisso"
-REPO="gastrobrain"
+OWNER="Ekaterina-Medvedeva"
+REPO="receptmeneger"
 ISSUE_NUMBER="$1"
 
 if [ -z "$ISSUE_NUMBER" ]; then

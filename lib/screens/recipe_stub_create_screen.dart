@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../core/errors/gastrobrain_exceptions.dart';
+import '../core/errors/receptmeneger_exceptions.dart';
 import '../database/database_helper.dart';
 import '../l10n/app_localizations.dart';
 import '../models/recipe.dart';
@@ -57,7 +57,7 @@ class _RecipeStubCreateScreenState extends State<RecipeStubCreateScreen> {
           ),
         );
       }
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(e.message)));

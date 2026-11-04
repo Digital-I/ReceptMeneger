@@ -1,6 +1,6 @@
-import 'package:gastrobrain/core/services/recommendation_service.dart';
-import 'package:gastrobrain/core/services/recommendation_service_extension.dart';
-import 'package:gastrobrain/core/di/providers/database_provider.dart';
+import 'package:receptmeneger/core/services/recommendation_service.dart';
+import 'package:receptmeneger/core/services/recommendation_service_extension.dart';
+import 'package:receptmeneger/core/di/providers/database_provider.dart';
 
 /// Provides recommendation services throughout the application
 class RecommendationProvider {

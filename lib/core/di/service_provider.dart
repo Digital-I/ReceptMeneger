@@ -1,11 +1,11 @@
 // IN: lib/core/di/service_provider.dart
-import 'package:gastrobrain/core/di/providers/database_provider.dart';
-import 'package:gastrobrain/core/di/providers/recommendation_provider.dart';
-import 'package:gastrobrain/core/di/providers/migration_provider.dart';
-import 'package:gastrobrain/core/di/providers/export_provider.dart';
-import 'package:gastrobrain/core/services/ingredient_parser_service.dart';
-import 'package:gastrobrain/core/services/meal_edit_service.dart';
-import 'package:gastrobrain/core/services/shopping_list_service.dart';
+import 'package:receptmeneger/core/di/providers/database_provider.dart';
+import 'package:receptmeneger/core/di/providers/recommendation_provider.dart';
+import 'package:receptmeneger/core/di/providers/migration_provider.dart';
+import 'package:receptmeneger/core/di/providers/export_provider.dart';
+import 'package:receptmeneger/core/services/ingredient_parser_service.dart';
+import 'package:receptmeneger/core/services/meal_edit_service.dart';
+import 'package:receptmeneger/core/services/shopping_list_service.dart';
 
 /// Central hub for accessing all application services
 class ServiceProvider {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/screens/recipe_details_screen.dart';
-import 'package:gastrobrain/screens/recipe_details_overview_tab.dart';
-import 'package:gastrobrain/screens/recipe_details_ingredients_tab.dart';
-import 'package:gastrobrain/l10n/app_localizations.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/screens/recipe_details_screen.dart';
+import 'package:receptmeneger/screens/recipe_details_overview_tab.dart';
+import 'package:receptmeneger/screens/recipe_details_ingredients_tab.dart';
+import 'package:receptmeneger/l10n/app_localizations.dart';
 import '../mocks/mock_database_helper.dart';
 
 Widget _buildTestApp(Widget child) {

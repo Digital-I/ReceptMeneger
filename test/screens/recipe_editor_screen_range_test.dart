@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:gastrobrain/screens/recipe_details_ingredients_tab.dart';
-import 'package:gastrobrain/l10n/app_localizations.dart';
+import 'package:receptmeneger/screens/recipe_details_ingredients_tab.dart';
+import 'package:receptmeneger/l10n/app_localizations.dart';
 
 Widget _buildTestApp(Widget child) {
   return MaterialApp(

@@ -3,7 +3,7 @@ import '../../database/database_helper.dart';
 import '../../models/tag.dart';
 import '../../models/tag_type.dart';
 import '../../utils/id_generator.dart';
-import '../errors/gastrobrain_exceptions.dart';
+import '../errors/receptmeneger_exceptions.dart';
 import '../migration/migration.dart';
 import '../migration/tag_vocabulary_seed.dart';
 
@@ -18,7 +18,7 @@ class TagRepository {
       final rows = await db.query('tag_types', orderBy: 'name ASC');
       return rows.map(TagType.fromMap).toList();
     } catch (e) {
-      throw GastrobrainException('Failed to load tag types: $e');
+      throw ReceptMenegerException('Failed to load tag types: $e');
     }
   }
 
@@ -33,7 +33,7 @@ class TagRepository {
       );
       return rows.map(Tag.fromMap).toList();
     } catch (e) {
-      throw GastrobrainException('Failed to load tags for type $typeId: $e');
+      throw ReceptMenegerException('Failed to load tags for type $typeId: $e');
     }
   }
 
@@ -49,7 +49,7 @@ class TagRepository {
       ''', [recipeId]);
       return rows.map(Tag.fromMap).toList();
     } catch (e) {
-      throw GastrobrainException('Failed to load tags for recipe $recipeId: $e');
+      throw ReceptMenegerException('Failed to load tags for recipe $recipeId: $e');
     }
   }
 
@@ -61,7 +61,7 @@ class TagRepository {
         [recipeId, tagId],
       );
     } catch (e) {
-      throw GastrobrainException('Failed to add tag to recipe: $e');
+      throw ReceptMenegerException('Failed to add tag to recipe: $e');
     }
   }
 
@@ -74,7 +74,7 @@ class TagRepository {
         whereArgs: [recipeId, tagId],
       );
     } catch (e) {
-      throw GastrobrainException('Failed to remove tag from recipe: $e');
+      throw ReceptMenegerException('Failed to remove tag from recipe: $e');
     }
   }
 
@@ -89,7 +89,7 @@ class TagRepository {
       await db.insert('tags', tag.toMap());
       return tag;
     } catch (e) {
-      throw GastrobrainException('Failed to create tag: $e');
+      throw ReceptMenegerException('Failed to create tag: $e');
     }
   }
 
@@ -107,8 +107,8 @@ class TagRepository {
       }
       return createTag(name, typeId);
     } catch (e) {
-      if (e is GastrobrainException) rethrow;
-      throw GastrobrainException('Failed to get or create tag: $e');
+      if (e is ReceptMenegerException) rethrow;
+      throw ReceptMenegerException('Failed to get or create tag: $e');
     }
   }
 
@@ -127,7 +127,7 @@ class TagRepository {
         );
       }
     } catch (e) {
-      throw GastrobrainException('Failed to set tags for recipe: $e');
+      throw ReceptMenegerException('Failed to set tags for recipe: $e');
     }
   }
 
@@ -152,8 +152,8 @@ class TagRepository {
       await txn.insert('tags', tag.toMap());
       return tag;
     } catch (e) {
-      if (e is GastrobrainException) rethrow;
-      throw GastrobrainException('Failed to get or create tag in txn: $e');
+      if (e is ReceptMenegerException) rethrow;
+      throw ReceptMenegerException('Failed to get or create tag in txn: $e');
     }
   }
 
@@ -175,7 +175,7 @@ class TagRepository {
         );
       }
     } catch (e) {
-      throw GastrobrainException('Failed to set tags for recipe in txn: $e');
+      throw ReceptMenegerException('Failed to set tags for recipe in txn: $e');
     }
   }
 
@@ -212,7 +212,7 @@ class TagRepository {
       final db = await _dbHelper.database;
       await seedBuiltInTagVocabulary(DatabaseWrapper(db));
     } catch (e) {
-      throw GastrobrainException('Failed to repair tag vocabulary: $e');
+      throw ReceptMenegerException('Failed to repair tag vocabulary: $e');
     }
   }
 }

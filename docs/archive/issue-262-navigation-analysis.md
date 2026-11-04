@@ -6,7 +6,7 @@
 
 ## Executive Summary
 
-Comprehensive audit of all navigation elements in the Gastrobrain app reveals that **most screens already rely on theme configuration** for AppBar styling, which is excellent. The main work required is:
+Comprehensive audit of all navigation elements in the ReceptMeneger app reveals that **most screens already rely on theme configuration** for AppBar styling, which is excellent. The main work required is:
 
 1. Remove hardcoded `type` property from BottomNavigationBar
 2. Replace 2 custom back button implementations with standard Material back buttons

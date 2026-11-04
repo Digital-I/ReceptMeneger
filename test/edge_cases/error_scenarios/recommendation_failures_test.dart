@@ -1,12 +1,12 @@
 // test/edge_cases/error_scenarios/recommendation_failures_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/core/services/recommendation_service.dart';
-import 'package:gastrobrain/core/services/meal_plan_analysis_service.dart';
-import 'package:gastrobrain/core/errors/gastrobrain_exceptions.dart';
-import 'package:gastrobrain/models/protein_type.dart';
-import 'package:gastrobrain/models/frequency_type.dart';
-import 'package:gastrobrain/core/di/providers/database_provider.dart';
+import 'package:receptmeneger/core/services/recommendation_service.dart';
+import 'package:receptmeneger/core/services/meal_plan_analysis_service.dart';
+import 'package:receptmeneger/core/errors/receptmeneger_exceptions.dart';
+import 'package:receptmeneger/models/protein_type.dart';
+import 'package:receptmeneger/models/frequency_type.dart';
+import 'package:receptmeneger/core/di/providers/database_provider.dart';
 import '../../mocks/mock_database_helper.dart';
 
 /// Tests for recommendation service error scenarios and failures.

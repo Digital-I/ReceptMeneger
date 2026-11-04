@@ -2,13 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/models/meal_plan.dart';
-import 'package:gastrobrain/models/meal_plan_item.dart';
-import 'package:gastrobrain/models/meal_plan_item_recipe.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/frequency_type.dart';
-import 'package:gastrobrain/models/time_context.dart';
-import 'package:gastrobrain/widgets/weekly_calendar_widget.dart';
+import 'package:receptmeneger/models/meal_plan.dart';
+import 'package:receptmeneger/models/meal_plan_item.dart';
+import 'package:receptmeneger/models/meal_plan_item_recipe.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/frequency_type.dart';
+import 'package:receptmeneger/models/time_context.dart';
+import 'package:receptmeneger/widgets/weekly_calendar_widget.dart';
 
 // Import our MockDatabaseHelper and TestSetup utility
 import '../mocks/mock_database_helper.dart';

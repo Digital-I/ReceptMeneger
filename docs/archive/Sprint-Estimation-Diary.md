@@ -26,7 +26,7 @@ Confirm with the developer: commits are a proxy, not the truth. A day without co
 Collect estimated points from GitHub Project #3 (source of truth for estimates):
 
 ```bash
-gh project item-list 3 --owner alemdisso --format json --limit 100
+gh project item-list 3 --owner Ekaterina-Medvedeva --format json --limit 100
 ```
 
 For issues not in the project board, use the sprint planning doc estimate.

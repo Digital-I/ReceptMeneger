@@ -7,7 +7,7 @@ import '../mocks/mock_database_helper.dart';
 /// Edge Case Test Helpers
 ///
 /// Utilities for testing edge cases, boundary conditions, and error scenarios
-/// across the Gastrobrain application. Extends patterns from DialogTestHelper
+/// across the ReceptMeneger application. Extends patterns from DialogTestHelper
 /// for app-wide edge case testing.
 ///
 /// Example usage:

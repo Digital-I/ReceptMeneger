@@ -1,4 +1,4 @@
-package com.example.gastrobrain
+package com.example.receptmeneger
 
 import io.flutter.embedding.android.FlutterActivity
 

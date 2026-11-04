@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import '../../models/recipe.dart';
 import '../repositories/recipe_repository.dart';
-import '../errors/gastrobrain_exceptions.dart';
+import '../errors/receptmeneger_exceptions.dart';
 
 /// Provider for managing recipe state throughout the application
 class RecipeProvider extends ChangeNotifier {
@@ -10,7 +10,7 @@ class RecipeProvider extends ChangeNotifier {
   // Current state
   List<Recipe> _recipes = [];
   bool _isLoading = false;
-  GastrobrainException? _error;
+  ReceptMenegerException? _error;
   int _totalRecipeCount = 0;
 
   // Filter and sort state
@@ -22,7 +22,7 @@ class RecipeProvider extends ChangeNotifier {
   // Getters for UI consumption
   List<Recipe> get recipes => List.unmodifiable(_recipes);
   bool get isLoading => _isLoading;
-  GastrobrainException? get error => _error;
+  ReceptMenegerException? get error => _error;
   bool get hasError => _error != null;
   bool get hasData => _recipes.isNotEmpty;
 
@@ -225,7 +225,7 @@ class RecipeProvider extends ChangeNotifier {
     }
   }
 
-  void _setError(GastrobrainException error) {
+  void _setError(ReceptMenegerException error) {
     _error = error;
   }
 

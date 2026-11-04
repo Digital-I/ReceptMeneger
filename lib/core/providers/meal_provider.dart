@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import '../../models/meal.dart';
 import '../../models/meal_recipe.dart';
 import '../repositories/meal_repository.dart';
-import '../errors/gastrobrain_exceptions.dart';
+import '../errors/receptmeneger_exceptions.dart';
 
 /// Provider for managing meal state throughout the application
 class MealProvider extends ChangeNotifier {
@@ -12,12 +12,12 @@ class MealProvider extends ChangeNotifier {
   List<Meal> _meals = [];
   Map<String, List<Meal>> _mealsByRecipe = {};
   bool _isLoading = false;
-  GastrobrainException? _error;
+  ReceptMenegerException? _error;
 
   // Getters for UI consumption
   List<Meal> get meals => List.unmodifiable(_meals);
   bool get isLoading => _isLoading;
-  GastrobrainException? get error => _error;
+  ReceptMenegerException? get error => _error;
   bool get hasError => _error != null;
   bool get hasData => _meals.isNotEmpty;
 
@@ -247,7 +247,7 @@ class MealProvider extends ChangeNotifier {
     }
   }
 
-  void _setError(GastrobrainException error) {
+  void _setError(ReceptMenegerException error) {
     _error = error;
   }
 

@@ -1,5 +1,5 @@
 <!-- markdownlint-disable -->
-# Gastrobrain Development Roadmap & Status
+# ReceptMeneger Development Roadmap & Status
 
 **Last Updated:** May 2026
 **Current Version:** 0.2.11 (shipped) / 0.2.12 complete in develop
@@ -165,7 +165,7 @@ Iterative improvements driven by real-world beta usage:
 
 ## ⭐ **Vision: 1.0.0 — Community Platform Launch**
 
-**Goal:** Complete realization of the Gastrobrain vision
+**Goal:** Complete realization of the ReceptMeneger vision
 **Issues:** 13 open, 1 closed
 
 **Key Features:**

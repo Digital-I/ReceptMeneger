@@ -40,11 +40,11 @@ void main() async {
     }
   }
 
-  runApp(const GastrobrainApp());
+  runApp(const ReceptMenegerApp());
 }
 
-class GastrobrainApp extends StatelessWidget {
-  const GastrobrainApp({super.key});
+class ReceptMenegerApp extends StatelessWidget {
+  const ReceptMenegerApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class GastrobrainApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => DebugSettingsProvider()),
       ],
       child: MaterialApp(
-        title: 'Gastrobrain',
+        title: 'ReceptMeneger',
         theme: AppTheme.lightTheme,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,

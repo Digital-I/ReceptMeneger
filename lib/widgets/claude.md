@@ -39,6 +39,6 @@ Widget → pure UI + local display state only
 
 ## Bottom Sheet Rule
 
-**Never call `showModalBottomSheet` directly.** Always use `showGastrobrainBottomSheet`
+**Never call `showModalBottomSheet` directly.** Always use `showReceptMenegerBottomSheet`
 from `lib/utils/dialog_utils.dart`. This helper enforces `isScrollControlled: true`
 and `useSafeArea: true` so nav-bar insets are consistently respected.

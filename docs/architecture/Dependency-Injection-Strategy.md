@@ -1,10 +1,10 @@
-# Dependency Injection in Gastrobrain
+# Dependency Injection in ReceptMeneger
 
-This document explains how dependency injection is implemented in the Gastrobrain application.
+This document explains how dependency injection is implemented in the ReceptMeneger application.
 
 ## Overview
 
-Gastrobrain uses a lightweight service locator pattern for dependency injection. This approach:
+ReceptMeneger uses a lightweight service locator pattern for dependency injection. This approach:
 - Centralizes service creation and management
 - Makes testing easier by allowing mock services to be injected
 - Reduces direct dependencies between components

@@ -1,6 +1,6 @@
 {
-    "name": "gastrobrain",
-    "short_name": "gastrobrain",
+    "name": "receptmeneger",
+    "short_name": "receptmeneger",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

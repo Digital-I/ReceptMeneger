@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/widgets/add_ingredient_dialog.dart';
-import 'package:gastrobrain/models/ingredient.dart';
-import 'package:gastrobrain/models/recipe_ingredient.dart';
+import 'package:receptmeneger/widgets/add_ingredient_dialog.dart';
+import 'package:receptmeneger/models/ingredient.dart';
+import 'package:receptmeneger/models/recipe_ingredient.dart';
 import '../mocks/mock_database_helper.dart';
 import '../helpers/dialog_test_helpers.dart';
 import '../test_utils/dialog_fixtures.dart';
@@ -1626,7 +1626,7 @@ void main() {
       });
 
       testWidgets(
-          'handles GastrobrainException when loading ingredients',
+          'handles ReceptMenegerException when loading ingredients',
           (WidgetTester tester) async {
         final testRecipe = DialogFixtures.createTestRecipe();
 
@@ -1647,7 +1647,7 @@ void main() {
 
         await tester.pumpAndSettle();
 
-        // Should show generic error message since it's not a GastrobrainException
+        // Should show generic error message since it's not a ReceptMenegerException
         expect(
             find.text(
                 'An unexpected error occurred while loading ingredients'),

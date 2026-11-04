@@ -1,10 +1,10 @@
-# Gastrobrain Design Tokens
+# ReceptMeneger Design Tokens
 
-> **Document Purpose:** Concrete, reusable visual values that implement the [Gastrobrain Visual Identity](visual_identity.md). These tokens should be used consistently across all UI implementation.
+> **Document Purpose:** Concrete, reusable visual values that implement the [ReceptMeneger Visual Identity](visual_identity.md). These tokens should be used consistently across all UI implementation.
 
 **Status:** Approved - Ready for Implementation
 **Created:** 2026-01-30
-**Related:** [Issue #255 - Define Gastrobrain Visual Identity and Design Principles](https://github.com/rodrigo-omena/gastrobrain/issues/255)
+**Related:** [Issue #255 - Define ReceptMeneger Visual Identity and Design Principles](https://github.com/rodrigo-omena/receptmeneger/issues/255)
 
 ---
 

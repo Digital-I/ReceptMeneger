@@ -8,7 +8,7 @@
 
 ## Overview
 
-This guide provides comprehensive instructions for identifying, implementing, and maintaining edge case tests in the Gastrobrain application. It complements the [EDGE_CASE_CATALOG.md](EDGE_CASE_CATALOG.md) which catalogs what to test, while this guide explains how to test it.
+This guide provides comprehensive instructions for identifying, implementing, and maintaining edge case tests in the ReceptMeneger application. It complements the [EDGE_CASE_CATALOG.md](EDGE_CASE_CATALOG.md) which catalogs what to test, while this guide explains how to test it.
 
 ## Table of Contents
 
@@ -98,8 +98,8 @@ Add to `docs/EDGE_CASE_CATALOG.md`:
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/screens/feature_screen.dart';
-import 'package:gastrobrain/core/di/providers/database_provider.dart';
+import 'package:receptmeneger/screens/feature_screen.dart';
+import 'package:receptmeneger/core/di/providers/database_provider.dart';
 import '../../mocks/mock_database_helper.dart';
 import '../../helpers/edge_case_test_helpers.dart';
 
@@ -147,7 +147,7 @@ void main() {
 // test/edge_cases/boundary_conditions/feature_boundary_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/models/feature.dart';
+import 'package:receptmeneger/models/feature.dart';
 import '../../fixtures/boundary_fixtures.dart';
 
 /// Tests for [Feature] boundary conditions.
@@ -187,7 +187,7 @@ void main() {
 // test/edge_cases/error_scenarios/feature_errors_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/services/feature_service.dart';
+import 'package:receptmeneger/services/feature_service.dart';
 import '../../mocks/mock_database_helper.dart';
 import '../../helpers/error_injection_helpers.dart';
 

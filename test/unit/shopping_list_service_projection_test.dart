@@ -1,13 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/core/services/shopping_list_service.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/ingredient.dart';
-import 'package:gastrobrain/models/recipe_ingredient.dart';
-import 'package:gastrobrain/models/meal_plan.dart';
-import 'package:gastrobrain/models/meal_plan_item.dart';
-import 'package:gastrobrain/models/meal_plan_item_recipe.dart';
-import 'package:gastrobrain/models/ingredient_category.dart';
-import 'package:gastrobrain/models/measurement_unit.dart';
+import 'package:receptmeneger/core/services/shopping_list_service.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/ingredient.dart';
+import 'package:receptmeneger/models/recipe_ingredient.dart';
+import 'package:receptmeneger/models/meal_plan.dart';
+import 'package:receptmeneger/models/meal_plan_item.dart';
+import 'package:receptmeneger/models/meal_plan_item_recipe.dart';
+import 'package:receptmeneger/models/ingredient_category.dart';
+import 'package:receptmeneger/models/measurement_unit.dart';
 import '../mocks/mock_database_helper.dart';
 
 void main() {

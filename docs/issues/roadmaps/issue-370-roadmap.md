@@ -189,8 +189,8 @@ File: `test/edge_cases/interaction_patterns/recipe_form_flow_test.dart`
 
 - [x] Delete `test/screens/add_recipe_screen_test.dart` (coverage now in `recipe_form_screen_test.dart`)
 - [x] Delete `test/screens/edit_recipe_screen_test.dart` (same reason)
-- [x] Update `docs/architecture/Gastrobrain-Codebase-Overview.md` — replaced `AddRecipeScreen` and `EditRecipeScreen` entries with `RecipeFormScreen`
-- [x] Update `docs/architecture/Gastrobrain-Codebase-Overview.html` — same
+- [x] Update `docs/architecture/ReceptMeneger-Codebase-Overview.md` — replaced `AddRecipeScreen` and `EditRecipeScreen` entries with `RecipeFormScreen`
+- [x] Update `docs/architecture/ReceptMeneger-Codebase-Overview.html` — same
 - [x] Create follow-up issues for deferred phases:
   - #385 `ux: redesign recipe form Phase 2 — Timing & difficulty`
   - #386 `ux: redesign recipe form Phase 3 — Tags & rating`
@@ -219,8 +219,8 @@ File: `test/edge_cases/interaction_patterns/recipe_form_flow_test.dart`
 - `lib/screens/recipe_details_screen.dart`
 - `lib/widgets/dashboard/quick_actions_panel.dart`
 - `lib/main.dart`
-- `docs/architecture/Gastrobrain-Codebase-Overview.md`
-- `docs/architecture/Gastrobrain-Codebase-Overview.html`
+- `docs/architecture/ReceptMeneger-Codebase-Overview.md`
+- `docs/architecture/ReceptMeneger-Codebase-Overview.html`
 
 **Delete**:
 - `lib/screens/add_recipe_screen.dart`

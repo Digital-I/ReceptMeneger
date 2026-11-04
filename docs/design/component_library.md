@@ -1,10 +1,10 @@
-# Gastrobrain UI Component Library
+# ReceptMeneger UI Component Library
 
-> **Document Purpose:** Central reference for all UI components, patterns, and visual guidelines in Gastrobrain. Use this document as the starting point for any UI implementation work.
+> **Document Purpose:** Central reference for all UI components, patterns, and visual guidelines in ReceptMeneger. Use this document as the starting point for any UI implementation work.
 
 **Status:** Active Reference Document
 **Created:** 2026-03-21
-**Issue:** [#263 - Create UI Component Library Documentation](https://github.com/alemdisso/gastrobrain/issues/263)
+**Issue:** [#263 - Create UI Component Library Documentation](https://github.com/Ekaterina-Medvedeva/receptmeneger/issues/263)
 **Milestone:** 0.1.14 - DB Housekeeping & Documentation
 
 ---
@@ -102,7 +102,7 @@ IconButton(
 ### Destructive Buttons
 
 ```dart
-import 'package:gastrobrain/core/theme/button_styles.dart';
+import 'package:receptmeneger/core/theme/button_styles.dart';
 
 // Primary destructive (confirmed delete)
 ElevatedButton(
@@ -562,7 +562,7 @@ AppBar(
 
 ## Typography
 
-Gastrobrain uses system fonts (San Francisco on iOS, Roboto on Android). Access via `Theme.of(context).textTheme`.
+ReceptMeneger uses system fonts (San Francisco on iOS, Roboto on Android). Access via `Theme.of(context).textTheme`.
 
 ### Text Style Reference
 

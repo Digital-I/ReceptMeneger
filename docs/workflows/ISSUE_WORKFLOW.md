@@ -1,6 +1,6 @@
 # Issue Workflow Guide
 
-This document contains detailed workflows for issue management, GitHub Projects integration, and Git Flow processes for the Gastrobrain project.
+This document contains detailed workflows for issue management, GitHub Projects integration, and Git Flow processes for the ReceptMeneger project.
 
 ## Issue Tackling Protocol
 
@@ -386,18 +386,18 @@ This structured approach ensures issues are well-defined and actionable.
 
 ## GitHub Projects Integration
 
-This project uses GitHub Projects for issue tracking and workflow management. All issues should be added to the **Gastrobrain** project and configured with appropriate field values.
+This project uses GitHub Projects for issue tracking and workflow management. All issues should be added to the **ReceptMeneger** project and configured with appropriate field values.
 
 ### Project Information
 
-- **Project Name**: Gastrobrain
+- **Project Name**: ReceptMeneger
 - **Project Number**: 3
-- **Owner**: alemdisso
+- **Owner**: Ekaterina-Medvedeva
 - **Project ID**: `PVT_kwHOABLkTc4A5MPP`
 
 ### Project Fields
 
-The Gastrobrain project includes the following custom fields:
+The ReceptMeneger project includes the following custom fields:
 
 **Status** (Single Select):
 - `Backlog` (ID: `f75ad846`) - New issues, not yet ready to work on
@@ -430,14 +430,14 @@ The Gastrobrain project includes the following custom fields:
 
 #### 1. Add Issue to Project
 
-After creating an issue, immediately add it to the Gastrobrain project:
+After creating an issue, immediately add it to the ReceptMeneger project:
 
 ```bash
 # Add issue to project (returns item ID for next steps)
-gh project item-add 3 --owner alemdisso --url https://github.com/alemdisso/gastrobrain/issues/{issue-number} --format json | jq -r '.id'
+gh project item-add 3 --owner Ekaterina-Medvedeva --url https://github.com/Ekaterina-Medvedeva/receptmeneger/issues/{issue-number} --format json | jq -r '.id'
 
 # Store the item ID for subsequent commands
-ITEM_ID=$(gh project item-add 3 --owner alemdisso --url https://github.com/alemdisso/gastrobrain/issues/{issue-number} --format json | jq -r '.id')
+ITEM_ID=$(gh project item-add 3 --owner Ekaterina-Medvedeva --url https://github.com/Ekaterina-Medvedeva/receptmeneger/issues/{issue-number} --format json | jq -r '.id')
 ```
 
 **Note**: The `--format json` output includes the `id` field (format: `PVTI_...`) which is required for editing project fields.
@@ -603,7 +603,7 @@ gh issue edit 167 --add-label "UI,enhancement,✓"
 gh issue edit 167 --milestone "0.1.0"
 
 # Step 4: Add to project and capture item ID
-ITEM_ID=$(gh project item-add 3 --owner alemdisso --url https://github.com/alemdisso/gastrobrain/issues/167 --format json | jq -r '.id')
+ITEM_ID=$(gh project item-add 3 --owner Ekaterina-Medvedeva --url https://github.com/Ekaterina-Medvedeva/receptmeneger/issues/167 --format json | jq -r '.id')
 echo "Item ID: $ITEM_ID"
 
 # Step 5: Set Status to Backlog
@@ -659,7 +659,7 @@ Manual status update to "Done" is only needed in rare cases where you want to ma
 
 **Note**: You'll need to retrieve the item ID if you don't have it saved. Use:
 ```bash
-gh project item-list 3 --owner alemdisso --format json | jq '.items[] | select(.content.number == {issue-number}) | .id'
+gh project item-list 3 --owner Ekaterina-Medvedeva --format json | jq '.items[] | select(.content.number == {issue-number}) | .id'
 ```
 
 ### Project Field Reference
@@ -695,7 +695,7 @@ PRIORITY_P2="da944a9c"  # Medium
 
 # Get item ID from issue number
 get_item_id() {
-  gh project item-list 3 --owner alemdisso --format json | jq -r ".items[] | select(.content.number == $1) | .id"
+  gh project item-list 3 --owner Ekaterina-Medvedeva --format json | jq -r ".items[] | select(.content.number == $1) | .id"
 }
 
 # Usage example
@@ -717,7 +717,7 @@ ITEM_ID=$(get_item_id 167)
 **Can't find item ID?**
 ```bash
 # List all items in project with issue numbers
-gh project item-list 3 --owner alemdisso --format json | jq '.items[] | {id: .id, number: .content.number, title: .content.title}'
+gh project item-list 3 --owner Ekaterina-Medvedeva --format json | jq '.items[] | {id: .id, number: .content.number, title: .content.title}'
 ```
 
 **Need to update project field options?**
@@ -725,7 +725,7 @@ gh project item-list 3 --owner alemdisso --format json | jq '.items[] | {id: .id
 # List all field options for Status, Priority, Size
 gh api graphql -f query='
 {
-  user(login: "alemdisso") {
+  user(login: "Ekaterina-Medvedeva") {
     projectV2(number: 3) {
       fields(first: 20) {
         nodes {
@@ -746,7 +746,7 @@ gh api graphql -f query='
 
 **View project in browser:**
 ```bash
-gh project view 3 --owner alemdisso --web
+gh project view 3 --owner Ekaterina-Medvedeva --web
 ```
 
 ## Git Flow Workflow

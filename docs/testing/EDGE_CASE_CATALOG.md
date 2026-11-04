@@ -15,7 +15,7 @@
 
 ## Overview
 
-This document catalogs all identified edge cases, boundary conditions, and error scenarios across the Gastrobrain application. It serves as a comprehensive reference for:
+This document catalogs all identified edge cases, boundary conditions, and error scenarios across the ReceptMeneger application. It serves as a comprehensive reference for:
 
 - **Test Planning**: What edge cases need testing
 - **Development**: What edge cases to consider when building features

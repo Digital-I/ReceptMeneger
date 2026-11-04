@@ -43,7 +43,7 @@ This repository uses **GitHub Actions** to automate the release process. When yo
 **Automated steps**:
 1. ✅ **Build APK**: Compiles release APK with signing
 2. ✅ **Create GitHub Release**: Automatically creates a published release
-3. ✅ **Upload APK**: Attaches APK to the release as `gastrobrain-{version}.apk`
+3. ✅ **Upload APK**: Attaches APK to the release as `receptmeneger-{version}.apk`
 4. ✅ **Publish**: Release is immediately published (non-draft, non-prerelease)
 
 **What you still need to do manually**:
@@ -192,12 +192,12 @@ git push origin v0.1.3
 3. ✅ Upload the APK to the release automatically
 4. ✅ Publish the release (non-draft, non-prerelease)
 
-**Monitor the GitHub Actions workflow** at: `https://github.com/your-org/gastrobrain/actions`
+**Monitor the GitHub Actions workflow** at: `https://github.com/your-org/receptmeneger/actions`
 
 ### Step 9: Wait for GitHub Actions to Complete
 
 **Monitor the automated release workflow**:
-1. Go to: `https://github.com/your-org/gastrobrain/actions`
+1. Go to: `https://github.com/your-org/receptmeneger/actions`
 2. Find the "Release Build" workflow triggered by your tag
 3. Verify all steps complete successfully:
    - ✅ Checkout code
@@ -237,7 +237,7 @@ git push origin --delete release/0.1.3
    - Add detailed CHANGELOG content to description
    - Add release highlights or breaking changes
    - Update release notes with migration guides
-4. The APK is already attached: `gastrobrain-v0.1.3.apk`
+4. The APK is already attached: `receptmeneger-v0.1.3.apk`
 
 **Note**: The automated release has a basic title and description. You can enhance it with more detailed notes if needed.
 
@@ -402,4 +402,4 @@ git push origin v0.1.3
 
 **Maintained by**: Development Team
 **Primary Audience**: Developers, Release Managers
-**Repository**: gastrobrain (private)
+**Repository**: receptmeneger (private)

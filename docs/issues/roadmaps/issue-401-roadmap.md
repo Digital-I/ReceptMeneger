@@ -29,7 +29,7 @@ Two new `TagRepository` methods:
   Returns `false` on a query error (safe default — never blocks startup).
 - `repairBuiltInVocabulary()` — re-runs `seedBuiltInTagVocabulary`
   (`INSERT OR IGNORE`, already idempotent from #399). Throws
-  `GastrobrainException` on failure, per `TagRepository`'s existing
+  `ReceptMenegerException` on failure, per `TagRepository`'s existing
   exception-handling convention.
 
 `home_screen.dart`'s `initState` postFrameCallback gets a third check block
@@ -133,7 +133,7 @@ Future<void> repairBuiltInVocabulary() async {
     final db = await _dbHelper.database;
     await seedBuiltInTagVocabulary(DatabaseWrapper(db));
   } catch (e) {
-    throw GastrobrainException('Failed to repair tag vocabulary: $e');
+    throw ReceptMenegerException('Failed to repair tag vocabulary: $e');
   }
 }
 ```
@@ -169,7 +169,7 @@ if (await tagRepository.hasIncompleteBuiltInVocabulary()) {
 | Partial wipe (#399-style — `meal_role`/`food_type` missing, others intact) | `hasIncompleteBuiltInVocabulary()` → `true`; repair restores only the missing rows via `INSERT OR IGNORE` |
 | Fully healthy DB (common case) | `hasIncompleteBuiltInVocabulary()` → `false`; no banner shown |
 | Repair tapped while already healthy (double-tap / race) | No-op — `INSERT OR IGNORE` idempotent |
-| Repair write fails (disk full, locked DB) | `repairBuiltInVocabulary()` throws `GastrobrainException`; `home_screen.dart` catches it, no crash |
+| Repair write fails (disk full, locked DB) | `repairBuiltInVocabulary()` throws `ReceptMenegerException`; `home_screen.dart` catches it, no crash |
 | Health-check query errors (transient DB issue) | Returns `false` (safe default) — no confusing banner on a transient error |
 | Both migration-failure and vocabulary banners trigger | `ScaffoldMessenger` queues SnackBars sequentially — no crash |
 

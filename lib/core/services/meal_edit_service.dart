@@ -1,10 +1,10 @@
 // lib/core/services/meal_edit_service.dart
 
-import 'package:gastrobrain/database/database_helper.dart';
-import 'package:gastrobrain/models/meal.dart';
-import 'package:gastrobrain/models/meal_recipe.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/core/errors/gastrobrain_exceptions.dart';
+import 'package:receptmeneger/database/database_helper.dart';
+import 'package:receptmeneger/models/meal.dart';
+import 'package:receptmeneger/models/meal_recipe.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/core/errors/receptmeneger_exceptions.dart';
 
 /// Service for managing meal editing operations.
 ///

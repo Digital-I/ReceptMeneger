@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'design_tokens.dart';
 
-/// Button Style Helpers for Gastrobrain
+/// Button Style Helpers for ReceptMeneger
 ///
 /// Provides standardized button styles for common use cases beyond the
 /// default theme. Use these for special cases like destructive actions.

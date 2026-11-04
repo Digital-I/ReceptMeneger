@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/utils/sorting_utils.dart';
+import 'package:receptmeneger/utils/sorting_utils.dart';
 
 void main() {
   group('SortingUtils', () {

@@ -8,7 +8,7 @@
 
 ## Overview
 
-This guide covers best practices and patterns for testing dialog widgets in the Gastrobrain app. Proper dialog testing ensures that user interactions through dialogs work correctly, data is properly captured and validated, and critical bugs (like the controller disposal crash) are prevented.
+This guide covers best practices and patterns for testing dialog widgets in the ReceptMeneger app. Proper dialog testing ensures that user interactions through dialogs work correctly, data is properly captured and validated, and critical bugs (like the controller disposal crash) are prevented.
 
 ## Table of Contents
 
@@ -1280,7 +1280,7 @@ When writing tests for a new dialog, ensure you cover:
 ## Related Documentation
 
 - **Testing Roadmap Summary**: `docs/testing/TESTING_ROADMAP_SUMMARY.md`
-- **Codebase Overview**: `docs/archive/Gastrobrain-Codebase-Overview.md`
+- **Codebase Overview**: `docs/archive/ReceptMeneger-Codebase-Overview.md`
 
 ---
 

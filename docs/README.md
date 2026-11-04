@@ -1,12 +1,12 @@
-# Gastrobrain Documentation
+# ReceptMeneger Documentation
 
 **Last Updated**: 2026-02-08
 
-This directory contains comprehensive documentation for the Gastrobrain project, organized by category.
+This directory contains comprehensive documentation for the ReceptMeneger project, organized by category.
 
 ## Quick Links
 
-- **New to the project?** Start with [Gastrobrain Codebase Overview](architecture/Gastrobrain-Codebase-Overview.md)
+- **New to the project?** Start with [ReceptMeneger Codebase Overview](architecture/ReceptMeneger-Codebase-Overview.md)
 - **Working on an issue?** Create roadmap in [issues/roadmaps/](issues/roadmaps/) and analysis in [issues/analysis/](issues/analysis/)
 - **Setting up tests?** See [Dialog Testing Guide](testing/DIALOG_TESTING_GUIDE.md) and [Edge Case Testing Guide](testing/EDGE_CASE_TESTING_GUIDE.md)
 - **Writing edge case tests?** Check [Edge Case Catalog](testing/EDGE_CASE_CATALOG.md)
@@ -122,7 +122,7 @@ High-level feature specifications that may span multiple issues.
 | [component_library.md](design/component_library.md) | UI Component Library — quick reference for all components and patterns | ✅ Current |
 | [design-tokens.md](design/design-tokens.md) | Core design tokens (colors, spacing, typography) | ✅ Current |
 | [theme_usage.md](design/theme_usage.md) | Flutter theme implementation patterns | ✅ Current |
-| [visual_identity.md](design/visual_identity.md) | Gastrobrain visual identity ("Cultured & Flavorful") | ✅ Current |
+| [visual_identity.md](design/visual_identity.md) | ReceptMeneger visual identity ("Cultured & Flavorful") | ✅ Current |
 | [button_patterns.md](design/button_patterns.md) | Full button pattern reference | ✅ Current |
 | [input_patterns.md](design/input_patterns.md) | Full form input pattern reference | ✅ Current |
 | [navigation_patterns.md](design/navigation_patterns.md) | Full navigation element pattern reference | ✅ Current |
@@ -148,7 +148,7 @@ UX designs and user flow documentation for specific features.
 
 | Document | Purpose | Status |
 |----------|---------|--------|
-| [Gastrobrain-Codebase-Overview.md](architecture/Gastrobrain-Codebase-Overview.md) | Comprehensive architecture overview, data models, services, and patterns | ✅ Current (2026-02-08) |
+| [ReceptMeneger-Codebase-Overview.md](architecture/ReceptMeneger-Codebase-Overview.md) | Comprehensive architecture overview, data models, services, and patterns | ✅ Current (2026-02-08) |
 | [RECOMMENDATION_ENGINE.md](architecture/RECOMMENDATION_ENGINE.md) | Recommendation service architecture and scoring factors | ✅ Current |
 | [Dependency-Injection-Strategy.md](architecture/Dependency-Injection-Strategy.md) | ServiceProvider pattern and DI approach | ✅ Current |
 
@@ -204,7 +204,7 @@ Historical planning documents and completed project tracking:
 
 | Document | Purpose | Status |
 |----------|---------|--------|
-| [Gastrobrain-Roadmap-Status.md](archive/Gastrobrain-Roadmap-Status.md) | Overall project roadmap and milestone tracking | 📅 Historical (2025-12-19) — update when starting 0.2.x |
+| [ReceptMeneger-Roadmap-Status.md](archive/ReceptMeneger-Roadmap-Status.md) | Overall project roadmap and milestone tracking | 📅 Historical (2025-12-19) — update when starting 0.2.x |
 | [Sprint-Estimation-Diary.md](archive/Sprint-Estimation-Diary.md) | Sprint estimation tracking and learnings | 📅 Historical |
 | [roadmap-0.1.4.md](archive/roadmap-0.1.4.md) | 0.1.4 - Testing Infrastructure milestone plan | 📅 Complete |
 | [roadmap-0.1.5.md](archive/roadmap-0.1.5.md) | 0.1.5 - Meal Recording Consolidation milestone plan | 📅 Complete |
@@ -230,7 +230,7 @@ Historical planning documents and completed project tracking:
 
 - **EDGE_CASE_CATALOG.md**: Add new edge cases as discovered during development
 - **EDGE_CASE_TESTING_GUIDE.md**: Update when new testing patterns emerge
-- **Gastrobrain-Codebase-Overview.md**: Update when architecture changes
+- **ReceptMeneger-Codebase-Overview.md**: Update when architecture changes
 - **RECOMMENDATION_ENGINE.md**: Update when recommendation factors change
 
 ### Archive Policy
@@ -322,4 +322,4 @@ If you can't find what you're looking for:
 
 **Maintained by**: Development Team
 **Primary Audience**: Developers, Contributors, Claude Code
-**Repository**: gastrobrain (private)
+**Repository**: receptmeneger (private)

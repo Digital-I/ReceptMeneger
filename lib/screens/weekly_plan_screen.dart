@@ -21,7 +21,7 @@ import '../core/theme/design_tokens.dart';
 import '../core/providers/recipe_provider.dart';
 import '../core/providers/meal_provider.dart';
 import '../core/providers/meal_plan_provider.dart';
-import '../core/errors/gastrobrain_exceptions.dart';
+import '../core/errors/receptmeneger_exceptions.dart';
 import '../models/ingredient.dart';
 import '../models/meal_plan_item_ingredient.dart';
 import '../widgets/weekly_calendar_widget.dart';
@@ -618,7 +618,7 @@ class WeeklyPlanScreenState extends State<WeeklyPlanScreen> {
       // Record the meal using the provider
       final success = await mealProvider.recordMeal(meal);
       if (!success) {
-        throw const GastrobrainException('Failed to record meal');
+        throw const ReceptMenegerException('Failed to record meal');
       }
 
       // Create and add primary recipe association
@@ -803,7 +803,7 @@ class WeeklyPlanScreenState extends State<WeeklyPlanScreen> {
   void _openSummarySheet() {
     setState(() => _isSummarySheetOpen = true);
 
-    showGastrobrainBottomSheet(
+    showReceptMenegerBottomSheet(
       context: context,
       useSafeArea: false,
       backgroundColor: Colors.transparent,

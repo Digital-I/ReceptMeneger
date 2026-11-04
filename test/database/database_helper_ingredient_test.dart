@@ -1,11 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/models/ingredient.dart';
-import 'package:gastrobrain/models/ingredient_category.dart';
-import 'package:gastrobrain/models/measurement_unit.dart';
-import 'package:gastrobrain/models/protein_type.dart';
-import 'package:gastrobrain/models/recipe.dart';
-import 'package:gastrobrain/models/recipe_ingredient.dart';
-import 'package:gastrobrain/core/errors/gastrobrain_exceptions.dart';
+import 'package:receptmeneger/models/ingredient.dart';
+import 'package:receptmeneger/models/ingredient_category.dart';
+import 'package:receptmeneger/models/measurement_unit.dart';
+import 'package:receptmeneger/models/protein_type.dart';
+import 'package:receptmeneger/models/recipe.dart';
+import 'package:receptmeneger/models/recipe_ingredient.dart';
+import 'package:receptmeneger/core/errors/receptmeneger_exceptions.dart';
 import '../mocks/mock_database_helper.dart';
 
 void main() {

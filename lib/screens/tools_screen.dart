@@ -12,7 +12,7 @@ import '../core/services/ingredient_import_service.dart' show IngredientImportRe
 import '../core/services/recipe_import_service.dart'
     show DuplicateStrategy, RecipeImportResult;
 import '../core/services/snackbar_service.dart';
-import '../core/errors/gastrobrain_exceptions.dart';
+import '../core/errors/receptmeneger_exceptions.dart';
 
 /// Temporary tools screen for development utilities
 class ToolsScreen extends StatefulWidget {
@@ -206,7 +206,7 @@ class _ToolsScreenState extends State<ToolsScreen> {
         final l10n = AppLocalizations.of(context)!;
         SnackbarService.showSuccess(context, l10n.backupSuccess);
       }
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
         SnackbarService.showError(
@@ -286,7 +286,7 @@ class _ToolsScreenState extends State<ToolsScreen> {
         await backupService
             .restoreDatabaseFromString(utf8.decode(pickedFile.bytes!));
       } else {
-        throw const GastrobrainException('Could not read the selected file');
+        throw const ReceptMenegerException('Could not read the selected file');
       }
 
       if (mounted) {
@@ -297,7 +297,7 @@ class _ToolsScreenState extends State<ToolsScreen> {
       if (mounted) {
         SnackbarService.showError(context, l10n.restoreBackupNewerVersion);
       }
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       if (mounted) {
         SnackbarService.showError(
           context,
@@ -426,7 +426,7 @@ class _ToolsScreenState extends State<ToolsScreen> {
       if (mounted) {
         _showRecipeImportResultDialog(l10n, result);
       }
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       if (mounted) SnackbarService.showError(context, e.message);
     } catch (e) {
       if (mounted) SnackbarService.showError(context, e.toString());
@@ -482,7 +482,7 @@ class _ToolsScreenState extends State<ToolsScreen> {
       if (mounted) {
         _showIngredientImportResultDialog(l10n, result);
       }
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       if (mounted) SnackbarService.showError(context, e.message);
     } catch (e) {
       if (mounted) SnackbarService.showError(context, e.toString());

@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-import 'package:gastrobrain/core/migration/migration.dart';
-import 'package:gastrobrain/core/migration/tag_vocabulary_seed.dart';
-import 'package:gastrobrain/core/services/database_backup_service.dart';
-import 'package:gastrobrain/database/database_helper.dart';
+import 'package:receptmeneger/core/migration/migration.dart';
+import 'package:receptmeneger/core/migration/tag_vocabulary_seed.dart';
+import 'package:receptmeneger/core/services/database_backup_service.dart';
+import 'package:receptmeneger/database/database_helper.dart';
 
 import 'helpers/backup_seed_helper.dart';
 

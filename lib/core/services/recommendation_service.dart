@@ -8,7 +8,7 @@ import '../../models/protein_type.dart';
 import '../../models/frequency_type.dart';
 import '../../models/recipe_recommendation.dart';
 import '../../models/meal_plan.dart';
-import '../errors/gastrobrain_exceptions.dart';
+import '../errors/receptmeneger_exceptions.dart';
 import 'localized_error_messages.dart';
 import 'recommendation_database_queries.dart';
 import 'meal_plan_analysis_service.dart';
@@ -278,7 +278,7 @@ class RecommendationService {
       }
 
       if (_factors.isEmpty) {
-        throw GastrobrainException(
+        throw ReceptMenegerException(
             LocalizedErrorMessages.getMessage('noRecommendationFactorsRegistered'));
       }
 
@@ -349,7 +349,7 @@ class RecommendationService {
     } on NotFoundException {
       rethrow;
     } catch (e) {
-      throw GastrobrainException(
+      throw ReceptMenegerException(
           '${LocalizedErrorMessages.getMessage('errorGeneratingRecommendations')}: ${e.toString()}');
     }
   }
@@ -394,7 +394,7 @@ class RecommendationService {
       }
 
       if (_factors.isEmpty) {
-        throw GastrobrainException(
+        throw ReceptMenegerException(
             LocalizedErrorMessages.getMessage('noRecommendationFactorsRegistered'));
       }
 
@@ -483,7 +483,7 @@ class RecommendationService {
     } on NotFoundException {
       rethrow;
     } catch (e) {
-      throw GastrobrainException(
+      throw ReceptMenegerException(
           '${LocalizedErrorMessages.getMessage('errorGeneratingDetailedRecommendations')}: ${e.toString()}');
     }
   }

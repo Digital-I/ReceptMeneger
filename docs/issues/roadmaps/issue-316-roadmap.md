@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Issue** | [#316 — Redesign Meal Options menu into a rich, unified experience](https://github.com/alemdisso/gastrobrain/issues/316) |
+| **Issue** | [#316 — Redesign Meal Options menu into a rich, unified experience](https://github.com/Ekaterina-Medvedeva/receptmeneger/issues/316) |
 | **Milestone** | 0.2.11 — DB Safety Foundation + UX Polish |
 | **Type** | UX Redesign |
 | **Priority** | P2-Medium |

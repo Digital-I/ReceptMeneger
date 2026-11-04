@@ -1,8 +1,8 @@
 // test/edge_cases/boundary_conditions/time_boundary_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gastrobrain/core/validators/entity_validator.dart';
-import 'package:gastrobrain/core/errors/gastrobrain_exceptions.dart';
+import 'package:receptmeneger/core/validators/entity_validator.dart';
+import 'package:receptmeneger/core/errors/receptmeneger_exceptions.dart';
 
 /// Tests for time boundary conditions.
 ///

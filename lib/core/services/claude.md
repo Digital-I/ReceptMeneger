@@ -33,7 +33,7 @@ apply to all files in `lib/core/services/`.
 [Feature]Service  → single feature domain
                   → depends on DatabaseHelper (injected)
                   → all public methods documented
-                  → consistent exception handling (rethrow GastrobrainException)
+                  → consistent exception handling (rethrow ReceptMenegerException)
                   → registered in ServiceProvider
                   → has corresponding test file
 ```

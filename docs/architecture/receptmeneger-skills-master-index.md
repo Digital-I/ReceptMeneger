@@ -1,9 +1,9 @@
 <!-- markdownlint-disable -->
-# Gastrobrain Agent Skills - Master Index
+# ReceptMeneger Agent Skills - Master Index
 
 ## Overview
 
-This document maps the complete Agent Skills ecosystem for Gastrobrain development, showing how skills work together throughout the development workflow and their implementation status.
+This document maps the complete Agent Skills ecosystem for ReceptMeneger development, showing how skills work together throughout the development workflow and their implementation status.
 
 ---
 
@@ -30,7 +30,7 @@ All skills live in `.claude/skills/` and are invoked with `/skill-name` in Claud
 
 #### Issue Creation Skill ⭐
 **Status:** ✅ Implemented
-**Location:** `.claude/skills/gastrobrain-issue-creator/`
+**Location:** `.claude/skills/receptmeneger-issue-creator/`
 **Triggers:** "Create an issue for...", "I found a bug...", "Feature request...", user reports problem
 
 **Purpose:**
@@ -45,7 +45,7 @@ All skills live in `.claude/skills/` and are invoked with `/skill-name` in Claud
 
 #### Sprint Planning Skill
 **Status:** ✅ Implemented
-**Location:** `.claude/skills/gastrobrain-sprint-planner/`
+**Location:** `.claude/skills/receptmeneger-sprint-planner/`
 **Triggers:** "Help me plan sprint 0.X.Y", "plan next sprint", "sprint retrospective"
 
 **Purpose:**
@@ -61,14 +61,14 @@ All skills live in `.claude/skills/` and are invoked with `/skill-name` in Claud
 
 #### Issue Roadmap Skill
 **Status:** ✅ Implemented
-**Location:** `.claude/skills/gastrobrain-issue-roadmap/`
+**Location:** `.claude/skills/receptmeneger-issue-roadmap/`
 **Triggers:** "I want to deal with #XXX", "create roadmap for #XXX", "plan issue #XXX"
 
 **Purpose:**
 - Fetch issue details from GitHub
 - Generate 4-phase roadmap (Analysis → Implementation → Testing → Documentation)
 - Identify files to modify
-- Apply Gastrobrain-specific conventions
+- Apply ReceptMeneger-specific conventions
 - Testing requirements by issue type
 - Localization and database change checklists
 
@@ -76,7 +76,7 @@ All skills live in `.claude/skills/` and are invoked with `/skill-name` in Claud
 
 #### Issue Analysis Skill
 **Status:** ✅ Implemented
-**Location:** `.claude/skills/gastrobrain-issue-analysis/`
+**Location:** `.claude/skills/receptmeneger-issue-analysis/`
 **Triggers:** "Analyze #XXX", "Phase 1 for #XXX", "understand the scope of #XXX"
 
 **Purpose:**
@@ -89,7 +89,7 @@ All skills live in `.claude/skills/` and are invoked with `/skill-name` in Claud
 
 #### Product Strategy Skill ⭐
 **Status:** ✅ Implemented
-**Location:** `.claude/skills/gastrobrain-product-strategy/`
+**Location:** `.claude/skills/receptmeneger-product-strategy/`
 **Triggers:** "Review the roadmap", "Help me prioritize", "Is my milestone balanced?", "Strategic review of 0.X.Y"
 
 **Purpose:**
@@ -103,7 +103,7 @@ All skills live in `.claude/skills/` and are invoked with `/skill-name` in Claud
 
 #### UX Design Skill ⭐
 **Status:** ✅ Implemented
-**Location:** `.claude/skills/gastrobrain-ux-design/`
+**Location:** `.claude/skills/receptmeneger-ux-design/`
 **Triggers:** "Design the UX for #XXX", "Help me redesign [screen]", "What should the user flow be?", "I need wireframes for #XXX"
 
 **Purpose:**
@@ -125,13 +125,13 @@ Use **Issue Analysis** (Tier 1) for Phase 1, then these skills for Phase 2.
 
 #### Senior Developer Implementation Skill ⭐
 **Status:** ✅ Implemented
-**Location:** `.claude/skills/gastrobrain-senior-dev-implementation/`
+**Location:** `.claude/skills/receptmeneger-senior-dev-implementation/`
 **Triggers:** "Implement Phase 2 for #XXX", "implement [feature]", "Phase 2 - UI", "Phase 2 - service layer"
 
 **Purpose:**
 - Checkpoint-driven Phase 2 implementation
 - Covers UI, service layer, and repository patterns
-- Reads and applies Gastrobrain conventions (keys, localization, ServiceProvider, error handling)
+- Reads and applies ReceptMeneger conventions (keys, localization, ServiceProvider, error handling)
 - Patterns available: `model_pattern.dart`, `service_pattern.dart`, `provider_pattern.dart`, `widget_pattern.dart`
 - Replaces the former "UI Component" and "Service/Repository" planned skills
 
@@ -139,7 +139,7 @@ Use **Issue Analysis** (Tier 1) for Phase 1, then these skills for Phase 2.
 
 #### Testing Implementation Skill ⭐
 **Status:** ✅ Implemented
-**Location:** `.claude/skills/gastrobrain-testing-implementation/`
+**Location:** `.claude/skills/receptmeneger-testing-implementation/`
 **Triggers:** "Implement Phase 3 for #XXX", "add tests for #XXX", "implement testing"
 
 **Purpose:**
@@ -154,7 +154,7 @@ Use **Issue Analysis** (Tier 1) for Phase 1, then these skills for Phase 2.
 
 #### Database Migration Skill ⭐
 **Status:** ✅ Implemented
-**Location:** `.claude/skills/gastrobrain-database-migration/`
+**Location:** `.claude/skills/receptmeneger-database-migration/`
 **Triggers:** "Create migration for #XXX", "implement database changes", "Phase 2 - database"
 
 **Purpose:**
@@ -168,7 +168,7 @@ Use **Issue Analysis** (Tier 1) for Phase 1, then these skills for Phase 2.
 
 #### UI Styling & Visual Polish Skill ⭐
 **Status:** ✅ Implemented
-**Location:** `.claude/skills/gastrobrain-ui-polish/`
+**Location:** `.claude/skills/receptmeneger-ui-polish/`
 **Triggers:** "Polish the UI for...", "Help me style...", "This feels unfinished visually"
 
 **Purpose:**
@@ -182,7 +182,7 @@ Use **Issue Analysis** (Tier 1) for Phase 1, then these skills for Phase 2.
 
 #### Refactoring Skill ⭐
 **Status:** ✅ Implemented
-**Location:** `.claude/skills/gastrobrain-refactoring/`
+**Location:** `.claude/skills/receptmeneger-refactoring/`
 **Triggers:** "Refactor according to #XXX", "extract service", "consolidate code", file in refactoring-backlog.md
 
 **Purpose:**
@@ -206,7 +206,7 @@ Use **Issue Analysis** (Tier 1) for Phase 1, then these skills for Phase 2.
 
 #### Code Review Skill ⭐
 **Status:** ✅ Implemented
-**Location:** `.claude/skills/gastrobrain-code-review/`
+**Location:** `.claude/skills/receptmeneger-code-review/`
 **Triggers:** "Review #XXX", "pre-merge check for #XXX", "ready to merge #XXX"
 
 **Purpose:**
@@ -220,7 +220,7 @@ Use **Issue Analysis** (Tier 1) for Phase 1, then these skills for Phase 2.
 
 #### QA Manager Skill ⭐
 **Status:** ✅ Implemented
-**Location:** `.claude/skills/gastrobrain-qa-manager/`
+**Location:** `.claude/skills/receptmeneger-qa-manager/`
 **Triggers:** "Run the test suite", "investigate failing tests", "test health report", "fix test failures"
 
 **Purpose:**
@@ -234,7 +234,7 @@ Use **Issue Analysis** (Tier 1) for Phase 1, then these skills for Phase 2.
 
 #### Documentation Master Skill ⭐
 **Status:** ✅ Implemented
-**Location:** `.claude/skills/gastrobrain-documentation-master/`
+**Location:** `.claude/skills/receptmeneger-documentation-master/`
 **Triggers:** "Update documentation for #XXX", "audit project documentation", "document the [component]"
 
 **Purpose:**
@@ -242,7 +242,7 @@ Use **Issue Analysis** (Tier 1) for Phase 1, then these skills for Phase 2.
 - Full documentation audits (6-checkpoint process)
 - Specific documentation tasks — architecture docs, ADRs, feature guides (3-checkpoint process)
 - Maintains accuracy of docs against actual codebase state
-- Follows Gastrobrain documentation standards and templates
+- Follows ReceptMeneger documentation standards and templates
 
 ---
 
@@ -262,28 +262,28 @@ Use **Issue Analysis** (Tier 1) for Phase 1, then these skills for Phase 2.
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    ISSUE CREATION (Optional)                 │
-│  /gastrobrain-issue-creator                                  │
+│  /receptmeneger-issue-creator                                  │
 │  Input: User report, bug discovery, feature idea             │
 │  Output: Well-structured GitHub issue with estimate          │
 └─────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────┐
 │                    SPRINT PLANNING                           │
-│  /gastrobrain-sprint-planner                                 │
+│  /receptmeneger-sprint-planner                                 │
 │  Input: Open issues from Project #3                          │
 │  Output: Sprint plan with ~30 pts, sequencing               │
 └─────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────┐
 │                    ISSUE PLANNING                            │
-│  /gastrobrain-issue-roadmap                                  │
+│  /receptmeneger-issue-roadmap                                  │
 │  Input: Issue #XXX from sprint plan                          │
 │  Output: 4-phase roadmap with checklists                     │
 └─────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────┐
 │              PHASE 1: ANALYSIS & UNDERSTANDING               │
-│  /gastrobrain-issue-analysis                                 │
+│  /receptmeneger-issue-analysis                                 │
 │  Input: Issue #XXX + roadmap                                 │
 │  Output: Technical analysis, risk identification, approach   │
 └─────────────────────────────────────────────────────────────┘
@@ -292,38 +292,38 @@ Use **Issue Analysis** (Tier 1) for Phase 1, then these skills for Phase 2.
 │                 PHASE 2: IMPLEMENTATION                      │
 │                                                               │
 │  [UX Design needed?]                                         │
-│  → /gastrobrain-ux-design (wireframes, flows, IA)            │
+│  → /receptmeneger-ux-design (wireframes, flows, IA)            │
 │                                                               │
 │  [Database changes?]                                         │
-│  → /gastrobrain-database-migration (6 checkpoints)          │
+│  → /receptmeneger-database-migration (6 checkpoints)          │
 │                                                               │
 │  [UI or service changes?]                                    │
-│  → /gastrobrain-senior-dev-implementation                    │
+│  → /receptmeneger-senior-dev-implementation                    │
 │                                                               │
 │  [Visual polish?]                                            │
-│  → /gastrobrain-ui-polish                                    │
+│  → /receptmeneger-ui-polish                                    │
 │                                                               │
 │  [Refactoring?]                                              │
-│  → /gastrobrain-refactoring                                  │
+│  → /receptmeneger-refactoring                                  │
 └─────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────┐
 │                   PHASE 3: TESTING                           │
-│  /gastrobrain-testing-implementation                         │
+│  /receptmeneger-testing-implementation                         │
 │  Process: One test at a time with verification               │
 │  Output: Complete test suite for issue                       │
 └─────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────┐
 │                  PHASE 4: DOCUMENTATION                      │
-│  /gastrobrain-documentation-master                           │
+│  /receptmeneger-documentation-master                           │
 │  Input: Completed issue #XXX                                 │
 │  Output: Docs updated, code comments added                   │
 └─────────────────────────────────────────────────────────────┘
                               ↓
 ┌─────────────────────────────────────────────────────────────┐
 │                    PRE-MERGE REVIEW                          │
-│  /gastrobrain-code-review                                    │
+│  /receptmeneger-code-review                                    │
 │  Process: 7-checkpoint systematic review                     │
 │  Output: Merge approval + instructions                       │
 └─────────────────────────────────────────────────────────────┘
@@ -341,20 +341,20 @@ Use **Issue Analysis** (Tier 1) for Phase 1, then these skills for Phase 2.
 
 | Skill | Trigger | Key Output |
 |-------|---------|-----------|
-| `/gastrobrain-issue-creator` | New bug / feature / debt | Structured GitHub issue + CLI commands |
-| `/gastrobrain-sprint-planner` | Sprint start or retro | Sprint plan / retrospective + diary entry |
-| `/gastrobrain-product-strategy` | "Review roadmap" / "prioritize" | Strategic assessment, health report |
-| `/gastrobrain-issue-roadmap` | "I want to deal with #XXX" | 4-phase roadmap markdown |
-| `/gastrobrain-issue-analysis` | Phase 1 of roadmap | Technical analysis, approach design |
-| `/gastrobrain-ux-design` | UX-heavy issues | Wireframes, user flows, IA |
-| `/gastrobrain-database-migration` | Schema changes | Safe migration with rollback |
-| `/gastrobrain-senior-dev-implementation` | Phase 2 implementation | Code changes (UI, services, repos) |
-| `/gastrobrain-ui-polish` | Visual refinement | Consistent styling, design token updates |
-| `/gastrobrain-refactoring` | Code health / god classes | Focused, tested refactoring |
-| `/gastrobrain-testing-implementation` | Phase 3 testing | Test suite (one test at a time) |
-| `/gastrobrain-documentation-master` | Post-implementation / audit | Updated docs, code comments |
-| `/gastrobrain-code-review` | Pre-merge | Merge approval + instructions |
-| `/gastrobrain-qa-manager` | Test failures / suite health | Debug reports, health reports |
+| `/receptmeneger-issue-creator` | New bug / feature / debt | Structured GitHub issue + CLI commands |
+| `/receptmeneger-sprint-planner` | Sprint start or retro | Sprint plan / retrospective + diary entry |
+| `/receptmeneger-product-strategy` | "Review roadmap" / "prioritize" | Strategic assessment, health report |
+| `/receptmeneger-issue-roadmap` | "I want to deal with #XXX" | 4-phase roadmap markdown |
+| `/receptmeneger-issue-analysis` | Phase 1 of roadmap | Technical analysis, approach design |
+| `/receptmeneger-ux-design` | UX-heavy issues | Wireframes, user flows, IA |
+| `/receptmeneger-database-migration` | Schema changes | Safe migration with rollback |
+| `/receptmeneger-senior-dev-implementation` | Phase 2 implementation | Code changes (UI, services, repos) |
+| `/receptmeneger-ui-polish` | Visual refinement | Consistent styling, design token updates |
+| `/receptmeneger-refactoring` | Code health / god classes | Focused, tested refactoring |
+| `/receptmeneger-testing-implementation` | Phase 3 testing | Test suite (one test at a time) |
+| `/receptmeneger-documentation-master` | Post-implementation / audit | Updated docs, code comments |
+| `/receptmeneger-code-review` | Pre-merge | Merge approval + instructions |
+| `/receptmeneger-qa-manager` | Test failures / suite health | Debug reports, health reports |
 
 ---
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:uuid/uuid.dart';
 import '../core/di/service_provider.dart';
-import '../core/errors/gastrobrain_exceptions.dart';
+import '../core/errors/receptmeneger_exceptions.dart';
 import '../core/repositories/tag_repository.dart';
 import '../core/services/ingredient_matching_service.dart';
 import '../core/services/snackbar_service.dart';
@@ -149,7 +149,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
           _isLoadingIngredients = false;
         });
       }
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       if (mounted) {
         setState(() {
           _ingredientsError =
@@ -177,7 +177,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
 
   void _addIngredients() {
     final l10n = AppLocalizations.of(context)!;
-    showGastrobrainBottomSheet<void>(
+    showReceptMenegerBottomSheet<void>(
       context: context,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
@@ -339,7 +339,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
             _hasChanges = true;
           });
         }
-      } on GastrobrainException catch (e) {
+      } on ReceptMenegerException catch (e) {
         if (mounted) {
           SnackbarService.showError(context, e.message);
         }
@@ -371,7 +371,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
   }
 
   Future<void> _editInstructions() async {
-    final result = await showGastrobrainBottomSheet<String>(
+    final result = await showReceptMenegerBottomSheet<String>(
       context: context,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
@@ -402,7 +402,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
           AppLocalizations.of(context)!.instructionsUpdatedSuccessfully,
         );
       }
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       if (mounted) {
         SnackbarService.showError(context, e.message);
       }
@@ -417,7 +417,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
   }
 
   Future<void> _editRecipeInfo() async {
-    final updated = await showGastrobrainBottomSheet<Recipe>(
+    final updated = await showReceptMenegerBottomSheet<Recipe>(
       context: context,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
@@ -438,7 +438,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
           AppLocalizations.of(context)!.recipeSavedSuccessfully,
         );
       }
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       if (mounted) SnackbarService.showError(context, e.message);
     } catch (_) {
       if (mounted) {
@@ -449,7 +449,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
   }
 
   Future<void> _editTags() async {
-    final selectedIds = await showGastrobrainBottomSheet<List<String>>(
+    final selectedIds = await showReceptMenegerBottomSheet<List<String>>(
       context: context,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
@@ -471,7 +471,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
           AppLocalizations.of(context)!.tagsUpdatedSuccessfully,
         );
       }
-    } on GastrobrainException catch (e) {
+    } on ReceptMenegerException catch (e) {
       if (mounted) SnackbarService.showError(context, e.message);
     } catch (_) {
       if (mounted) {
@@ -525,7 +525,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen>
           );
           Navigator.pop(context, true);
         }
-      } on GastrobrainException catch (e) {
+      } on ReceptMenegerException catch (e) {
         if (mounted) {
           SnackbarService.showError(context, e.message);
         }

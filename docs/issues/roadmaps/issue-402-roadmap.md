@@ -189,7 +189,7 @@ column is actually exercised by the guardrail.
   recipes, ingredients, meal_plans w/ items, meals w/ history — per
   [[feedback_import_test_data]]
 - [x] `test/fixtures/backups/real_device_backup_v1.json` — sanitized excerpt
-  of Rodrigo's real export (`gastrobrain_backup_2026-06-15_124709.json`,
+  of Rodrigo's real export (`receptmeneger_backup_2026-06-15_124709.json`,
   217 recipes / 266 ingredients / 27 meal plans / 111 meals in full). Trimmed
   to a relationally-complete subset: 8 recipes (all `recipe_ingredients`
   preserved), 41 ingredients, 1 meal plan with 4 items (incl. a multi-recipe

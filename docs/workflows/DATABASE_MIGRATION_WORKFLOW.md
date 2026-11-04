@@ -1,12 +1,12 @@
 # Database Migration Workflow
 
-This document captures the rules, conventions, and checklists for Gastrobrain's database migration system. It was written after the 0.2.6 emergency release (issue #372) to prevent the same class of failure from recurring.
+This document captures the rules, conventions, and checklists for ReceptMeneger's database migration system. It was written after the 0.2.6 emergency release (issue #372) to prevent the same class of failure from recurring.
 
 ---
 
 ## Migration System Overview
 
-Gastrobrain uses a custom `MigrationRunner` backed by a `schema_migrations` table with four columns:
+ReceptMeneger uses a custom `MigrationRunner` backed by a `schema_migrations` table with four columns:
 
 ```
 version INTEGER PRIMARY KEY
