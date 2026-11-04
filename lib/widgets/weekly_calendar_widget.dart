@@ -1,0 +1,679 @@
+// lib/widgets/weekly_calendar_widget.dart
+
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import '../models/meal_plan.dart';
+import '../models/meal_plan_item.dart';
+import '../models/recipe.dart';
+import '../models/time_context.dart';
+import '../core/di/service_provider.dart';
+import '../core/theme/design_tokens.dart';
+import '../database/database_helper.dart';
+import '../l10n/app_localizations.dart';
+
+class WeeklyCalendarWidget extends StatefulWidget {
+  final DateTime weekStartDate;
+  final MealPlan? mealPlan;
+  final TimeContext timeContext;
+  final Function(DateTime date, String mealType)? onSlotTap;
+  final Function(DateTime date, String mealType, String recipeId)? onMealTap;
+  final Function(DateTime selectedDate, int selectedDayIndex)? onDaySelected;
+  final ScrollController? scrollController;
+  final DatabaseHelper? databaseHelper;
+  /// Map of ingredient id → name for resolving DB-linked simple sides.
+  final Map<String, String> ingredientNames;
+
+  const WeeklyCalendarWidget({
+    super.key,
+    required this.weekStartDate,
+    this.mealPlan,
+    required this.timeContext,
+    this.onSlotTap,
+    this.onMealTap,
+    this.onDaySelected,
+    this.scrollController,
+    this.databaseHelper,
+    this.ingredientNames = const {},
+  });
+
+  @override
+  State<WeeklyCalendarWidget> createState() => _WeeklyCalendarWidgetState();
+}
+
+class _WeeklyCalendarWidgetState extends State<WeeklyCalendarWidget>
+    with SingleTickerProviderStateMixin {
+  /// Returns localized weekday names starting from Friday
+  List<String> _getLocalizedWeekdayNames(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return [
+      l10n.friday,
+      l10n.saturday,
+      l10n.sunday,
+      l10n.monday,
+      l10n.tuesday,
+      l10n.wednesday,
+      l10n.thursday,
+    ];
+  }
+
+  /// Returns localized meal type name
+  String _getLocalizedMealType(BuildContext context, String mealType) {
+    final l10n = AppLocalizations.of(context)!;
+    return mealType == MealPlanItem.lunch ? l10n.lunch : l10n.dinner;
+  }
+
+  /// Returns English day name for key generation (not localized)
+  /// Index 0 = Friday, 1 = Saturday, ..., 6 = Thursday
+  String _getEnglishDayName(int dayIndex) {
+    const days = [
+      'friday',
+      'saturday',
+      'sunday',
+      'monday',
+      'tuesday',
+      'wednesday',
+      'thursday',
+    ];
+    return days[dayIndex];
+  }
+
+  /// Generates a consistent key for meal plan slots
+  /// Pattern: meal_plan_{day}_{mealtype}_slot
+  Key _generateSlotKey(int dayIndex, String mealType) {
+    final day = _getEnglishDayName(dayIndex);
+    return Key('meal_plan_${day}_${mealType}_slot');
+  }
+
+  late List<DateTime> _weekDates;
+  late DatabaseHelper _dbHelper;
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+
+  // Cache for recipe details
+  final Map<String, Recipe> _recipes = {};
+
+  int _selectedDayIndex = 0; // Default to first day (Friday)
+
+  @override
+  void initState() {
+    super.initState();
+    _dbHelper = widget.databaseHelper ?? ServiceProvider.database.dbHelper;
+
+    // Initialize animation controller
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+
+    _initializeWeekDates();
+    _prefetchRecipes();
+
+    // Start animation
+    _animationController.forward();
+  }
+
+  @override
+  void didUpdateWidget(WeeklyCalendarWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.weekStartDate != widget.weekStartDate ||
+        oldWidget.mealPlan != widget.mealPlan ||
+        oldWidget.timeContext != widget.timeContext) {
+      _initializeWeekDates();
+      _prefetchRecipes();
+
+      // Trigger fade animation on context change
+      if (oldWidget.timeContext != widget.timeContext) {
+        _animationController.reset();
+        _animationController.forward();
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _initializeWeekDates() {
+    // Ensure we start with a Friday
+    // Calculate days to subtract to get to the previous Friday
+    // If today is Friday (weekday 5), subtract 0; otherwise calculate offset
+    final daysToSubtract = widget.weekStartDate.weekday < 5
+        ? widget.weekStartDate.weekday + 2 // Go back to previous Friday
+        : widget.weekStartDate.weekday - 5; // Friday is day 5
+
+    final friday = DateTime(
+      widget.weekStartDate.year,
+      widget.weekStartDate.month,
+      widget.weekStartDate.day - daysToSubtract,
+    );
+
+    _weekDates = List.generate(
+      7,
+      (index) => friday.add(Duration(days: index)),
+    );
+  }
+
+  Future<void> _prefetchRecipes() async {
+    if (widget.mealPlan == null || widget.mealPlan!.items.isEmpty) {
+      return;
+    }
+
+    // Get unique recipe IDs from all mealPlanItemRecipes across all items
+    final recipeIds = <String>{};
+
+    for (final item in widget.mealPlan!.items) {
+      if (item.mealPlanItemRecipes != null) {
+        for (final recipe in item.mealPlanItemRecipes!) {
+          recipeIds.add(recipe.recipeId);
+        }
+      }
+    }
+
+    // Fetch recipe details for each ID
+    for (final id in recipeIds) {
+      if (!_recipes.containsKey(id)) {
+        final recipe = await _dbHelper.getRecipe(id);
+        if (recipe != null && mounted) {
+          setState(() {
+            _recipes[id] = recipe;
+          });
+        }
+      }
+    }
+  }
+
+  bool _hasPrimaryRecipe(MealPlanItem? plannedMeal) {
+    return plannedMeal != null &&
+        plannedMeal.mealPlanItemRecipes != null &&
+        plannedMeal.mealPlanItemRecipes!.isNotEmpty;
+  }
+
+  String? _getPrimaryRecipeId(MealPlanItem? plannedMeal) {
+    if (_hasPrimaryRecipe(plannedMeal)) {
+      return plannedMeal!.mealPlanItemRecipes!.first.recipeId;
+    }
+    return null;
+  }
+
+  void _handleTap(DateTime date, String mealType, MealPlanItem? plannedMeal,
+      bool hasPlannedMeal) {
+    final hasPrimaryRecipe = _hasPrimaryRecipe(plannedMeal);
+
+    if (hasPlannedMeal && widget.onMealTap != null && hasPrimaryRecipe) {
+      // Call onMealTap with the primary recipe ID
+      final primaryRecipeId = _getPrimaryRecipeId(plannedMeal);
+      widget.onMealTap!(date, mealType, primaryRecipeId!);
+    } else if (widget.onSlotTap != null) {
+      // No meal or no recipes, call onSlotTap to add a meal
+      widget.onSlotTap!(date, mealType);
+    }
+  }
+
+  String _formatDate(DateTime date) {
+    final locale = Localizations.localeOf(context).toString();
+    return DateFormat.yMd(locale).format(date);
+  }
+
+  /// Gets the context-specific background color (subtle styling)
+  Color _getContextBackgroundColor(BuildContext context) {
+    switch (widget.timeContext) {
+      case TimeContext.past:
+        return DesignTokens.textSecondary
+            .withValues(alpha: 0.1); // Very subtle gray background
+      case TimeContext.current:
+        return Colors.transparent; // No special background
+      case TimeContext.future:
+        return Theme.of(context)
+            .colorScheme
+            .primary
+            .withAlpha(15); // Very subtle blue background
+    }
+  }
+
+  /// Apply context styling ONLY to card backgrounds, not text or icons
+  Widget _buildContextualCard({
+    required Widget child,
+    Color? baseColor,
+    bool isSelected = false,
+    bool isToday = false,
+  }) {
+    final backgroundColor = baseColor ?? Theme.of(context).cardColor;
+
+    // Apply context background as an overlay, but keep original colors readable
+    final contextBackground = _getContextBackgroundColor(context);
+    final finalBackgroundColor = contextBackground == Colors.transparent
+        ? backgroundColor
+        : Color.alphaBlend(contextBackground, backgroundColor);
+
+    return Card(
+      color: finalBackgroundColor,
+      elevation: isSelected || isToday ? 2 : 1,
+      child: child,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _fadeAnimation,
+      child: _buildContent(context),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
+    // Check screen width to determine layout
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
+    // If in landscape on a smaller device, use a more compact layout
+    if (isLandscape && screenWidth < 960) {
+      // Use a more horizontal layout with smaller meal cards
+      return GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, // Two columns
+          childAspectRatio: 2.5, // Wider than tall
+          crossAxisSpacing: DesignTokens.spacingSm,
+          mainAxisSpacing: DesignTokens.spacingSm,
+        ),
+        itemCount: 14, // 7 days * 2 meal types
+        itemBuilder: (context, index) {
+          final dayIndex = index ~/ 2; // Integer division
+          final isLunch = index % 2 == 0;
+          final date = _weekDates[dayIndex];
+
+          return _buildCompactMealTile(date,
+              isLunch ? MealPlanItem.lunch : MealPlanItem.dinner, dayIndex);
+        },
+        padding: const EdgeInsets.all(DesignTokens.spacingSm),
+      );
+    }
+
+    // For wider screens (tablets/desktop), use a side-by-side layout
+    if (screenWidth > 600) {
+      return Row(
+        children: [
+          // Left side: weekday selection
+          SizedBox(
+            width: 120, // Fixed width for day selector
+            child: ListView.builder(
+              controller: widget.scrollController, // Use it here
+              itemCount: 7,
+              itemBuilder: (context, index) {
+                final date = _weekDates[index];
+                return _buildDaySelector(date, index);
+              },
+            ),
+          ),
+
+          // Right side: selected day's meals
+          Expanded(
+            child: _buildDaySection(
+                _weekDates[_selectedDayIndex], _selectedDayIndex),
+          ),
+        ],
+      );
+    }
+    // For narrower screens (phones), keep the current vertical layout
+    else {
+      return ListView.builder(
+        controller: widget.scrollController, // Use it here
+        itemCount: 7,
+        itemBuilder: (context, index) {
+          final date = _weekDates[index];
+          return _buildDaySection(date, index);
+        },
+      );
+    }
+  }
+
+  Widget _buildCompactMealTile(DateTime date, String mealType, int dayIndex) {
+    final MealPlanItem? plannedMeal =
+        widget.mealPlan?.getItemsForDateAndMealType(date, mealType).firstOrNull;
+
+    final primaryRecipeId = _getPrimaryRecipeId(plannedMeal);
+    final Recipe? recipe =
+        primaryRecipeId != null ? _recipes[primaryRecipeId] : null;
+
+    final bool hasPlannedMeal = plannedMeal != null && recipe != null;
+
+    return _buildContextualCard(
+      child: InkWell(
+        key: _generateSlotKey(dayIndex, mealType),
+        onTap: () => _handleTap(date, mealType, plannedMeal, hasPlannedMeal),
+        child: Padding(
+          padding: const EdgeInsets.all(DesignTokens.spacingSm),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '${_getLocalizedWeekdayNames(context)[dayIndex]} ${_getLocalizedMealType(context, mealType)}',
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      fontWeight: DesignTokens.weightBold,
+                    ),
+              ),
+              hasPlannedMeal
+                  ? Text(
+                      recipe.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    )
+                  : Text(
+                      AppLocalizations.of(context)!.addMeal,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontStyle: FontStyle.italic,
+                            color: DesignTokens.textSecondary,
+                          ),
+                    ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDaySelector(DateTime date, int dayIndex) {
+    final today = DateTime.now();
+    final isToday = date.year == today.year &&
+        date.month == today.month &&
+        date.day == today.day;
+    final isSelected = dayIndex == _selectedDayIndex;
+
+    final baseColor = isSelected
+        ? Theme.of(context).colorScheme.primary.withAlpha(64)
+        : (isToday
+            ? Theme.of(context).colorScheme.primaryContainer.withAlpha(64)
+            : Theme.of(context).cardColor);
+
+    return _buildContextualCard(
+      baseColor: baseColor,
+      isSelected: isSelected,
+      isToday: isToday,
+      child: InkWell(
+        onTap: () {
+          setState(() {
+            _selectedDayIndex = dayIndex;
+          });
+          if (widget.onDaySelected != null) {
+            widget.onDaySelected!(_weekDates[dayIndex], dayIndex);
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(DesignTokens.spacingMd),
+          child: Column(
+            children: [
+              Text(
+                _getLocalizedWeekdayNames(context)[dayIndex],
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      fontWeight: DesignTokens.weightBold,
+                      color: isSelected
+                          ? Theme.of(context).colorScheme.primary
+                          : (isToday
+                              ? Theme.of(context).colorScheme.primary
+                              : Theme.of(context).textTheme.bodyMedium?.color),
+                    ),
+              ),
+              Text(
+                date.day.toString(),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: isSelected
+                          ? DesignTokens.weightBold
+                          : DesignTokens.weightRegular,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                    ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDaySection(DateTime date, int dayIndex) {
+    final today = DateTime.now();
+    final isToday = date.year == today.year &&
+        date.month == today.month &&
+        date.day == today.day;
+
+    final baseColor = isToday
+        ? Theme.of(context).colorScheme.primaryContainer.withAlpha(64)
+        : Theme.of(context).cardColor;
+
+    return _buildContextualCard(
+      baseColor: baseColor,
+      isToday: isToday,
+      child: Padding(
+        padding: const EdgeInsets.all(DesignTokens.spacingSm),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Day header
+            Row(
+              children: [
+                Text(
+                  _getLocalizedWeekdayNames(context)[dayIndex],
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: DesignTokens.weightBold,
+                        color: isToday
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).textTheme.bodyMedium?.color,
+                      ),
+                ),
+                const SizedBox(width: DesignTokens.spacingSm),
+                Text(
+                  _formatDate(date),
+                  style: TextStyle(
+                    color: isToday
+                        ? Theme.of(context).colorScheme.primary
+                        : DesignTokens.textSecondary,
+                  ),
+                ),
+                if (isToday) ...[
+                  const SizedBox(width: DesignTokens.spacingSm),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: DesignTokens.spacingSm,
+                        vertical: DesignTokens.spacingXXs),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.circular(
+                          DesignTokens.borderRadiusMedium),
+                    ),
+                    child: Text(
+                      AppLocalizations.of(context)!.today,
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+
+            const Divider(),
+
+            // Lunch section
+            _buildMealSection(date, MealPlanItem.lunch, dayIndex),
+
+            const SizedBox(height: DesignTokens.spacingSm),
+
+            // Dinner section
+            _buildMealSection(date, MealPlanItem.dinner, dayIndex),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Returns a comma-separated list of side dish names for display.
+  /// Recipe-based sides (isPrimaryDish == false) come first, then
+  /// ingredient-based simple sides.
+  String _buildSideNames(MealPlanItem plannedMeal) {
+    final parts = <String>[];
+
+    if (plannedMeal.mealPlanItemRecipes != null) {
+      for (final r in plannedMeal.mealPlanItemRecipes!
+          .where((r) => !r.isPrimaryDish)) {
+        final name = _recipes[r.recipeId]?.name;
+        if (name != null) parts.add(name);
+      }
+    }
+
+    if (plannedMeal.mealPlanItemIngredients != null) {
+      for (final s in plannedMeal.mealPlanItemIngredients!) {
+        if (s.ingredientId != null) {
+          parts.add(
+            widget.ingredientNames[s.ingredientId] ?? s.customName ?? '?',
+          );
+        } else {
+          parts.add(s.customName ?? '?');
+        }
+      }
+    }
+
+    return parts.join(', ');
+  }
+
+  Widget _buildMealSection(DateTime date, String mealType, int dayIndex) {
+    final MealPlanItem? plannedMeal =
+        widget.mealPlan?.getItemsForDateAndMealType(date, mealType).firstOrNull;
+
+    final primaryRecipeId = _getPrimaryRecipeId(plannedMeal);
+    final Recipe? recipe =
+        primaryRecipeId != null ? _recipes[primaryRecipeId] : null;
+
+    final bool hasPlannedMeal = plannedMeal != null && recipe != null;
+    final bool hasBeenCooked = plannedMeal?.hasBeenCooked ?? false;
+
+    // Status-based color scheme: colors reflect meal state, not meal type
+    final Color backgroundColor = !hasPlannedMeal
+        ? DesignTokens.mealEmpty
+        : hasBeenCooked
+            ? DesignTokens.mealCooked
+            : DesignTokens.mealPlanned;
+
+    final Color borderColor = !hasPlannedMeal
+        ? DesignTokens.mealEmptyBorder
+        : hasBeenCooked
+            ? DesignTokens.mealCookedBorder
+            : DesignTokens.mealPlannedBorder;
+
+    final screenWidth = MediaQuery.of(context).size.width;
+    final EdgeInsets contentPadding = screenWidth < 360
+        ? const EdgeInsets.all(DesignTokens.spacingSm)
+        : const EdgeInsets.all(DesignTokens.spacingMd);
+
+    // Meal type label (subtle, consistent across both states)
+    final Widget mealTypeLabel = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          mealType == MealPlanItem.lunch
+              ? Icons.wb_sunny_outlined
+              : Icons.nightlight_outlined,
+          size: 14,
+          color: DesignTokens.mealBadgeContent,
+        ),
+        const SizedBox(width: DesignTokens.spacingXXs),
+        Text(
+          mealType == MealPlanItem.lunch
+              ? AppLocalizations.of(context)!.lunch
+              : AppLocalizations.of(context)!.dinner,
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: DesignTokens.mealBadgeContent,
+              ),
+        ),
+      ],
+    );
+
+    final sideLine = hasPlannedMeal ? _buildSideNames(plannedMeal) : '';
+
+    return InkWell(
+      key: _generateSlotKey(dayIndex, mealType),
+      onTap: () => _handleTap(date, mealType, plannedMeal, hasPlannedMeal),
+      borderRadius: BorderRadius.circular(DesignTokens.borderRadiusSmall),
+      child: Container(
+        padding: contentPadding,
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          border: Border.all(color: borderColor),
+          borderRadius: BorderRadius.circular(DesignTokens.borderRadiusSmall),
+        ),
+        child: hasPlannedMeal
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Meal type label + cooked checkmark
+                  Row(
+                    children: [
+                      mealTypeLabel,
+                      const Spacer(),
+                      if (hasBeenCooked)
+                        Tooltip(
+                          message: AppLocalizations.of(context)!.cooked,
+                          child: const Icon(
+                            Icons.check_circle,
+                            color: DesignTokens.mealCookedIcon,
+                            size: 20,
+                          ),
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: DesignTokens.spacingXs),
+                  // Recipe name (full width, max 2 lines)
+                  Text(
+                    recipe.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: DesignTokens.weightBold,
+                        ),
+                  ),
+                  // Side dish names: recipe sides first, then simple sides
+                  if (sideLine.isNotEmpty) ...[
+                    const SizedBox(height: DesignTokens.spacingXs),
+                    Text(
+                      sideLine,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: DesignTokens.mealBadgeContent,
+                            fontStyle: FontStyle.italic,
+                          ),
+                    ),
+                  ],
+                ],
+              )
+            : Row(
+                children: [
+                  mealTypeLabel,
+                  const SizedBox(width: DesignTokens.spacingMd),
+                  const Icon(Icons.add,
+                      size: 18, color: DesignTokens.mealBadgeContent),
+                  const SizedBox(width: DesignTokens.spacingXs),
+                  Expanded(
+                    child: Text(
+                      AppLocalizations.of(context)!.addMeal,
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                            color: DesignTokens.mealBadgeContent,
+                          ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+      ),
+    );
+  }
+}

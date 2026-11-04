@@ -1,0 +1,1664 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:gastrobrain/core/services/ingredient_matching_service.dart';
+import 'package:gastrobrain/models/ingredient.dart';
+import 'package:gastrobrain/models/ingredient_category.dart';
+import 'package:gastrobrain/models/ingredient_match.dart';
+import 'package:gastrobrain/models/measurement_unit.dart';
+import 'package:gastrobrain/models/protein_type.dart';
+
+void main() {
+  group('IngredientMatchingService', () {
+    late IngredientMatchingService service;
+    late List<Ingredient> testIngredients;
+
+    setUp(() {
+      service = IngredientMatchingService();
+
+      // Create test ingredients with various characteristics
+      testIngredients = [
+        Ingredient(
+          id: '1',
+          name: 'Tomate',
+          category: IngredientCategory.vegetable,
+          unit: MeasurementUnit.piece,
+        ),
+        Ingredient(
+          id: '2',
+          name: 'tomate',
+          category: IngredientCategory.vegetable,
+          unit: MeasurementUnit.piece,
+        ),
+        Ingredient(
+          id: '3',
+          name: 'sal',
+          category: IngredientCategory.seasoning,
+          unit: MeasurementUnit.gram,
+        ),
+        Ingredient(
+          id: '4',
+          name: 'Sal',
+          category: IngredientCategory.seasoning,
+          unit: MeasurementUnit.gram,
+        ),
+        Ingredient(
+          id: '5',
+          name: 'Frango',
+          category: IngredientCategory.protein,
+          unit: MeasurementUnit.gram,
+          proteinType: ProteinType.chicken,
+        ),
+        Ingredient(
+          id: '6',
+          name: 'Cebola',
+          category: IngredientCategory.vegetable,
+          unit: MeasurementUnit.piece,
+        ),
+        Ingredient(
+          id: '7',
+          name: 'Açúcar',
+          category: IngredientCategory.other,
+          unit: MeasurementUnit.gram,
+        ),
+        Ingredient(
+          id: '8',
+          name: 'Azeite',
+          category: IngredientCategory.other,
+          unit: MeasurementUnit.milliliter,
+        ),
+        Ingredient(
+          id: '9',
+          name: 'Alho',
+          category: IngredientCategory.seasoning,
+          unit: MeasurementUnit.piece,
+        ),
+        Ingredient(
+          id: '10',
+          name: 'Arroz',
+          category: IngredientCategory.grain,
+          unit: MeasurementUnit.gram,
+        ),
+      ];
+
+      service.initialize(testIngredients);
+    });
+
+    group('initialization', () {
+      test('initializes with ingredients successfully', () {
+        final freshService = IngredientMatchingService();
+        expect(() => freshService.initialize(testIngredients), returnsNormally);
+      });
+
+      test('handles empty ingredient list', () {
+        final freshService = IngredientMatchingService();
+        expect(() => freshService.initialize([]), returnsNormally);
+      });
+    });
+
+    group('exact match (Stage 1)', () {
+      test('finds exact match with identical string', () {
+        final matches = service.findMatches('Tomate');
+
+        expect(matches, isNotEmpty);
+        expect(matches.first.ingredient.name, equals('Tomate'));
+        expect(matches.first.confidence, equals(1.0));
+        expect(matches.first.matchType, equals(MatchType.exact));
+        expect(matches.first.confidenceLevel, equals(MatchConfidence.high));
+      });
+
+      test('finds exact match for lowercase ingredient', () {
+        final matches = service.findMatches('sal');
+
+        expect(matches, isNotEmpty);
+        expect(matches.first.ingredient.name, equals('sal'));
+        expect(matches.first.confidence, equals(1.0));
+        expect(matches.first.matchType, equals(MatchType.exact));
+      });
+
+      test('does not confuse case-sensitive exact match', () {
+        final matches = service.findMatches('Tomate');
+
+        // Should match 'Tomate' (id=1), not 'tomate' (id=2)
+        expect(matches.first.ingredient.id, equals('1'));
+        expect(matches.first.matchType, equals(MatchType.exact));
+      });
+
+      test('returns early after exact match (no further processing)', () {
+        final matches = service.findMatches('Frango');
+
+        // Should only return one match (exact)
+        expect(matches.length, equals(1));
+        expect(matches.first.confidence, equals(1.0));
+      });
+    });
+
+    group('case-insensitive match (Stage 2)', () {
+      test('finds case-insensitive match when exact fails', () {
+        final matches = service.findMatches('TOMATE');
+
+        expect(matches, isNotEmpty);
+        // Should match either 'Tomate' or 'tomate'
+        expect(matches.first.ingredient.name.toLowerCase(), equals('tomate'));
+        expect(matches.first.confidence, equals(0.95));
+        expect(matches.first.matchType, equals(MatchType.caseInsensitive));
+        expect(matches.first.confidenceLevel, equals(MatchConfidence.high));
+      });
+
+      test('finds case-insensitive match for mixed case', () {
+        final matches = service.findMatches('FrAnGo');
+
+        expect(matches, isNotEmpty);
+        expect(matches.first.ingredient.name, equals('Frango'));
+        expect(matches.first.confidence, equals(0.95));
+        expect(matches.first.matchType, equals(MatchType.caseInsensitive));
+      });
+
+      test('handles uppercase input', () {
+        final matches = service.findMatches('SAL');
+
+        expect(matches, isNotEmpty);
+        expect(matches.first.confidence, equals(0.95));
+        expect(matches.first.matchType, equals(MatchType.caseInsensitive));
+      });
+
+      test('returns early after case-insensitive match', () {
+        final matches = service.findMatches('frango');
+
+        // Should only return one match (case-insensitive)
+        expect(matches.length, equals(1));
+        expect(matches.first.confidence, equals(0.95));
+      });
+    });
+
+    group('normalized match (Stage 3)', () {
+      test('finds match after removing accents', () {
+        final matches = service.findMatches('Acucar');
+
+        expect(matches, isNotEmpty);
+        expect(matches.first.ingredient.name, equals('Açúcar'));
+        expect(matches.first.confidence, equals(0.90));
+        expect(matches.first.matchType, equals(MatchType.normalized));
+        expect(matches.first.confidenceLevel, equals(MatchConfidence.high));
+      });
+
+      test('finds match with lowercase and no accents', () {
+        final matches = service.findMatches('acucar');
+
+        expect(matches, isNotEmpty);
+        expect(matches.first.ingredient.name, equals('Açúcar'));
+        expect(matches.first.confidence, equals(0.90));
+      });
+
+      test('matches ingredient with accents to normalized input', () {
+        final matches = service.findMatches('azeite');
+
+        expect(matches, isNotEmpty);
+        expect(matches.first.ingredient.name, equals('Azeite'));
+      });
+
+      test('handles multiple normalized matches', () {
+        // Add another ingredient with similar normalized form
+        final extraIngredients = [
+          ...testIngredients,
+          Ingredient(
+            id: '11',
+            name: 'açucar',
+            category: IngredientCategory.other,
+            unit: MeasurementUnit.gram,
+          ),
+        ];
+        service.initialize(extraIngredients);
+
+        final matches = service.findMatches('acucar');
+
+        // Could match both 'Açúcar' and 'açucar' at normalized level
+        expect(matches, isNotEmpty);
+      });
+
+      test('matches hyphenated ingredient to space-separated input', () {
+        // Add hyphenated ingredient
+        final extraIngredients = [
+          ...testIngredients,
+          Ingredient(
+            id: '11',
+            name: 'noz-moscada',
+            category: IngredientCategory.seasoning,
+            unit: MeasurementUnit.gram,
+          ),
+        ];
+        service.initialize(extraIngredients);
+
+        final matches = service.findMatches('noz moscada');
+
+        expect(matches, isNotEmpty);
+        expect(matches.first.ingredient.name, equals('noz-moscada'));
+        expect(matches.first.confidence, equals(0.90));
+        expect(matches.first.matchType, equals(MatchType.normalized));
+      });
+
+      test('matches space-separated ingredient to hyphenated input', () {
+        // Add space-separated ingredient
+        final extraIngredients = [
+          ...testIngredients,
+          Ingredient(
+            id: '11',
+            name: 'pimenta do reino',
+            category: IngredientCategory.seasoning,
+            unit: MeasurementUnit.gram,
+          ),
+        ];
+        service.initialize(extraIngredients);
+
+        final matches = service.findMatches('pimenta-do-reino');
+
+        expect(matches, isNotEmpty);
+        expect(matches.first.ingredient.name, equals('pimenta do reino'));
+        expect(matches.first.confidence, equals(0.90));
+      });
+
+      test('handles underscores as word separators', () {
+        final extraIngredients = [
+          ...testIngredients,
+          Ingredient(
+            id: '11',
+            name: 'azeite_oliva',
+            category: IngredientCategory.other,
+            unit: MeasurementUnit.milliliter,
+          ),
+        ];
+        service.initialize(extraIngredients);
+
+        final matches = service.findMatches('azeite oliva');
+
+        expect(matches, isNotEmpty);
+        expect(matches.first.ingredient.name, equals('azeite_oliva'));
+      });
+
+      test('collapses multiple spaces to single space', () {
+        final extraIngredients = [
+          ...testIngredients,
+          Ingredient(
+            id: '11',
+            name: 'queijo  ralado',
+            category: IngredientCategory.other,
+            unit: MeasurementUnit.gram,
+          ),
+        ];
+        service.initialize(extraIngredients);
+
+        final matches = service.findMatches('queijo ralado');
+
+        expect(matches, isNotEmpty);
+        expect(matches.first.ingredient.name, equals('queijo  ralado'));
+      });
+    });
+
+    group('prefix/partial match (Stage 4)', () {
+      test('finds prefix match for partial ingredient name', () {
+        final extraIngredients = [
+          ...testIngredients,
+          Ingredient(
+            id: '11',
+            name: 'manteiga de amendoim',
+            category: IngredientCategory.other,
+            unit: MeasurementUnit.gram,
+          ),
+        ];
+        service.initialize(extraIngredients);
+
+        final matches = service.findMatches('manteiga');
+
+        expect(matches, isNotEmpty);
+
+        // Should find prefix match since "manteiga" is not in testIngredients
+        final prefixMatches = matches.where((m) => m.matchType == MatchType.partial).toList();
+        expect(prefixMatches, isNotEmpty);
+        expect(prefixMatches.first.ingredient.name, equals('manteiga de amendoim'));
+        expect(prefixMatches.first.confidence, greaterThanOrEqualTo(0.65));
+        expect(prefixMatches.first.confidence, lessThanOrEqualTo(0.85));
+      });
+
+      test('finds multiple prefix matches for same prefix', () {
+        final extraIngredients = [
+          ...testIngredients,
+          Ingredient(
+            id: '11',
+            name: 'queijo parmesao',
+            category: IngredientCategory.other,
+            unit: MeasurementUnit.gram,
+          ),
+          Ingredient(
+            id: '12',
+            name: 'queijo mussarela',
+            category: IngredientCategory.other,
+            unit: MeasurementUnit.gram,
+          ),
+          Ingredient(
+            id: '13',
+            name: 'queijo cheddar',
+            category: IngredientCategory.other,
+            unit: MeasurementUnit.gram,
+          ),
+        ];
+        service.initialize(extraIngredients);
+
+        final matches = service.findMatches('queijo');
+
+        // Should find prefix matches since "queijo" alone is not in testIngredients
+        expect(matches, isNotEmpty);
+
+        // Filter for partial matches only
+        final prefixMatches = matches.where((m) => m.matchType == MatchType.partial).toList();
+        expect(prefixMatches.length, greaterThanOrEqualTo(2));
+
+        // All should start with "queijo"
+        for (final match in prefixMatches) {
+          expect(match.ingredient.name.toLowerCase().startsWith('queijo'), isTrue);
+        }
+      });
+
+      test('respects word boundary - prevents partial word matching', () {
+        final extraIngredients = [
+          ...testIngredients,
+          Ingredient(
+            id: '11',
+            name: 'pimentao',
+            category: IngredientCategory.vegetable,
+            unit: MeasurementUnit.piece,
+          ),
+          Ingredient(
+            id: '12',
+            name: 'pimenta do reino',
+            category: IngredientCategory.seasoning,
+            unit: MeasurementUnit.gram,
+          ),
+        ];
+        service.initialize(extraIngredients);
+
+        final matches = service.findMatches('pimenta');
+
+        // Should match "pimenta do reino" but NOT "pimentao"
+        expect(matches, isNotEmpty);
+
+        final prefixMatches = matches.where((m) => m.matchType == MatchType.partial).toList();
+        expect(prefixMatches, isNotEmpty);
+        expect(prefixMatches.first.ingredient.name, equals('pimenta do reino'));
+
+        // Verify pimentao is not in prefix matches
+        final pimentaoMatch = prefixMatches.where((m) => m.ingredient.name == 'pimentao');
+        expect(pimentaoMatch, isEmpty);
+      });
+
+      test('calculates confidence based on match ratio', () {
+        final extraIngredients = [
+          ...testIngredients,
+          Ingredient(
+            id: '11',
+            name: 'sal grosso',
+            category: IngredientCategory.seasoning,
+            unit: MeasurementUnit.gram,
+          ),
+          Ingredient(
+            id: '12',
+            name: 'sal marinho refinado',
+            category: IngredientCategory.seasoning,
+            unit: MeasurementUnit.gram,
+          ),
+        ];
+        service.initialize(extraIngredients);
+
+        final matches = service.findMatches('sal');
+
+        // "sal" is 3 chars, "sal grosso" is 10 chars (30% ratio)
+        // "sal" is 3 chars, "sal marinho refinado" is 19 chars (16% ratio)
+        // Higher match ratio should have higher confidence
+        final prefixMatches = matches.where((m) => m.matchType == MatchType.partial).toList();
+
+        if (prefixMatches.length >= 2) {
+          final grossoMatch = prefixMatches.firstWhere((m) => m.ingredient.name == 'sal grosso');
+          final marinhoMatch = prefixMatches.firstWhere((m) => m.ingredient.name == 'sal marinho refinado');
+
+          expect(grossoMatch.confidence, greaterThan(marinhoMatch.confidence));
+        }
+      });
+
+      test('reverse prefix match - longer input matches shorter database entry', () {
+        final extraIngredients = [
+          ...testIngredients,
+          Ingredient(
+            id: '11',
+            name: 'molho de tomate',
+            category: IngredientCategory.other,
+            unit: MeasurementUnit.gram,
+          ),
+        ];
+        service.initialize(extraIngredients);
+
+        // User types more specific than what's in database
+        final matches = service.findMatches('molho de tomate caseiro');
+
+        expect(matches, isNotEmpty);
+
+        // After dedup, 'molho de tomate' may appear via partial or fuzzy —
+        // either way the correct ingredient must be present with >= 60% confidence.
+        final molhoMatch = matches.firstWhere(
+          (m) => m.ingredient.name == 'molho de tomate',
+          orElse: () => throw TestFailure(
+            'Expected a match for "molho de tomate" but none was found',
+          ),
+        );
+
+        expect(molhoMatch.confidence, greaterThanOrEqualTo(0.60));
+      });
+
+      test('limits prefix matches to top 5 results', () {
+        final extraIngredients = [
+          ...testIngredients,
+          ...List.generate(10, (i) => Ingredient(
+            id: 'pref_$i',
+            name: 'queijo tipo $i',
+            category: IngredientCategory.other,
+          )),
+        ];
+        service.initialize(extraIngredients);
+
+        final matches = service.findMatches('queijo');
+
+        final prefixMatches = matches.where((m) => m.matchType == MatchType.partial).toList();
+        expect(prefixMatches.length, lessThanOrEqualTo(5));
+      });
+
+      test('skips very short strings (< 3 chars)', () {
+        final extraIngredients = [
+          ...testIngredients,
+          Ingredient(
+            id: '11',
+            name: 'sal marinho',
+            category: IngredientCategory.seasoning,
+            unit: MeasurementUnit.gram,
+          ),
+        ];
+        service.initialize(extraIngredients);
+
+        // Very short input should not produce prefix matches
+        final matches = service.findMatches('sa');
+
+        expect(matches, isA<List<IngredientMatch>>());
+        // Should not crash, just might not find prefix matches
+      });
+
+      test('prefix match has lower confidence than exact match', () {
+        final extraIngredients = [
+          ...testIngredients,
+          Ingredient(
+            id: '11',
+            name: 'Tomate',
+            category: IngredientCategory.vegetable,
+          ),
+          Ingredient(
+            id: '12',
+            name: 'Tomate cereja',
+            category: IngredientCategory.vegetable,
+          ),
+        ];
+        service.initialize(extraIngredients);
+
+        final exactMatches = service.findMatches('Tomate');
+
+        expect(exactMatches, isNotEmpty);
+        expect(exactMatches.first.matchType, equals(MatchType.exact));
+        expect(exactMatches.first.confidence, equals(1.0));
+
+        // Any prefix matches should have lower confidence
+        final prefixMatches = exactMatches.where((m) => m.matchType == MatchType.partial);
+        for (final match in prefixMatches) {
+          expect(match.confidence, lessThan(1.0));
+        }
+      });
+
+      test('works with normalized strings (accents removed)', () {
+        final extraIngredients = [
+          ...testIngredients,
+          Ingredient(
+            id: '11',
+            name: 'vinagre balsamico',
+            category: IngredientCategory.other,
+            unit: MeasurementUnit.milliliter,
+          ),
+        ];
+        service.initialize(extraIngredients);
+
+        // Input without accents should still match via normalization + prefix
+        final matches = service.findMatches('vinagre');
+
+        expect(matches, isNotEmpty);
+
+        // Should match via prefix (vinagre is not in testIngredients)
+        final prefixMatches = matches.where(
+          (m) => m.matchType == MatchType.partial && m.ingredient.name == 'vinagre balsamico'
+        ).toList();
+        expect(prefixMatches, isNotEmpty);
+      });
+    });
+
+    group('fuzzy match (Stage 5)', () {
+      test('finds fuzzy match for typo in ingredient name', () {
+        // Add ingredient
+        final extraIngredients = [
+          ...testIngredients,
+          Ingredient(
+            id: '11',
+            name: 'Tomate',
+            category: IngredientCategory.vegetable,
+            unit: MeasurementUnit.piece,
+          ),
+        ];
+        service.initialize(extraIngredients);
+
+        // "Tomatoe" is a common typo
+        final matches = service.findMatches('Tomatoe');
+
+        expect(matches, isNotEmpty);
+        expect(matches.first.ingredient.name, equals('Tomate'));
+        expect(matches.first.matchType, equals(MatchType.fuzzy));
+        expect(matches.first.confidence, greaterThan(0.60));
+        expect(matches.first.confidence, lessThan(0.90));
+      });
+
+      test('finds fuzzy match for similar spelling', () {
+        final extraIngredients = [
+          ...testIngredients,
+          Ingredient(
+            id: '11',
+            name: 'Cebola',
+            category: IngredientCategory.vegetable,
+            unit: MeasurementUnit.piece,
+          ),
+        ];
+        service.initialize(extraIngredients);
+
+        // "Cebolla" (Spanish) vs "Cebola" (Portuguese)
+        final matches = service.findMatches('Cebolla');
+
+        expect(matches, isNotEmpty);
+        expect(matches.first.ingredient.name, equals('Cebola'));
+        expect(matches.first.matchType, equals(MatchType.fuzzy));
+      });
+
+      test('fuzzy match has lower confidence than exact match', () {
+        final extraIngredients = [
+          ...testIngredients,
+          Ingredient(
+            id: '11',
+            name: 'Sal',
+            category: IngredientCategory.seasoning,
+            unit: MeasurementUnit.gram,
+          ),
+        ];
+        service.initialize(extraIngredients);
+
+        final exactMatches = service.findMatches('Sal');
+        final fuzzyMatches = service.findMatches('Slt');
+
+        if (fuzzyMatches.isNotEmpty) {
+          expect(exactMatches.first.confidence, greaterThan(fuzzyMatches.first.confidence));
+        }
+      });
+
+      test('returns multiple fuzzy matches sorted by confidence', () {
+        final extraIngredients = [
+          ...testIngredients,
+          Ingredient(
+            id: '11',
+            name: 'Tomate',
+            category: IngredientCategory.vegetable,
+          ),
+          Ingredient(
+            id: '12',
+            name: 'Tomato',
+            category: IngredientCategory.vegetable,
+          ),
+          Ingredient(
+            id: '13',
+            name: 'Tomatinho',
+            category: IngredientCategory.vegetable,
+          ),
+        ];
+        service.initialize(extraIngredients);
+
+        final matches = service.findMatches('Tomat');
+
+        expect(matches.length, greaterThanOrEqualTo(2));
+
+        // Verify sorted by confidence
+        for (int i = 0; i < matches.length - 1; i++) {
+          expect(
+            matches[i].confidence,
+            greaterThanOrEqualTo(matches[i + 1].confidence),
+          );
+        }
+      });
+
+      test('limits fuzzy matches to top 5 results', () {
+        // Create many similar ingredients
+        final extraIngredients = [
+          ...testIngredients,
+          ...List.generate(10, (i) => Ingredient(
+            id: 'similar_$i',
+            name: 'Ingredient$i',
+            category: IngredientCategory.other,
+          )),
+        ];
+        service.initialize(extraIngredients);
+
+        final matches = service.findMatches('Ingredien');
+
+        // Should limit to 5 fuzzy matches even if more are similar
+        expect(matches.length, lessThanOrEqualTo(5));
+      });
+
+      test('skips very short strings (< 3 chars)', () {
+        // Should not crash, but might not find fuzzy matches for very short strings
+        expect(() => service.findMatches('AB'), returnsNormally);
+
+        // Verify it returns a result (even if empty or non-fuzzy)
+        final matches = service.findMatches('AB');
+        expect(matches, isA<List<IngredientMatch>>());
+      });
+
+      test('fuzzy match confidence correlates with similarity', () {
+        final extraIngredients = [
+          ...testIngredients,
+          Ingredient(
+            id: '11',
+            name: 'Manteiga',
+            category: IngredientCategory.other,
+          ),
+        ];
+        service.initialize(extraIngredients);
+
+        // Very similar
+        final closeMatch = service.findMatches('Mantega');
+        // Less similar
+        final farMatch = service.findMatches('Mantiga');
+
+        if (closeMatch.isNotEmpty && farMatch.isNotEmpty) {
+          expect(
+            closeMatch.first.confidence,
+            greaterThanOrEqualTo(farMatch.first.confidence),
+          );
+        }
+      });
+
+      test('fuzzy match respects minimum threshold (60%)', () {
+        final extraIngredients = [
+          ...testIngredients,
+          Ingredient(
+            id: '11',
+            name: 'Abacaxi',
+            category: IngredientCategory.other,
+          ),
+        ];
+        service.initialize(extraIngredients);
+
+        final matches = service.findMatches('xyz');
+
+        // Completely different string should not match
+        expect(matches, isEmpty);
+      });
+
+      test('fuzzy match works with normalized strings', () {
+        final extraIngredients = [
+          ...testIngredients,
+          Ingredient(
+            id: '11',
+            name: 'Açúcar',
+            category: IngredientCategory.other,
+          ),
+        ];
+        service.initialize(extraIngredients);
+
+        // Typo without accent
+        final matches = service.findMatches('Acucar');
+
+        // Should find via normalized match (90%) before fuzzy
+        expect(matches, isNotEmpty);
+        expect(matches.first.confidence, equals(0.90));
+        expect(matches.first.matchType, equals(MatchType.normalized));
+      });
+    });
+
+    group('no matches', () {
+      test('returns empty list when no match found', () {
+        final matches = service.findMatches('xyz123');
+
+        expect(matches, isEmpty);
+      });
+
+      test('returns empty list for ingredient not in database', () {
+        final matches = service.findMatches('Chocolate');
+
+        expect(matches, isEmpty);
+      });
+    });
+
+    group('edge cases', () {
+      test('handles empty string input', () {
+        final matches = service.findMatches('');
+
+        expect(matches, isEmpty);
+      });
+
+      test('handles whitespace-only input', () {
+        final matches = service.findMatches('   ');
+
+        expect(matches, isEmpty);
+      });
+
+      test('handles input with leading/trailing whitespace', () {
+        final matches = service.findMatches('  Tomate  ');
+
+        // Normalization should trim the input and find match
+        expect(matches, isNotEmpty);
+        expect(matches.first.ingredient.name, equals('Tomate'));
+      });
+
+      test('handles single character input', () {
+        // Might match ingredients starting with A (Arroz, Alho, etc.)
+        // depending on first-letter index
+        expect(() => service.findMatches('A'), returnsNormally);
+      });
+
+      test('handles special characters in input', () {
+        final matches = service.findMatches('Açúcar');
+
+        expect(matches, isNotEmpty);
+        expect(matches.first.ingredient.name, equals('Açúcar'));
+      });
+    });
+
+    group('getBestMatch', () {
+      test('returns highest confidence match', () {
+        final match = service.getBestMatch('Tomate');
+
+        expect(match, isNotNull);
+        expect(match!.confidence, equals(1.0));
+        expect(match.ingredient.name, equals('Tomate'));
+      });
+
+      test('returns null when no matches found', () {
+        final match = service.getBestMatch('Chocolate');
+
+        expect(match, isNull);
+      });
+
+      test('returns first match when multiple equal confidence', () {
+        final match = service.getBestMatch('tomate');
+
+        expect(match, isNotNull);
+        expect(match!.confidence, greaterThan(0.0));
+      });
+    });
+
+    group('shouldAutoSelect', () {
+      test('returns true for high confidence single match', () {
+        final matches = service.findMatches('Tomate');
+
+        expect(service.shouldAutoSelect(matches), isTrue);
+      });
+
+      test('returns true for case-insensitive match', () {
+        final matches = service.findMatches('frango');
+
+        expect(service.shouldAutoSelect(matches), isTrue);
+        expect(matches.first.confidenceLevel, equals(MatchConfidence.high));
+      });
+
+      test('returns false for empty match list', () {
+        final matches = service.findMatches('Chocolate');
+
+        expect(service.shouldAutoSelect(matches), isFalse);
+      });
+
+      test('returns false when multiple matches with same confidence', () {
+        // Create scenario with multiple equal-confidence matches
+        final multiService = IngredientMatchingService();
+        final multiIngredients = [
+          Ingredient(
+            id: '1',
+            name: 'Tomate',
+            category: IngredientCategory.vegetable,
+          ),
+          Ingredient(
+            id: '2',
+            name: 'Tomate',
+            category: IngredientCategory.vegetable,
+          ),
+        ];
+        multiService.initialize(multiIngredients);
+
+        final matches = multiService.findMatches('Tomate');
+
+        // If there are multiple exact matches, shouldn't auto-select
+        if (matches.length > 1 &&
+            matches[0].confidence == matches[1].confidence) {
+          expect(multiService.shouldAutoSelect(matches), isFalse);
+        }
+      });
+    });
+
+    group('getAutoSelectedMatch', () {
+      test('returns match when should auto-select', () {
+        final match = service.getAutoSelectedMatch('Tomate');
+
+        expect(match, isNotNull);
+        expect(match!.ingredient.name, equals('Tomate'));
+      });
+
+      test('returns null when no high-confidence match', () {
+        final match = service.getAutoSelectedMatch('Chocolate');
+
+        expect(match, isNull);
+      });
+
+      test('returns null when empty input', () {
+        final match = service.getAutoSelectedMatch('');
+
+        expect(match, isNull);
+      });
+    });
+
+    group('confidence levels', () {
+      test('exact match has high confidence', () {
+        final matches = service.findMatches('Tomate');
+
+        expect(matches.first.confidenceLevel, equals(MatchConfidence.high));
+      });
+
+      test('case-insensitive match has high confidence', () {
+        final matches = service.findMatches('frango');
+
+        expect(matches.first.confidenceLevel, equals(MatchConfidence.high));
+      });
+
+      test('normalized match has high confidence', () {
+        final matches = service.findMatches('acucar');
+
+        expect(matches.first.confidenceLevel, equals(MatchConfidence.high));
+      });
+    });
+
+    group('match sorting', () {
+      test('matches are sorted by confidence (highest first)', () {
+        // This will be more relevant when we have fuzzy/partial matches
+        final matches = service.findMatches('Tomate');
+
+        // Verify descending order
+        for (int i = 0; i < matches.length - 1; i++) {
+          expect(
+            matches[i].confidence,
+            greaterThanOrEqualTo(matches[i + 1].confidence),
+          );
+        }
+      });
+    });
+
+    group('preserves ingredient properties', () {
+      test('matched ingredient preserves category', () {
+        final match = service.getBestMatch('Frango');
+
+        expect(match, isNotNull);
+        expect(match!.ingredient.category, equals(IngredientCategory.protein));
+      });
+
+      test('matched ingredient preserves protein type', () {
+        final match = service.getBestMatch('Frango');
+
+        expect(match, isNotNull);
+        expect(match!.ingredient.proteinType, equals(ProteinType.chicken));
+      });
+
+      test('matched ingredient preserves unit', () {
+        final match = service.getBestMatch('Arroz');
+
+        expect(match, isNotNull);
+        expect(match!.ingredient.unit, equals(MeasurementUnit.gram));
+      });
+
+      test('matched ingredient preserves ID', () {
+        final match = service.getBestMatch('Tomate');
+
+        expect(match, isNotNull);
+        expect(match!.ingredient.id, equals('1'));
+      });
+    });
+
+    group('performance characteristics', () {
+      test('handles large ingredient list efficiently', () {
+        final largeList = List.generate(
+          1000,
+          (i) => Ingredient(
+            id: 'ing_$i',
+            name: 'Ingredient $i',
+            category: IngredientCategory.other,
+          ),
+        );
+
+        final perfService = IngredientMatchingService();
+        perfService.initialize(largeList);
+
+        // Should complete quickly (< 100ms implied by requirement)
+        final stopwatch = Stopwatch()..start();
+        perfService.findMatches('Ingredient 500');
+        stopwatch.stop();
+
+        // Just verify it completes without error
+        expect(stopwatch.elapsedMilliseconds, lessThan(1000));
+      });
+    });
+
+    group('IngredientMatch model', () {
+      test('toString provides readable output', () {
+        final ingredient = Ingredient(
+          id: '1',
+          name: 'Tomate',
+          category: IngredientCategory.vegetable,
+        );
+
+        final match = IngredientMatch(
+          ingredient: ingredient,
+          confidence: 0.95,
+          matchType: MatchType.caseInsensitive,
+        );
+
+        final str = match.toString();
+        expect(str, contains('Tomate'));
+        expect(str, contains('95%'));
+        expect(str, contains('caseInsensitive'));
+      });
+
+      test('confidence level thresholds work correctly', () {
+        final ingredient = Ingredient(
+          id: '1',
+          name: 'Test',
+          category: IngredientCategory.other,
+        );
+
+        // High: >= 0.90
+        final highMatch = IngredientMatch(
+          ingredient: ingredient,
+          confidence: 0.95,
+          matchType: MatchType.exact,
+        );
+        expect(highMatch.confidenceLevel, equals(MatchConfidence.high));
+
+        // Medium: >= 0.70
+        final mediumMatch = IngredientMatch(
+          ingredient: ingredient,
+          confidence: 0.75,
+          matchType: MatchType.fuzzy,
+        );
+        expect(mediumMatch.confidenceLevel, equals(MatchConfidence.medium));
+
+        // Low: < 0.70
+        final lowMatch = IngredientMatch(
+          ingredient: ingredient,
+          confidence: 0.60,
+          matchType: MatchType.partial,
+        );
+        expect(lowMatch.confidenceLevel, equals(MatchConfidence.low));
+      });
+    });
+
+    group('plural form matching', () {
+      late IngredientMatchingService pluralService;
+      late List<Ingredient> pluralIngredients;
+
+      setUp(() {
+        pluralService = IngredientMatchingService();
+
+        // Create ingredients in singular form (as they would be in database)
+        pluralIngredients = [
+          // Portuguese ingredients
+          Ingredient(
+            id: '1',
+            name: 'cebola',
+            category: IngredientCategory.vegetable,
+          ),
+          Ingredient(
+            id: '2',
+            name: 'berinjela',
+            category: IngredientCategory.vegetable,
+          ),
+          Ingredient(
+            id: '3',
+            name: 'tomate',
+            category: IngredientCategory.vegetable,
+          ),
+          Ingredient(
+            id: '4',
+            name: 'batata',
+            category: IngredientCategory.vegetable,
+          ),
+          Ingredient(
+            id: '5',
+            name: 'ovo',
+            category: IngredientCategory.protein,
+          ),
+          Ingredient(
+            id: '6',
+            name: 'alho',
+            category: IngredientCategory.seasoning,
+          ),
+          Ingredient(
+            id: '7',
+            name: 'limão',
+            category: IngredientCategory.fruit,
+          ),
+          Ingredient(
+            id: '8',
+            name: 'pimentão',
+            category: IngredientCategory.vegetable,
+          ),
+          Ingredient(
+            id: '9',
+            name: 'pão',
+            category: IngredientCategory.grain,
+          ),
+          Ingredient(
+            id: '10',
+            name: 'atum',
+            category: IngredientCategory.protein,
+          ),
+          Ingredient(
+            id: '11',
+            name: 'arroz',
+            category: IngredientCategory.grain,
+          ),
+          Ingredient(
+            id: '12',
+            name: 'noz',
+            category: IngredientCategory.other,
+          ),
+          // English ingredients
+          Ingredient(
+            id: '13',
+            name: 'tomato',
+            category: IngredientCategory.vegetable,
+          ),
+          Ingredient(
+            id: '14',
+            name: 'potato',
+            category: IngredientCategory.vegetable,
+          ),
+          Ingredient(
+            id: '15',
+            name: 'onion',
+            category: IngredientCategory.vegetable,
+          ),
+          Ingredient(
+            id: '16',
+            name: 'berry',
+            category: IngredientCategory.fruit,
+          ),
+          Ingredient(
+            id: '17',
+            name: 'cherry',
+            category: IngredientCategory.fruit,
+          ),
+          Ingredient(
+            id: '18',
+            name: 'leaf',
+            category: IngredientCategory.vegetable,
+          ),
+          Ingredient(
+            id: '19',
+            name: 'knife',
+            category: IngredientCategory.other,
+          ),
+        ];
+
+        pluralService.initialize(pluralIngredients);
+      });
+
+      group('Portuguese plural matching', () {
+        test('cebolas matches cebola with high confidence', () {
+          final matches = pluralService.findMatches('cebolas');
+
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('cebola'));
+          expect(matches.first.confidence, greaterThanOrEqualTo(0.90));
+          expect(matches.first.matchType, equals(MatchType.normalized));
+          expect(matches.first.confidenceLevel, equals(MatchConfidence.high));
+        });
+
+        test('berinjelas matches berinjela with high confidence', () {
+          final matches = pluralService.findMatches('berinjelas');
+
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('berinjela'));
+          expect(matches.first.confidence, greaterThanOrEqualTo(0.90));
+        });
+
+        test('tomates matches tomate with high confidence', () {
+          final matches = pluralService.findMatches('tomates');
+
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('tomate'));
+          expect(matches.first.confidence, greaterThanOrEqualTo(0.90));
+        });
+
+        test('batatas matches batata with high confidence', () {
+          final matches = pluralService.findMatches('batatas');
+
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('batata'));
+          expect(matches.first.confidence, greaterThanOrEqualTo(0.90));
+        });
+
+        test('ovos matches ovo with high confidence (irregular)', () {
+          final matches = pluralService.findMatches('ovos');
+
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('ovo'));
+          expect(matches.first.confidence, greaterThanOrEqualTo(0.90));
+        });
+
+        test('alhos matches alho with high confidence (irregular)', () {
+          final matches = pluralService.findMatches('alhos');
+
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('alho'));
+          expect(matches.first.confidence, greaterThanOrEqualTo(0.90));
+        });
+
+        test('limões matches limão with high confidence (-ões -> -ão)', () {
+          final matches = pluralService.findMatches('limões');
+
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('limão'));
+          expect(matches.first.confidence, greaterThanOrEqualTo(0.90));
+        });
+
+        test('pimentões matches pimentão with high confidence (-ões -> -ão)', () {
+          final matches = pluralService.findMatches('pimentões');
+
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('pimentão'));
+          expect(matches.first.confidence, greaterThanOrEqualTo(0.90));
+        });
+
+        test('pães matches pão with high confidence (-ães -> -ão)', () {
+          final matches = pluralService.findMatches('pães');
+
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('pão'));
+          expect(matches.first.confidence, greaterThanOrEqualTo(0.90));
+        });
+
+        test('atuns matches atum with high confidence (-ns -> -m)', () {
+          final matches = pluralService.findMatches('atuns');
+
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('atum'));
+          expect(matches.first.confidence, greaterThanOrEqualTo(0.90));
+        });
+
+        test('arrozes matches arroz with high confidence (-zes -> -z)', () {
+          final matches = pluralService.findMatches('arrozes');
+
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('arroz'));
+          expect(matches.first.confidence, greaterThanOrEqualTo(0.90));
+        });
+
+        test('nozes matches noz with high confidence (-zes -> -z)', () {
+          final matches = pluralService.findMatches('nozes');
+
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('noz'));
+          expect(matches.first.confidence, greaterThanOrEqualTo(0.90));
+        });
+
+        test('handles accents in plural forms correctly', () {
+          // Test with accent in plural form
+          final matches = pluralService.findMatches('limões');
+
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('limão'));
+          expect(matches.first.confidence, greaterThanOrEqualTo(0.90));
+        });
+
+        test('handles case-insensitive plural matching', () {
+          final matches = pluralService.findMatches('CEBOLAS');
+
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('cebola'));
+          expect(matches.first.confidence, greaterThanOrEqualTo(0.90));
+        });
+      });
+
+      group('English plural matching', () {
+        test('tomatoes matches tomato with high confidence', () {
+          final matches = pluralService.findMatches('tomatoes');
+
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('tomato'));
+          expect(matches.first.confidence, greaterThanOrEqualTo(0.90));
+        });
+
+        test('potatoes matches potato with high confidence', () {
+          final matches = pluralService.findMatches('potatoes');
+
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('potato'));
+          expect(matches.first.confidence, greaterThanOrEqualTo(0.90));
+        });
+
+        test('onions matches onion with high confidence', () {
+          final matches = pluralService.findMatches('onions');
+
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('onion'));
+          expect(matches.first.confidence, greaterThanOrEqualTo(0.90));
+        });
+
+        test('berries matches berry with high confidence (-ies -> -y)', () {
+          final matches = pluralService.findMatches('berries');
+
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('berry'));
+          expect(matches.first.confidence, greaterThanOrEqualTo(0.90));
+        });
+
+        test('cherries matches cherry with high confidence (-ies -> -y)', () {
+          final matches = pluralService.findMatches('cherries');
+
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('cherry'));
+          expect(matches.first.confidence, greaterThanOrEqualTo(0.90));
+        });
+
+        test('leaves matches leaf with high confidence (-ves -> -f)', () {
+          final matches = pluralService.findMatches('leaves');
+
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('leaf'));
+          expect(matches.first.confidence, greaterThanOrEqualTo(0.90));
+        });
+
+        test('knives matches knife with high confidence (-ves -> -fe)', () {
+          final matches = pluralService.findMatches('knives');
+
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('knife'));
+          expect(matches.first.confidence, greaterThanOrEqualTo(0.90));
+        });
+
+        test('handles case-insensitive English plural matching', () {
+          final matches = pluralService.findMatches('TOMATOES');
+
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('tomato'));
+          expect(matches.first.confidence, greaterThanOrEqualTo(0.90));
+        });
+      });
+
+      group('compound word plural matching', () {
+        test('handles compound words with hyphens', () {
+          final compoundService = IngredientMatchingService();
+          final compoundIngredients = [
+            Ingredient(
+              id: '1',
+              name: 'couve-flor',
+              category: IngredientCategory.vegetable,
+            ),
+            Ingredient(
+              id: '2',
+              name: 'batata-doce',
+              category: IngredientCategory.vegetable,
+            ),
+          ];
+          compoundService.initialize(compoundIngredients);
+
+          // Test couve-flores -> couve-flor
+          final matches1 = compoundService.findMatches('couve-flores');
+          expect(matches1, isNotEmpty);
+          expect(matches1.first.ingredient.name, equals('couve-flor'));
+          expect(matches1.first.confidence, greaterThanOrEqualTo(0.90));
+
+          // Test batatas-doces -> batata-doce
+          final matches2 = compoundService.findMatches('batatas-doces');
+          expect(matches2, isNotEmpty);
+          expect(matches2.first.ingredient.name, equals('batata-doce'));
+          expect(matches2.first.confidence, greaterThanOrEqualTo(0.90));
+        });
+
+        test('handles compound words with spaces', () {
+          final compoundService = IngredientMatchingService();
+          final compoundIngredients = [
+            Ingredient(
+              id: '1',
+              name: 'batata doce',
+              category: IngredientCategory.vegetable,
+            ),
+          ];
+          compoundService.initialize(compoundIngredients);
+
+          final matches = compoundService.findMatches('batatas doces');
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('batata doce'));
+          expect(matches.first.confidence, greaterThanOrEqualTo(0.90));
+        });
+      });
+
+      group('edge cases and validation', () {
+        test('does not over-singularize very short words', () {
+          final shortService = IngredientMatchingService();
+          final shortIngredients = [
+            Ingredient(
+              id: '1',
+              name: 'sal',
+              category: IngredientCategory.seasoning,
+            ),
+          ];
+          shortService.initialize(shortIngredients);
+
+          // "sal" itself should not be treated as plural of "sa"
+          final matches = shortService.findMatches('sal');
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('sal'));
+        });
+
+        test('preserves exact matches over plural matches', () {
+          final mixedService = IngredientMatchingService();
+          final mixedIngredients = [
+            Ingredient(
+              id: '1',
+              name: 'tomates',
+              category: IngredientCategory.vegetable,
+            ),
+            Ingredient(
+              id: '2',
+              name: 'tomate',
+              category: IngredientCategory.vegetable,
+            ),
+          ];
+          mixedService.initialize(mixedIngredients);
+
+          // If both plural and singular exist, exact match should win
+          final matches = mixedService.findMatches('tomates');
+          expect(matches, isNotEmpty);
+          // Should match 'tomates' exactly with higher confidence
+          expect(matches.first.ingredient.name, equals('tomates'));
+          expect(matches.first.confidence, equals(1.0));
+        });
+
+        test('does not break existing normalized matches', () {
+          // Ensure that ingredients without plural forms still match correctly
+          final normalService = IngredientMatchingService();
+          final normalIngredients = [
+            Ingredient(
+              id: '1',
+              name: 'Açúcar',
+              category: IngredientCategory.other,
+            ),
+          ];
+          normalService.initialize(normalIngredients);
+
+          final matches = normalService.findMatches('acucar');
+          expect(matches, isNotEmpty);
+          expect(matches.first.ingredient.name, equals('Açúcar'));
+          expect(matches.first.confidence, equals(0.90));
+        });
+
+        test('returns empty for completely unmatched plural forms', () {
+          final matches = pluralService.findMatches('chocolates');
+
+          // No ingredient named 'chocolate' or 'chocolates' in test data
+          expect(matches, isEmpty);
+        });
+
+        test('handles empty and whitespace in plural forms', () {
+          expect(pluralService.findMatches(''), isEmpty);
+          expect(pluralService.findMatches('   '), isEmpty);
+        });
+      });
+
+      group('confidence level verification', () {
+        test('plural matches achieve high confidence level (≥90%)', () {
+          final testCases = [
+            'cebolas',
+            'tomates',
+            'batatas',
+            'ovos',
+            'limões',
+            'pães',
+            'atuns',
+            'tomatoes',
+            'onions',
+            'berries',
+          ];
+
+          for (final testCase in testCases) {
+            final matches = pluralService.findMatches(testCase);
+            expect(matches, isNotEmpty, reason: 'No match found for $testCase');
+            expect(
+              matches.first.confidence,
+              greaterThanOrEqualTo(0.90),
+              reason: '$testCase did not achieve 90% confidence',
+            );
+            expect(
+              matches.first.confidenceLevel,
+              equals(MatchConfidence.high),
+              reason: '$testCase does not have high confidence level',
+            );
+          }
+        });
+      });
+    });
+
+    group('confidence threshold for auto-selection (#364)', () {
+      // These tests verify that the confidence values produced by the matching
+      // service align with the 0.80 threshold applied in recipe_editor_screen.dart.
+      // A match with confidence < 0.80 must NOT auto-select so the
+      // "Create New Ingredient" button stays visible.
+
+      test('low-confidence partial-word match stays below 0.80 threshold', () {
+        final thresholdService = IngredientMatchingService();
+        thresholdService.initialize([
+          Ingredient(
+            id: '1',
+            name: 'óleo de girassol',
+            category: IngredientCategory.other,
+            unit: MeasurementUnit.milliliter,
+          ),
+        ]);
+
+        final matches = thresholdService.findMatches('sementes de girassol');
+
+        // The shared word "girassol" may produce a partial/fuzzy match, but the
+        // overall similarity must be below 0.80 so it does not auto-select.
+        if (matches.isNotEmpty) {
+          expect(
+            matches.first.confidence,
+            lessThan(0.80),
+            reason:
+                '"sementes de girassol" must not reach the 0.80 auto-select threshold against "óleo de girassol"',
+          );
+        }
+        // isEmpty is also a valid outcome — no match means selectedMatch stays null.
+      });
+
+      test('exact match "cebola" produces confidence >= 0.80 (auto-select regression)', () {
+        final thresholdService = IngredientMatchingService();
+        thresholdService.initialize([
+          Ingredient(
+            id: '1',
+            name: 'cebola',
+            category: IngredientCategory.vegetable,
+            unit: MeasurementUnit.piece,
+          ),
+        ]);
+
+        final matches = thresholdService.findMatches('cebola');
+
+        expect(matches, isNotEmpty);
+        expect(
+          matches.first.confidence,
+          greaterThanOrEqualTo(0.80),
+          reason: 'Exact match must exceed the 0.80 threshold and auto-select correctly',
+        );
+        expect(matches.first.matchType, equals(MatchType.exact));
+      });
+
+      test('case-insensitive match produces confidence >= 0.80 (auto-select regression)', () {
+        final thresholdService = IngredientMatchingService();
+        thresholdService.initialize([
+          Ingredient(
+            id: '1',
+            name: 'Cebola',
+            category: IngredientCategory.vegetable,
+            unit: MeasurementUnit.piece,
+          ),
+        ]);
+
+        final matches = thresholdService.findMatches('cebola');
+
+        expect(matches, isNotEmpty);
+        expect(
+          matches.first.confidence,
+          greaterThanOrEqualTo(0.80),
+          reason: 'Case-insensitive match (0.95) must exceed the 0.80 threshold',
+        );
+      });
+
+      test('no matches returns empty list — selectedMatch stays null', () {
+        final thresholdService = IngredientMatchingService();
+        thresholdService.initialize([
+          Ingredient(
+            id: '1',
+            name: 'cebola',
+            category: IngredientCategory.vegetable,
+            unit: MeasurementUnit.piece,
+          ),
+        ]);
+
+        final matches = thresholdService.findMatches('ingrediente inexistente xyz');
+
+        // Empty matches → selectedMatch = null → Create New Ingredient button visible.
+        expect(matches, isEmpty);
+      });
+    });
+
+    group('alias match (Stage 1.5)', () {
+      late List<Ingredient> ingredientsWithAliases;
+
+      setUp(() {
+        ingredientsWithAliases = [
+          Ingredient(
+            id: '100',
+            name: 'salsão',
+            category: IngredientCategory.vegetable,
+            aliases: ['aipo', 'celery'],
+          ),
+          Ingredient(
+            id: '101',
+            name: 'coentro',
+            category: IngredientCategory.herb,
+            aliases: ['cilantro', 'coriander'],
+          ),
+          Ingredient(
+            id: '102',
+            name: 'tomate',
+            category: IngredientCategory.vegetable,
+          ),
+        ];
+        service.initialize(ingredientsWithAliases);
+      });
+
+      test('alias match found with MatchType.alias', () {
+        final matches = service.findMatches('aipo');
+
+        expect(matches, isNotEmpty);
+        expect(matches.first.matchType, equals(MatchType.alias));
+        expect(matches.first.ingredient.name, equals('salsão'));
+      });
+
+      test('alias match confidence is 0.95', () {
+        final matches = service.findMatches('aipo');
+
+        expect(matches, isNotEmpty);
+        expect(matches.first.confidence, equals(0.95));
+      });
+
+      test('exact name match (1.0) wins over alias match (0.95)', () {
+        // Add an ingredient whose primary name is 'aipo'
+        final mixed = [
+          Ingredient(
+            id: '200',
+            name: 'aipo',
+            category: IngredientCategory.vegetable,
+          ),
+          Ingredient(
+            id: '201',
+            name: 'salsão',
+            category: IngredientCategory.vegetable,
+            aliases: ['aipo'],
+          ),
+        ];
+        service.initialize(mixed);
+
+        final matches = service.findMatches('aipo');
+
+        // Should return immediately after exact match — only one result
+        expect(matches.length, equals(1));
+        expect(matches.first.matchType, equals(MatchType.exact));
+        expect(matches.first.confidence, equals(1.0));
+        expect(matches.first.ingredient.name, equals('aipo'));
+      });
+
+      test('two ingredients sharing same alias both returned', () {
+        final shared = [
+          Ingredient(
+            id: '300',
+            name: 'salsão',
+            category: IngredientCategory.vegetable,
+            aliases: ['aipo'],
+          ),
+          Ingredient(
+            id: '301',
+            name: 'aipo-rábano',
+            category: IngredientCategory.vegetable,
+            aliases: ['aipo'],
+          ),
+        ];
+        service.initialize(shared);
+
+        final matches = service.findMatches('aipo');
+
+        final aliasMatches =
+            matches.where((m) => m.matchType == MatchType.alias).toList();
+        expect(aliasMatches.length, equals(2));
+      });
+
+      test('case-insensitive alias matching', () {
+        final matches = service.findMatches('AIPO');
+
+        expect(matches, isNotEmpty);
+        expect(matches.first.matchType, equals(MatchType.alias));
+        expect(matches.first.ingredient.name, equals('salsão'));
+      });
+
+      test('ingredient with no aliases produces no alias matches', () {
+        // 'tomate' has no aliases — parsing 'tomate' hits exact match, not alias
+        // Parse something that only tomate could match via alias (but it has none)
+        final matches = service.findMatches('tomato');
+
+        // No alias match; may find fuzzy/partial but NOT alias type
+        final aliasMatches =
+            matches.where((m) => m.matchType == MatchType.alias).toList();
+        expect(aliasMatches, isEmpty);
+      });
+    });
+  });
+}

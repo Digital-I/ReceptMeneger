@@ -1,0 +1,607 @@
+import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../models/frequency_type.dart';
+import '../models/recipe.dart';
+import '../models/tag.dart';
+import '../models/tag_type.dart';
+import '../widgets/recipe_card.dart';
+import '../widgets/recipe_filter_dialog.dart';
+import '../l10n/app_localizations.dart';
+import '../core/theme/button_styles.dart';
+import '../core/providers/recipe_provider.dart';
+import '../core/repositories/tag_repository.dart';
+import '../core/theme/design_tokens.dart';
+import '../core/di/service_provider.dart';
+import 'cook_meal_screen.dart';
+import 'recipe_details_screen.dart';
+import 'recipe_stub_create_screen.dart';
+
+class RecipesScreen extends StatefulWidget {
+  const RecipesScreen({super.key});
+
+  @override
+  State<RecipesScreen> createState() => _RecipesScreenState();
+}
+
+class _RecipesScreenState extends State<RecipesScreen> {
+  String _searchQuery = '';
+  final TextEditingController _searchController = TextEditingController();
+
+  bool _hasContentAbove = false;
+  bool _hasContentBelow = false;
+
+  List<TagType> _tagTypes = [];
+  Map<String, List<Tag>> _tagsByType = {};
+  late final TagRepository _tagRepo;
+
+  @override
+  void initState() {
+    super.initState();
+    _tagRepo = TagRepository(ServiceProvider.database.helper);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<RecipeProvider>().loadRecipes();
+      _loadTagData();
+    });
+  }
+
+  Future<void> _loadTagData() async {
+    try {
+      final types = await _tagRepo.getAllTagTypes();
+      final byType = <String, List<Tag>>{};
+      for (final t in types) {
+        byType[t.id] = await _tagRepo.getTagsByType(t.id);
+      }
+      if (mounted) {
+        setState(() {
+          _tagTypes = types;
+          _tagsByType = byType;
+        });
+      }
+    } catch (_) {}
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _addRecipe() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const RecipeStubCreateScreen()),
+    );
+    if (mounted) {
+      context.read<RecipeProvider>().loadRecipes(forceRefresh: true);
+    }
+  }
+
+  Future<void> _editRecipe(Recipe recipe) async {
+    final changed = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => RecipeDetailsScreen(recipe: recipe),
+      ),
+    );
+    if (changed == true && mounted) {
+      context.read<RecipeProvider>().loadRecipes(forceRefresh: true);
+    }
+  }
+
+  Future<void> _deleteRecipe(Recipe recipe) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(AppLocalizations.of(context)!.deleteRecipe),
+        content:
+            Text(AppLocalizations.of(context)!.deleteConfirmation(recipe.name)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(AppLocalizations.of(context)!.cancel),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: ButtonStyles.destructive,
+            child: Text(AppLocalizations.of(context)!.delete),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      final provider = context.read<RecipeProvider>();
+      final success = await provider.deleteRecipe(recipe.id);
+
+      if (!success && mounted) {
+        // Show error message if deletion failed
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.errorOccurred),
+            backgroundColor: DesignTokens.error,
+          ),
+        );
+      }
+    }
+  }
+
+  void _showSortingDialog() {
+    final provider = context.read<RecipeProvider>();
+    final currentSortBy = provider.currentSortBy;
+    final currentSortOrder = provider.currentSortOrder;
+
+    // Map provider state to a virtual dialog key that encodes field + direction
+    String? tempSortKey;
+    if (currentSortBy == 'created_at') {
+      tempSortKey = currentSortOrder == 'ASC' ? 'created_at_asc' : 'created_at_desc';
+    } else {
+      tempSortKey = currentSortBy;
+    }
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text(AppLocalizations.of(context)!.sortOptions),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  RadioGroup<String>(
+                    groupValue: tempSortKey,
+                    onChanged: (value) => setState(() => tempSortKey = value),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        RadioListTile<String>(
+                          title: Text(AppLocalizations.of(context)!.name),
+                          value: 'name',
+                        ),
+                        RadioListTile<String>(
+                          title: Text(AppLocalizations.of(context)!.rating),
+                          value: 'rating',
+                        ),
+                        RadioListTile<String>(
+                          title: Text(AppLocalizations.of(context)!.difficulty),
+                          value: 'difficulty',
+                        ),
+                        RadioListTile<String>(
+                          title: Text(AppLocalizations.of(context)!.sortNewestFirst),
+                          value: 'created_at_desc',
+                        ),
+                        RadioListTile<String>(
+                          title: Text(AppLocalizations.of(context)!.sortOldestFirst),
+                          value: 'created_at_asc',
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(AppLocalizations.of(context)!.cancel),
+                ),
+                TextButton(
+                  onPressed: () {
+                    if (tempSortKey != null) {
+                      final String sortBy;
+                      final String sortOrder;
+                      if (tempSortKey == 'created_at_desc') {
+                        sortBy = 'created_at';
+                        sortOrder = 'DESC';
+                      } else if (tempSortKey == 'created_at_asc') {
+                        sortBy = 'created_at';
+                        sortOrder = 'ASC';
+                      } else {
+                        sortBy = tempSortKey!;
+                        sortOrder = tempSortKey == 'rating' ? 'DESC' : 'ASC';
+                      }
+                      context.read<RecipeProvider>().setSorting(
+                            sortBy: sortBy,
+                            sortOrder: sortOrder,
+                          );
+                    }
+                    Navigator.pop(context);
+                  },
+                  child: Text(AppLocalizations.of(context)!.apply),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  /// Checks if any filter is currently active (provider filters or search query)
+  bool _hasAnyActiveFilter(RecipeProvider provider) {
+    return provider.hasActiveFilters || _searchQuery.isNotEmpty;
+  }
+
+  /// Clears all active filters (both provider filters and search query)
+  Future<void> _clearAllFilters() async {
+    setState(() {
+      _searchQuery = '';
+      _searchController.clear(); // Clear the TextField as well
+    });
+    await context.read<RecipeProvider>().clearFilters();
+  }
+
+  /// Gets a human-readable description of active filters
+  String _getFilterDescription(BuildContext context, RecipeProvider provider) {
+    final List<String> filterParts = [];
+    final l10n = AppLocalizations.of(context)!;
+
+    // Add search query if present
+    if (_searchQuery.isNotEmpty) {
+      filterParts.add('${l10n.filterByName}: "$_searchQuery"');
+    }
+
+    // Add provider filters
+    final filters = provider.filters;
+    if (filters.containsKey('difficulty')) {
+      filterParts.add(l10n.filterByDifficulty(filters['difficulty'] as int));
+    }
+    if (filters.containsKey('rating')) {
+      filterParts.add('${l10n.filterByRating}: ${filters['rating']}+');
+    }
+    if (filters.containsKey('desired_frequency')) {
+      final freq = FrequencyType.fromString(filters['desired_frequency'] as String);
+      filterParts.add(l10n.filterByFrequency(freq.getLocalizedDisplayName(context)));
+    }
+
+    final tagFilters = provider.tagFilters;
+    if (tagFilters.isNotEmpty) {
+      filterParts.add('Tags (${tagFilters.length})');
+    }
+
+    return filterParts.join(', ');
+  }
+
+  Future<void> _showFilterDialog() async {
+    final provider = context.read<RecipeProvider>();
+    final result = await showDialog<RecipeFilterResult>(
+      context: context,
+      builder: (_) => RecipeFilterDialog(
+        initialFilters: provider.filters,
+        initialTagFilters: provider.tagFilters,
+        tagTypes: _tagTypes,
+        tagsByType: _tagsByType,
+      ),
+    );
+    if (result != null && mounted) {
+      await provider.setFilters(result.filters);
+      await provider.setTagFilters(result.tagFilters);
+    }
+  }
+
+  List<Recipe> _getFilteredRecipes(List<Recipe> recipes) {
+    if (_searchQuery.isEmpty) {
+      return recipes;
+    }
+    return recipes
+        .where((recipe) =>
+            recipe.name.toLowerCase().contains(_searchQuery.toLowerCase()))
+        .toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.recipes),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.sort),
+            onPressed: _showSortingDialog,
+            tooltip: AppLocalizations.of(context)!.sortRecipes,
+          ),
+          Consumer<RecipeProvider>(
+            builder: (context, provider, child) {
+              final hasActiveFilters = _hasAnyActiveFilter(provider);
+              return IconButton(
+                icon: Badge(
+                  isLabelVisible: hasActiveFilters,
+                  child: const Icon(Icons.filter_list),
+                ),
+                onPressed: _showFilterDialog,
+                tooltip: AppLocalizations.of(context)!.filterRecipesTooltip,
+              );
+            },
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(DesignTokens.spacingSm),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: AppLocalizations.of(context)!.searchRecipes,
+                prefixIcon: const Icon(Icons.search),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  _searchQuery = value.trim();
+                });
+              },
+            ),
+          ),
+          // Filter indicator banner
+          Consumer<RecipeProvider>(
+            builder: (context, provider, child) {
+              if (!_hasAnyActiveFilter(provider)) {
+                return const SizedBox.shrink();
+              }
+
+              final filteredCount =
+                  _getFilteredRecipes(provider.recipes).length;
+              final totalCount = provider.totalRecipeCount;
+
+              return Container(
+                color: Theme.of(context).colorScheme.primaryContainer,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: DesignTokens.spacingMd,
+                  vertical: DesignTokens.spacingSm,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.filter_list,
+                          size: 20,
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer,
+                        ),
+                        const SizedBox(width: DesignTokens.spacingSm),
+                        Expanded(
+                          child: Text(
+                            '${AppLocalizations.of(context)!.filtersActive}: ${_getFilterDescription(context, provider)}',
+                            style: TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onPrimaryContainer,
+                              fontSize: 13,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        TextButton.icon(
+                          icon: const Icon(Icons.clear, size: 16),
+                          label:
+                              Text(AppLocalizations.of(context)!.clearFilters),
+                          onPressed: _clearAllFilters,
+                          style: TextButton.styleFrom(
+                            foregroundColor: Theme.of(context)
+                                .colorScheme
+                                .onPrimaryContainer,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 4),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        AppLocalizations.of(context)!.showingXOfYRecipes(
+                          filteredCount,
+                          totalCount,
+                        ),
+                        style: TextStyle(
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+          Expanded(
+            child: Stack(
+              children: [
+            Consumer<RecipeProvider>(
+              builder: (context, recipeProvider, child) {
+                // Handle loading state
+                if (recipeProvider.isLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                // Handle error state
+                if (recipeProvider.hasError) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.error_outline,
+                          size: 64,
+                          color: Colors.red[300],
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          AppLocalizations.of(context)!.errorOccurred,
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          recipeProvider.error?.message ?? '',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () {
+                            recipeProvider.clearError();
+                            recipeProvider.loadRecipes(forceRefresh: true);
+                          },
+                          child: Text(AppLocalizations.of(context)!.retry),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                // Handle empty state
+                if (!recipeProvider.hasData) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.restaurant_menu,
+                          size: 64,
+                          color: Colors.grey[400],
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          AppLocalizations.of(context)!.noRecipesFound,
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          AppLocalizations.of(context)!.addFirstRecipe,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                // Get filtered recipes
+                final filteredRecipes =
+                    _getFilteredRecipes(recipeProvider.recipes);
+
+                // Build recipes list
+                return RefreshIndicator(
+                  onRefresh: () =>
+                      recipeProvider.loadRecipes(forceRefresh: true),
+                  child: NotificationListener<ScrollMetricsNotification>(
+                    onNotification: (notification) {
+                      final hasAbove =
+                          notification.metrics.extentBefore > 0;
+                      final hasBelow =
+                          notification.metrics.extentAfter > 0;
+                      if (hasAbove != _hasContentAbove ||
+                          hasBelow != _hasContentBelow) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          if (mounted) {
+                            setState(() {
+                              _hasContentAbove = hasAbove;
+                              _hasContentBelow = hasBelow;
+                            });
+                          }
+                        });
+                      }
+                      return false;
+                    },
+                    child: ListView.builder(
+                      padding: EdgeInsets.only(
+                        bottom:
+                            max(80.0, MediaQuery.of(context).size.height * 0.3),
+                      ),
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemCount: filteredRecipes.length,
+                      itemBuilder: (context, index) {
+                      final recipe = filteredRecipes[index];
+                      return RecipeCard(
+                        recipe: recipe,
+                        onEdit: () => _editRecipe(recipe),
+                        onDelete: () => _deleteRecipe(recipe),
+                        onCooked: () {
+                          Navigator.push<bool>(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  CookMealScreen(recipe: recipe),
+                            ),
+                          ).then((value) {
+                            if (value == true) {
+                              recipeProvider.loadRecipes(forceRefresh: true);
+                            }
+                          });
+                        },
+                        mealCount: recipeProvider.getMealCount(recipe.id),
+                        lastCooked: recipeProvider.getLastCookedDate(recipe.id),
+                      );
+                    },
+                  ),
+                  ),
+                );
+              },
+            ),
+            // Top affordance: fades in when content exists above the viewport
+            Positioned(
+              top: 0, left: 0, right: 0,
+              height: 32,
+              child: IgnorePointer(
+                child: AnimatedOpacity(
+                  opacity: _hasContentAbove ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 150),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Theme.of(context).colorScheme.surface,
+                          Theme.of(context).colorScheme.surface.withValues(alpha: 0),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            // Bottom affordance: fades in when more content exists below the viewport
+            Positioned(
+              bottom: 0, left: 0, right: 0,
+              height: 80,
+              child: IgnorePointer(
+                child: AnimatedOpacity(
+                  opacity: _hasContentBelow ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 150),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: [
+                          Theme.of(context).colorScheme.surface,
+                          Theme.of(context).colorScheme.surface.withValues(alpha: 0),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _addRecipe,
+        tooltip: AppLocalizations.of(context)!.addRecipe,
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}

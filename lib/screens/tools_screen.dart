@@ -1,0 +1,1152 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:provider/provider.dart';
+import '../l10n/app_localizations.dart';
+import '../core/di/service_provider.dart';
+import '../core/providers/debug_settings_provider.dart';
+import '../core/services/ingredient_import_service.dart' show IngredientImportResult;
+import '../core/services/recipe_import_service.dart'
+    show DuplicateStrategy, RecipeImportResult;
+import '../core/services/snackbar_service.dart';
+import '../core/errors/gastrobrain_exceptions.dart';
+
+/// Temporary tools screen for development utilities
+class ToolsScreen extends StatefulWidget {
+  const ToolsScreen({super.key});
+
+  @override
+  State<ToolsScreen> createState() => _ToolsScreenState();
+}
+
+class _ToolsScreenState extends State<ToolsScreen> {
+  bool _isBackingUp = false;
+  bool _isRestoring = false;
+  bool _isImportingRecipes = false;
+  bool _isImportingIngredients = false;
+  bool _isExportingRecipes = false;
+  bool _isExportingIngredients = false;
+  bool _isInspectingSchema = false;
+  PackageInfo? _packageInfo;
+
+  @override
+  void initState() {
+    super.initState();
+    PackageInfo.fromPlatform().then((info) {
+      if (mounted) setState(() => _packageInfo = info);
+    });
+  }
+
+  Future<void> _inspectSchema() async {
+    if (_isInspectingSchema) return;
+    setState(() => _isInspectingSchema = true);
+    try {
+      final db = await ServiceProvider.database.helper.database;
+
+      final migrations = await db.rawQuery(
+        'SELECT version, description, applied_at FROM schema_migrations ORDER BY version',
+      );
+      final recipeColumns = await db.rawQuery('PRAGMA table_info(recipes)');
+      final tables = await db.rawQuery(
+        "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name",
+      );
+
+      final buf = StringBuffer();
+      buf.writeln('=== schema_migrations ===');
+      if (migrations.isEmpty) {
+        buf.writeln('(empty)');
+      } else {
+        for (final r in migrations) {
+          buf.writeln('v${r['version']}  ${r['description']}  applied: ${r['applied_at']}');
+        }
+      }
+
+      buf.writeln('\n=== recipes columns ===');
+      for (final r in recipeColumns) {
+        buf.writeln('  ${r['name']}  ${r['type']}  notnull=${r['notnull']}  dflt=${r['dflt_value']}');
+      }
+
+      buf.writeln('\n=== tables ===');
+      for (final r in tables) {
+        buf.writeln('  ${r['name']}');
+      }
+
+      final report = buf.toString();
+
+      if (mounted) {
+        await showDialog<void>(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const Text('Schema Inspector'),
+            content: SingleChildScrollView(
+              child: SelectableText(
+                report,
+                style: const TextStyle(fontFamily: 'monospace', fontSize: 11),
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Clipboard.setData(ClipboardData(text: report));
+                  Navigator.pop(ctx);
+                  SnackbarService.showSuccess(context, 'Copied to clipboard');
+                },
+                child: const Text('Copy & Close'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: const Text('Close'),
+              ),
+            ],
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        SnackbarService.showError(context, 'Schema inspect failed: $e');
+      }
+    } finally {
+      if (mounted) setState(() => _isInspectingSchema = false);
+    }
+  }
+
+  Future<void> _exportRecipes() async {
+    if (_isExportingRecipes) return;
+
+    setState(() {
+      _isExportingRecipes = true;
+    });
+
+    try {
+      final exportService = ServiceProvider.export.recipeExport;
+      final filePath = await exportService.exportRecipesToJson();
+
+      if (mounted) {
+        SnackbarService.showSuccess(
+          context,
+          'Recipes exported successfully!\nFile: $filePath',
+        );
+
+        // Copy file path to clipboard for easy access
+        await Clipboard.setData(ClipboardData(text: filePath));
+
+        // Show additional info
+        _showExportSuccessDialog(filePath);
+      }
+    } catch (e) {
+      if (mounted) {
+        SnackbarService.showError(
+          context,
+          'Failed to export recipes: ${e.toString()}',
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isExportingRecipes = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _exportIngredients() async {
+    if (_isExportingIngredients) return;
+
+    setState(() {
+      _isExportingIngredients = true;
+    });
+
+    try {
+      final exportService = ServiceProvider.export.ingredientExport;
+      final filePath = await exportService.exportIngredientsToJson();
+
+      if (mounted) {
+        SnackbarService.showSuccess(
+          context,
+          'Ingredients exported successfully!\nFile: $filePath',
+        );
+
+        // Copy file path to clipboard for easy access
+        await Clipboard.setData(ClipboardData(text: filePath));
+
+        // Show additional info
+        _showExportSuccessDialog(filePath, 'Ingredients');
+      }
+    } catch (e) {
+      if (mounted) {
+        SnackbarService.showError(
+          context,
+          'Failed to export ingredients: ${e.toString()}',
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isExportingIngredients = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _backupDatabase() async {
+    if (_isBackingUp) return;
+
+    setState(() {
+      _isBackingUp = true;
+    });
+
+    try {
+      final backupService = ServiceProvider.database.backup;
+      await backupService.backupDatabase(); // triggers share sheet
+
+      if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        SnackbarService.showSuccess(context, l10n.backupSuccess);
+      }
+    } on GastrobrainException catch (e) {
+      if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        SnackbarService.showError(
+          context,
+          '${l10n.backupFailed}: ${e.message}',
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        SnackbarService.showError(
+          context,
+          '${l10n.backupFailed}: ${e.toString()}',
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isBackingUp = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _restoreDatabase() async {
+    if (_isRestoring) return;
+
+    final l10n = AppLocalizations.of(context)!;
+
+    // Open native file picker (SAF-compliant — no storage permissions needed)
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['json'],
+    );
+
+    if (result == null) return; // user cancelled
+
+    // Show warning dialog before proceeding
+    if (!mounted) return;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.restoreWarningTitle),
+        content: Text(l10n.restoreWarningMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(l10n.cancel),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.error,
+              foregroundColor: Theme.of(context).colorScheme.onError,
+            ),
+            child: Text(l10n.buttonContinue),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+
+    setState(() {
+      _isRestoring = true;
+    });
+
+    try {
+      final backupService = ServiceProvider.database.backup;
+      final pickedFile = result.files.first;
+
+      if (pickedFile.path != null) {
+        // Direct filesystem path available
+        await backupService.restoreDatabase(pickedFile.path!);
+      } else if (pickedFile.bytes != null) {
+        // SAF content URI — only bytes returned (Android 10+ scoped storage)
+        await backupService
+            .restoreDatabaseFromString(utf8.decode(pickedFile.bytes!));
+      } else {
+        throw const GastrobrainException('Could not read the selected file');
+      }
+
+      if (mounted) {
+        SnackbarService.showSuccess(context, l10n.restoreSuccess);
+        _showRestoreSuccessDialog();
+      }
+    } on BackupVersionException {
+      if (mounted) {
+        SnackbarService.showError(context, l10n.restoreBackupNewerVersion);
+      }
+    } on GastrobrainException catch (e) {
+      if (mounted) {
+        SnackbarService.showError(
+          context,
+          '${l10n.restoreFailed}: ${e.message}',
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        SnackbarService.showError(
+          context,
+          '${l10n.restoreFailed}: ${e.toString()}',
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isRestoring = false;
+        });
+      }
+    }
+  }
+
+  void _showExportSuccessDialog(String filePath, [String type = 'Recipe']) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Export Successful'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('$type data has been exported to JSON format.'),
+            const SizedBox(height: 16),
+            const Text('📁 Saved to Downloads folder',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            const Text('Full path:',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            SelectableText(
+              filePath,
+              style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+            ),
+            const SizedBox(height: 16),
+            const Text('📋 File path copied to clipboard'),
+            const SizedBox(height: 8),
+            const Text(
+              'You can find this file in your device\'s Downloads folder or file manager.',
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showRestoreSuccessDialog() {
+    final l10n = AppLocalizations.of(context)!;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.restoreSuccess),
+        content: Text(l10n.restoreSuccessMessage),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              // Note: In a real app, you might want to restart or refresh the app state here
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _importRecipes() async {
+    if (_isImportingRecipes) return;
+    final l10n = AppLocalizations.of(context)!;
+
+    final picked = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['json'],
+    );
+    if (picked == null) return;
+    if (!mounted) return;
+
+    final pickedFile = picked.files.first;
+    final bytes = pickedFile.bytes ??
+        (pickedFile.path != null
+            ? await _readFileBytes(pickedFile.path!)
+            : null);
+    if (bytes == null) {
+      SnackbarService.showError(context, 'Could not read the selected file');
+      return;
+    }
+
+    setState(() => _isImportingRecipes = true);
+
+    try {
+      final service = ServiceProvider.export.recipeImport;
+      final preview = await service.previewImport(bytes);
+
+      if (!mounted) return;
+
+      if (preview.records.isEmpty) {
+        SnackbarService.showSuccess(context, l10n.importEmptyFile);
+        return;
+      }
+
+      DuplicateStrategy strategy = DuplicateStrategy.skip;
+      if (preview.hasDuplicates) {
+        final chosen = await _showDuplicateStrategyDialog(
+            l10n, preview.duplicateNames.length);
+        if (chosen == null || !mounted) return;
+        strategy = chosen;
+      }
+
+      final result = await service.executeImport(preview, strategy);
+
+      if (mounted) {
+        _showRecipeImportResultDialog(l10n, result);
+      }
+    } on GastrobrainException catch (e) {
+      if (mounted) SnackbarService.showError(context, e.message);
+    } catch (e) {
+      if (mounted) SnackbarService.showError(context, e.toString());
+    } finally {
+      if (mounted) setState(() => _isImportingRecipes = false);
+    }
+  }
+
+  Future<void> _importIngredients() async {
+    if (_isImportingIngredients) return;
+    final l10n = AppLocalizations.of(context)!;
+
+    final picked = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['json'],
+    );
+    if (picked == null) return;
+    if (!mounted) return;
+
+    final pickedFile = picked.files.first;
+    final bytes = pickedFile.bytes ??
+        (pickedFile.path != null
+            ? await _readFileBytes(pickedFile.path!)
+            : null);
+    if (bytes == null) {
+      SnackbarService.showError(context, 'Could not read the selected file');
+      return;
+    }
+
+    setState(() => _isImportingIngredients = true);
+
+    try {
+      final service = ServiceProvider.export.ingredientImport;
+      final preview = await service.previewImport(bytes);
+
+      if (!mounted) return;
+
+      if (preview.records.isEmpty) {
+        SnackbarService.showSuccess(context, l10n.importEmptyFile);
+        return;
+      }
+
+      DuplicateStrategy strategy = DuplicateStrategy.skip;
+      if (preview.hasDuplicates) {
+        final chosen = await _showDuplicateStrategyDialog(
+            l10n, preview.duplicateNames.length);
+        if (chosen == null || !mounted) return;
+        strategy = chosen;
+      }
+
+      final result = await service.executeImport(preview, strategy);
+
+      if (mounted) {
+        _showIngredientImportResultDialog(l10n, result);
+      }
+    } on GastrobrainException catch (e) {
+      if (mounted) SnackbarService.showError(context, e.message);
+    } catch (e) {
+      if (mounted) SnackbarService.showError(context, e.toString());
+    } finally {
+      if (mounted) setState(() => _isImportingIngredients = false);
+    }
+  }
+
+  Future<Uint8List?> _readFileBytes(String path) async {
+    try {
+      return await File(path).readAsBytes();
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<DuplicateStrategy?> _showDuplicateStrategyDialog(
+      AppLocalizations l10n, int count) {
+    return showDialog<DuplicateStrategy>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.importDuplicatesTitle),
+        content: Text(l10n.importDuplicatesMessage(count)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(null),
+            child: Text(l10n.cancel),
+          ),
+          TextButton(
+            onPressed: () =>
+                Navigator.of(ctx).pop(DuplicateStrategy.skip),
+            child: Text(l10n.importStrategySkip),
+          ),
+          TextButton(
+            onPressed: () =>
+                Navigator.of(ctx).pop(DuplicateStrategy.addAsNew),
+            child: Text(l10n.importStrategyAddAsNew),
+          ),
+          ElevatedButton(
+            onPressed: () =>
+                Navigator.of(ctx).pop(DuplicateStrategy.replace),
+            child: Text(l10n.importStrategyReplace),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showRecipeImportResultDialog(
+      AppLocalizations l10n, RecipeImportResult result) {
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(result.hasErrors
+            ? 'Import Completed with Errors'
+            : 'Import Successful'),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _importSummaryRow(l10n.importResultAdded, result.recipesAdded),
+              _importSummaryRow(
+                  l10n.importResultUpdated, result.recipesUpdated),
+              _importSummaryRow(
+                  l10n.importResultSkipped, result.recipesSkipped),
+              if (result.hasWarnings) ...[
+                const SizedBox(height: 12),
+                Text(l10n.importResultWarnings,
+                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 4),
+                Text(result.warnings.join('\n'),
+                    style: const TextStyle(fontSize: 12)),
+              ],
+              if (result.hasErrors) ...[
+                const SizedBox(height: 12),
+                Text('Errors',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(ctx).colorScheme.error)),
+                const SizedBox(height: 4),
+                Text(result.errors.join('\n'),
+                    style: const TextStyle(fontSize: 12)),
+              ],
+              const SizedBox(height: 12),
+              const Divider(),
+              const SizedBox(height: 8),
+              Text(
+                l10n.importRecipesMealHistoryNotice,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontStyle: FontStyle.italic,
+                  color: Theme.of(ctx).colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: Text(l10n.ok),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showIngredientImportResultDialog(
+      AppLocalizations l10n, IngredientImportResult result) {
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(result.hasErrors
+            ? 'Import Completed with Errors'
+            : 'Import Successful'),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _importSummaryRow(l10n.importResultAdded, result.added),
+              _importSummaryRow(l10n.importResultUpdated, result.updated),
+              _importSummaryRow(l10n.importResultSkipped, result.skipped),
+              if (result.hasWarnings) ...[
+                const SizedBox(height: 12),
+                Text(l10n.importResultWarnings,
+                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 4),
+                Text(result.warnings.join('\n'),
+                    style: const TextStyle(fontSize: 12)),
+              ],
+              if (result.hasErrors) ...[
+                const SizedBox(height: 12),
+                Text('Errors',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(ctx).colorScheme.error)),
+                const SizedBox(height: 4),
+                Text(result.errors.join('\n'),
+                    style: const TextStyle(fontSize: 12)),
+              ],
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: Text(l10n.ok),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _importSummaryRow(String label, int count) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(label),
+          Text('$count', style: const TextStyle(fontWeight: FontWeight.bold)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDebugToggleCard(BuildContext context, AppLocalizations l10n) {
+    final debugSettings = context.watch<DebugSettingsProvider>();
+    return Card(
+      child: SwitchListTile(
+        secondary: Icon(
+          Icons.analytics_outlined,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+        title: Text(l10n.debugScoringMode),
+        subtitle: Text(
+          l10n.debugScoringModeDescription,
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+        value: debugSettings.debugScoringMode,
+        onChanged: (_) => debugSettings.toggleDebugScoringMode(),
+      ),
+    );
+  }
+
+  Widget _buildScopeNote(AppLocalizations l10n) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                Icons.info_outline,
+                size: 14,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  l10n.recipeExportImportScopeNote,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: Text(
+              l10n.recipeExportImportFullBackupHint,
+              style: TextStyle(
+                fontSize: 12,
+                fontStyle: FontStyle.italic,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Simple section header - no over-engineering
+  Widget _buildSectionHeader(String title, IconData icon) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 24, bottom: 12, left: 4),
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: Theme.of(context).colorScheme.primary),
+          const SizedBox(width: 8),
+          Text(
+            title,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(l10n.tools),
+      ),
+      body: SafeArea(
+        bottom: true,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.toolsScreenSubtitle,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+              ),
+
+              // Developer Tools Section
+              _buildSectionHeader(l10n.developerTools, Icons.developer_mode),
+              _buildDebugToggleCard(context, l10n),
+              const SizedBox(height: 8),
+              Card(
+                child: ListTile(
+                  leading: Icon(Icons.storage, color: Theme.of(context).colorScheme.primary),
+                  title: const Text('Schema Inspector'),
+                  subtitle: const Text('Show schema_migrations, recipes columns, and tables'),
+                  trailing: _isInspectingSchema
+                      ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                      : const Icon(Icons.chevron_right),
+                  onTap: _inspectSchema,
+                ),
+              ),
+
+              // Recipe Management Section
+              _buildSectionHeader(l10n.recipeManagement, Icons.restaurant_menu),
+
+              // Recipe Editor
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.edit_note,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              l10n.recipeEditor,
+                              style: Theme.of(context).textTheme.titleMedium,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(l10n.recipeEditorDescription),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.of(context).pushNamed('/recipe-editor');
+                          },
+                          icon: const Icon(Icons.edit_outlined),
+                          label: Text(l10n.openRecipeEditor),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              // Data Management Section
+              _buildSectionHeader(l10n.dataManagement, Icons.storage),
+
+              // Database Backup
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.backup,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            l10n.databaseBackup,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(l10n.backupDescription),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: _isBackingUp ? null : _backupDatabase,
+                          icon: _isBackingUp
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child:
+                                      CircularProgressIndicator(strokeWidth: 2),
+                                )
+                              : const Icon(Icons.backup),
+                          label: Text(_isBackingUp
+                              ? l10n.backingUp
+                              : l10n.backupAllData),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(l10n.restoreDescription),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: _isRestoring ? null : _restoreDatabase,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.errorContainer,
+                            foregroundColor:
+                                Theme.of(context).colorScheme.onErrorContainer,
+                          ),
+                          icon: _isRestoring
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child:
+                                      CircularProgressIndicator(strokeWidth: 2),
+                                )
+                              : const Icon(Icons.restore),
+                          label: Text(_isRestoring
+                              ? l10n.restoring
+                              : l10n.restoreFromBackup),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      const Divider(),
+                      const SizedBox(height: 16),
+                      Text(l10n.importRecipesDescription),
+                      const SizedBox(height: 8),
+                      _buildScopeNote(l10n),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed:
+                              _isImportingRecipes ? null : _importRecipes,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Theme.of(context)
+                                .colorScheme
+                                .secondaryContainer,
+                            foregroundColor: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer,
+                          ),
+                          icon: _isImportingRecipes
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child:
+                                      CircularProgressIndicator(strokeWidth: 2),
+                                )
+                              : const Icon(Icons.file_upload),
+                          label: Text(_isImportingRecipes
+                              ? 'Importing...'
+                              : l10n.importRecipes),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Ingredient Import
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.file_upload_outlined,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            l10n.importIngredientsTitle,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(l10n.importIngredientsDescription),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: _isImportingIngredients
+                              ? null
+                              : _importIngredients,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Theme.of(context)
+                                .colorScheme
+                                .secondaryContainer,
+                            foregroundColor: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer,
+                          ),
+                          icon: _isImportingIngredients
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                      strokeWidth: 2),
+                                )
+                              : const Icon(Icons.file_upload),
+                          label: Text(_isImportingIngredients
+                              ? 'Importing...'
+                              : l10n.importIngredients),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Recipe Export
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.file_download,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            l10n.exportRecipes,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(l10n.exportRecipesDescription),
+                      const SizedBox(height: 8),
+                      _buildScopeNote(l10n),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed:
+                              _isExportingRecipes ? null : _exportRecipes,
+                          icon: _isExportingRecipes
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child:
+                                      CircularProgressIndicator(strokeWidth: 2),
+                                )
+                              : const Icon(Icons.download),
+                          label: Text(_isExportingRecipes
+                              ? 'Exporting...'
+                              : l10n.exportRecipes),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Ingredient Export
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.local_grocery_store,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            l10n.exportIngredients,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(l10n.exportIngredientsDescription),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: _isExportingIngredients
+                              ? null
+                              : _exportIngredients,
+                          icon: _isExportingIngredients
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child:
+                                      CircularProgressIndicator(strokeWidth: 2),
+                                )
+                              : const Icon(Icons.download),
+                          label: Text(_isExportingIngredients
+                              ? 'Exporting...'
+                              : l10n.exportIngredients),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Info Section
+              Card(
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.info_outline,
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Export Information',
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'Recipe Export:\n'
+                        '• Complete ingredient data (quantities, units, categories)\n'
+                        '• Current ingredients show existing recipe compositions\n'
+                        '• Enhanced ingredients array ready for external editing\n\n'
+                        'Ingredient Export:\n'
+                        '• All ingredients with categories, units, protein types\n'
+                        '• Master ingredient list for external management\n'
+                        '• Useful for ingredient database maintenance\n\n'
+                        'Backup & Restore:\n'
+                        '• Complete database backup to Downloads folder\n'
+                        '• Restore from previous backups\n'
+                        '• Import recipes and ingredients from JSON\n\n'
+                        'General:\n'
+                        '• Files saved to Downloads folder with timestamp\n'
+                        '• Use exported data with import utilities',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              // App version footer
+              if (_packageInfo != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 24, bottom: 8),
+                  child: Center(
+                    child: Text(
+                      '${l10n.appVersionLabel} ${_packageInfo!.version} (${_packageInfo!.buildNumber})',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

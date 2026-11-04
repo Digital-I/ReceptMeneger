@@ -1,0 +1,585 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart' show SharePlus, ShareParams, XFile;
+import '../../database/database_helper.dart';
+import '../errors/gastrobrain_exceptions.dart';
+import '../migration/migration.dart';
+import '../migration/tag_vocabulary_seed.dart';
+
+/// Service for complete database backup and restore using JSON format
+///
+/// Creates a single JSON file containing ALL application data:
+/// - Tag Types and Tags (taxonomy)
+/// - Recipes (with ingredients, story, marinating time, servings, tags)
+/// - Ingredients (with aliases)
+/// - Meal Plans (with simple-side ingredients per planned item)
+/// - Meals (cooked meal records, with simple-side ingredients)
+/// - Recommendation History (user preferences and interactions)
+///
+/// This is a COMPLETE backup/restore (no merge logic).
+/// Restore operation replaces ALL existing data.
+class DatabaseBackupService {
+  final DatabaseHelper _databaseHelper;
+
+  DatabaseBackupService(this._databaseHelper);
+
+  /// Creates a complete backup of all database data to JSON.
+  ///
+  /// Writes to app-private storage and triggers the native share sheet so the
+  /// user can send the file to Drive, email, WhatsApp, etc. No storage
+  /// permissions are required on Android 10+.
+  ///
+  /// Returns the path of the written file (app-private directory).
+  Future<String> backupDatabase() async {
+    try {
+      final backupData = await buildBackupData();
+      final jsonString = const JsonEncoder.withIndent('  ').convert(backupData);
+      return await _writeAndShareBackup(jsonString);
+    } catch (e) {
+      throw GastrobrainException('Failed to create backup: ${e.toString()}');
+    }
+  }
+
+  /// Assembles the complete backup data map (no file I/O or sharing).
+  ///
+  /// Exposed separately from [backupDatabase] so the export content can be
+  /// verified in tests without platform channels (path_provider, share_plus).
+  Future<Map<String, dynamic>> buildBackupData() async {
+    final backupData = <String, dynamic>{
+      'version': '1.0',
+      'schema_version': await _getCurrentSchemaVersion(),
+      'backup_date': DateTime.now().toIso8601String(),
+    };
+
+    backupData['tag_types'] = await _exportTagTypes();
+    backupData['tags'] = await _exportTags();
+    backupData['recipes'] = await _exportRecipes();
+    backupData['ingredients'] = await _exportIngredients();
+    backupData['meal_plans'] = await _exportMealPlans();
+    backupData['meals'] = await _exportMeals();
+    backupData['recommendation_history'] = await _exportRecommendationHistory();
+
+    return backupData;
+  }
+
+  /// Returns the max applied migration version, or 0 if it cannot be
+  /// determined (e.g. schema_migrations table absent in test databases).
+  Future<int> _getCurrentSchemaVersion() async {
+    try {
+      final db = await _databaseHelper.database;
+      final result =
+          await db.rawQuery('SELECT MAX(version) AS version FROM schema_migrations');
+      return (result.first['version'] as int?) ?? 0;
+    } catch (_) {
+      return 0;
+    }
+  }
+
+  /// Exports all recipes with their recipe_ingredients junction table data
+  Future<List<Map<String, dynamic>>> _exportRecipes() async {
+    final recipes = await _databaseHelper.getAllRecipes();
+    final exportData = <Map<String, dynamic>>[];
+    final db = await _databaseHelper.database;
+
+    for (final recipe in recipes) {
+      final recipeIngredients = await db.query(
+        'recipe_ingredients',
+        where: 'recipe_id = ?',
+        whereArgs: [recipe.id],
+      );
+      final recipeTags = await db.query(
+        'recipe_tags',
+        where: 'recipe_id = ?',
+        whereArgs: [recipe.id],
+      );
+
+      exportData.add({
+        'id': recipe.id,
+        'name': recipe.name,
+        'difficulty': recipe.difficulty,
+        'prep_time_minutes': recipe.prepTimeMinutes,
+        'cook_time_minutes': recipe.cookTimeMinutes,
+        'marinating_time_minutes': recipe.marinatingTimeMinutes,
+        'rating': recipe.rating,
+        'desired_frequency': recipe.desiredFrequency.value,
+        'notes': recipe.notes,
+        'story': recipe.story,
+        'instructions': recipe.instructions,
+        'servings': recipe.servings,
+        'created_at': recipe.createdAt.toIso8601String(),
+        'recipe_ingredients': recipeIngredients
+            .map((ri) => {
+                  'id': ri['id'],
+                  'recipe_id': ri['recipe_id'],
+                  'ingredient_id': ri['ingredient_id'],
+                  'quantity': ri['quantity'],
+                  'notes': ri['notes'],
+                  'unit_override': ri['unit_override'],
+                  'custom_name': ri['custom_name'],
+                  'custom_category': ri['custom_category'],
+                  'custom_unit': ri['custom_unit'],
+                })
+            .toList(),
+        'tag_ids': recipeTags.map((rt) => rt['tag_id'] as String).toList(),
+      });
+    }
+
+    return exportData;
+  }
+
+  /// Exports all ingredients
+  Future<List<Map<String, dynamic>>> _exportIngredients() async {
+    final ingredients = await _databaseHelper.getAllIngredients();
+
+    return ingredients
+        .map((ingredient) => {
+              'id': ingredient.id,
+              'name': ingredient.name,
+              'category': ingredient.category.value,
+              'unit': ingredient.unit?.value,
+              'protein_type': ingredient.proteinType?.name,
+              'notes': ingredient.notes,
+              'aliases': ingredient.aliases.isEmpty ? null : ingredient.aliases,
+            })
+        .toList();
+  }
+
+  /// Exports all meal plans with their items and recipes
+  Future<List<Map<String, dynamic>>> _exportMealPlans() async {
+    final mealPlans = await _databaseHelper.getAllMealPlans();
+    final exportData = <Map<String, dynamic>>[];
+
+    for (final plan in mealPlans) {
+      // Get items for this meal plan
+      final items = await _databaseHelper.getMealPlanItems(plan.id);
+
+      exportData.add({
+        'id': plan.id,
+        'week_start_date': plan.weekStartDate.toIso8601String(),
+        'notes': plan.notes,
+        'created_at': plan.createdAt.toIso8601String(),
+        'modified_at': plan.modifiedAt.toIso8601String(),
+        'items': items
+            .map((item) => {
+                  'id': item.id,
+                  'meal_plan_id': item.mealPlanId,
+                  'planned_date': item.plannedDate,
+                  'meal_type': item.mealType,
+                  'notes': item.notes,
+                  'has_been_cooked': item.hasBeenCooked,
+                  'planned_servings': item.plannedServings,
+                  'recipes': (item.mealPlanItemRecipes ?? [])
+                      .map((recipe) => {
+                            'id': recipe.id,
+                            'meal_plan_item_id': recipe.mealPlanItemId,
+                            'recipe_id': recipe.recipeId,
+                            'is_primary_dish': recipe.isPrimaryDish,
+                            'notes': recipe.notes,
+                          })
+                      .toList(),
+                  'ingredients': (item.mealPlanItemIngredients ?? [])
+                      .map((ingredient) => ingredient.toMap())
+                      .toList(),
+                })
+            .toList(),
+      });
+    }
+
+    return exportData;
+  }
+
+  /// Exports all cooked meals with their recipes
+  Future<List<Map<String, dynamic>>> _exportMeals() async {
+    final meals = await _databaseHelper.getAllMeals();
+    final exportData = <Map<String, dynamic>>[];
+
+    for (final meal in meals) {
+      exportData.add({
+        'id': meal.id,
+        'recipe_id': meal.recipeId,
+        'cooked_at': meal.cookedAt.toIso8601String(),
+        'servings': meal.servings,
+        'notes': meal.notes,
+        'was_successful': meal.wasSuccessful,
+        'actual_prep_time': meal.actualPrepTime,
+        'actual_cook_time': meal.actualCookTime,
+        'modified_at': meal.modifiedAt?.toIso8601String(),
+        'meal_recipes': (meal.mealRecipes ?? [])
+            .map((recipe) => {
+                  'id': recipe.id,
+                  'meal_id': recipe.mealId,
+                  'recipe_id': recipe.recipeId,
+                  'is_primary_dish': recipe.isPrimaryDish,
+                  'notes': recipe.notes,
+                })
+            .toList(),
+        'meal_ingredients': (meal.mealIngredients ?? [])
+            .map((ingredient) => ingredient.toMap())
+            .toList(),
+      });
+    }
+
+    return exportData;
+  }
+
+  /// Exports all tag types
+  Future<List<Map<String, dynamic>>> _exportTagTypes() async {
+    final db = await _databaseHelper.database;
+    final rows = await db.query('tag_types');
+    return rows
+        .map((r) => {
+              'id': r['id'],
+              'name': r['name'],
+              'is_hard': r['is_hard'],
+              'is_open': r['is_open'],
+            })
+        .toList();
+  }
+
+  /// Exports all tags
+  Future<List<Map<String, dynamic>>> _exportTags() async {
+    final db = await _databaseHelper.database;
+    final rows = await db.query('tags');
+    return rows
+        .map((r) => {
+              'id': r['id'],
+              'name': r['name'],
+              'type_id': r['type_id'],
+            })
+        .toList();
+  }
+
+  /// Exports all recommendation history records
+  Future<List<Map<String, dynamic>>> _exportRecommendationHistory() async {
+    final db = await _databaseHelper.database;
+    final records = await db.query('recommendation_history');
+
+    return records
+        .map((record) => {
+              'id': record['id'],
+              'result_data': record['result_data'],
+              'created_at': record['created_at'],
+              'context_type': record['context_type'],
+              'target_date': record['target_date'],
+              'meal_type': record['meal_type'],
+              'user_id': record['user_id'],
+            })
+        .toList();
+  }
+
+  /// Writes backup JSON to app-private storage and triggers the share sheet.
+  ///
+  /// Returns the path of the written file.
+  Future<String> _writeAndShareBackup(String jsonString) async {
+    try {
+      final timestamp = DateTime.now();
+      final formattedDate =
+          '${timestamp.year}-${timestamp.month.toString().padLeft(2, '0')}-${timestamp.day.toString().padLeft(2, '0')}';
+      final formattedTime =
+          '${timestamp.hour.toString().padLeft(2, '0')}${timestamp.minute.toString().padLeft(2, '0')}${timestamp.second.toString().padLeft(2, '0')}';
+      final fileName = 'gastrobrain_backup_${formattedDate}_$formattedTime.json';
+
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/$fileName');
+      await file.writeAsString(jsonString);
+
+      await SharePlus.instance.share(
+        ShareParams(files: [XFile(file.path)], subject: fileName),
+      );
+
+      return file.path;
+    } catch (e) {
+      throw GastrobrainException(
+          'Failed to share backup: ${e.toString()}');
+    }
+  }
+
+  /// Restores database from a backup JSON file at the given path.
+  ///
+  /// IMPORTANT: This operation replaces ALL existing data.
+  /// Show a warning dialog before calling this.
+  Future<void> restoreDatabase(String backupFilePath) async {
+    try {
+      final file = File(backupFilePath);
+      if (!await file.exists()) {
+        throw GastrobrainException('Backup file not found: $backupFilePath');
+      }
+      final jsonString = await file.readAsString();
+      final Map<String, dynamic> backupData = json.decode(jsonString);
+      await _restoreFromJson(backupData);
+    } on GastrobrainException {
+      rethrow;
+    } catch (e) {
+      throw GastrobrainException('Failed to restore backup: ${e.toString()}');
+    }
+  }
+
+  /// Restores database from backup JSON content (string).
+  ///
+  /// Use when file_picker returns bytes instead of a resolvable path (SAF
+  /// content URI on Android 10+). Content must be valid Gastrobrain backup JSON.
+  Future<void> restoreDatabaseFromString(String jsonContent) async {
+    try {
+      final Map<String, dynamic> backupData = json.decode(jsonContent);
+      await _restoreFromJson(backupData);
+    } on GastrobrainException {
+      rethrow;
+    } catch (e) {
+      throw GastrobrainException('Failed to restore backup: ${e.toString()}');
+    }
+  }
+
+  /// Validates and applies backup data inside a single database transaction.
+  Future<void> _restoreFromJson(Map<String, dynamic> backupData) async {
+    if (backupData['version'] == null) {
+      throw const GastrobrainException('Invalid backup file: missing version');
+    }
+
+    // Refuse backups stamped by a newer app schema before touching any data.
+    // Backups without a stamp predate the stamp and go through the tolerant
+    // path; current version 0 means it cannot be determined (test databases).
+    final backupSchemaVersion = backupData['schema_version'];
+    if (backupSchemaVersion is int) {
+      final currentSchemaVersion = await _getCurrentSchemaVersion();
+      if (currentSchemaVersion > 0 &&
+          backupSchemaVersion > currentSchemaVersion) {
+        throw const BackupVersionException(
+            'Backup was created by a newer app version');
+      }
+    }
+
+    final db = await _databaseHelper.database;
+
+    await db.transaction((txn) async {
+      // Delete all existing data (reverse dependency order)
+      await txn.delete('meal_recipes');
+      await txn.delete('meal_ingredients');
+      await txn.delete('meals');
+      await txn.delete('meal_plan_item_recipes');
+      await txn.delete('meal_plan_item_ingredients');
+      await txn.delete('meal_plan_items');
+      await txn.delete('meal_plans');
+      await txn.delete('recipe_ingredients');
+      await txn.delete('recipe_tags');
+      await txn.delete('recipes');
+      await txn.delete('ingredients');
+      await txn.delete('recommendation_history');
+      await txn.delete('tags');
+      await txn.delete('tag_types');
+
+      if (backupData['tag_types'] != null) {
+        final tagTypes = backupData['tag_types'] as List;
+        for (final tt in tagTypes) {
+          // Older backups carry legacy color/icon keys and no flags; those
+          // keys are ignored and the flags fall back to open-vocabulary
+          // defaults matching the seed migrations.
+          await txn.insert('tag_types', {
+            'id': tt['id'],
+            'name': tt['name'],
+            'is_hard': tt['is_hard'] ?? 0,
+            'is_open': tt['is_open'] ?? 1,
+          });
+        }
+      }
+
+      if (backupData['tags'] != null) {
+        final tags = backupData['tags'] as List;
+        for (final tag in tags) {
+          await txn.insert('tags', {
+            'id': tag['id'],
+            'name': tag['name'],
+            'type_id': tag['type_id'],
+          });
+        }
+      }
+
+      // Fill any gaps in the built-in tag vocabulary. INSERT OR IGNORE means
+      // rows just restored from the backup win; this only seeds tag_types/
+      // tags missing from the backup — e.g. pre-tagging backups (#399).
+      await seedBuiltInTagVocabulary(TransactionWrapper(txn));
+
+      if (backupData['ingredients'] != null) {
+        final ingredients = backupData['ingredients'] as List;
+        for (final ing in ingredients) {
+          final aliases = ing['aliases'];
+          await txn.insert('ingredients', {
+            'id': ing['id'],
+            'name': ing['name'],
+            'category': ing['category'],
+            'unit': ing['unit'],
+            'protein_type': ing['protein_type'],
+            'notes': ing['notes'],
+            'aliases': aliases == null
+                ? null
+                : (aliases is List ? jsonEncode(aliases) : aliases as String),
+          });
+        }
+      }
+
+      if (backupData['recipes'] != null) {
+        final recipes = backupData['recipes'] as List;
+        for (final recipe in recipes) {
+          await txn.insert('recipes', {
+            'id': recipe['id'],
+            'name': recipe['name'],
+            'difficulty': recipe['difficulty'],
+            'prep_time_minutes': recipe['prep_time_minutes'],
+            'cook_time_minutes': recipe['cook_time_minutes'],
+            'marinating_time_minutes': recipe['marinating_time_minutes'] ?? 0,
+            'rating': recipe['rating'],
+            'desired_frequency': recipe['desired_frequency'],
+            'notes': recipe['notes'],
+            'story': recipe['story'] ?? '',
+            'instructions': recipe['instructions'],
+            'servings': recipe['servings'] ?? 4,
+            'created_at': recipe['created_at'],
+          });
+
+          if (recipe['recipe_ingredients'] != null) {
+            final recipeIngredients = recipe['recipe_ingredients'] as List;
+            for (final ri in recipeIngredients) {
+              await txn.insert('recipe_ingredients', {
+                'id': ri['id'],
+                'recipe_id': ri['recipe_id'],
+                'ingredient_id': ri['ingredient_id'],
+                'quantity': ri['quantity'],
+                'notes': ri['notes'],
+                'unit_override': ri['unit_override'],
+                'custom_name': ri['custom_name'],
+                'custom_category': ri['custom_category'],
+                'custom_unit': ri['custom_unit'],
+              });
+            }
+          }
+
+          if (recipe['tag_ids'] != null) {
+            final tagIds = recipe['tag_ids'] as List;
+            for (final tagId in tagIds) {
+              await txn.insert('recipe_tags', {
+                'recipe_id': recipe['id'],
+                'tag_id': tagId as String,
+              });
+            }
+          }
+        }
+      }
+
+      if (backupData['meal_plans'] != null) {
+        final mealPlans = backupData['meal_plans'] as List;
+        for (final plan in mealPlans) {
+          await txn.insert('meal_plans', {
+            'id': plan['id'],
+            'week_start_date': plan['week_start_date'],
+            'notes': plan['notes'],
+            'created_at': plan['created_at'],
+            'modified_at': plan['modified_at'],
+          });
+
+          if (plan['items'] != null) {
+            final items = plan['items'] as List;
+            for (final item in items) {
+              await txn.insert('meal_plan_items', {
+                'id': item['id'],
+                'meal_plan_id': item['meal_plan_id'],
+                'planned_date': item['planned_date'],
+                'meal_type': item['meal_type'],
+                'notes': item['notes'] ?? '',
+                'has_been_cooked': item['has_been_cooked'] ? 1 : 0,
+                'planned_servings': item['planned_servings'] ?? 4,
+              });
+
+              if (item['recipes'] != null) {
+                final recipes = item['recipes'] as List;
+                for (final recipe in recipes) {
+                  await txn.insert('meal_plan_item_recipes', {
+                    'id': recipe['id'],
+                    'meal_plan_item_id': recipe['meal_plan_item_id'],
+                    'recipe_id': recipe['recipe_id'],
+                    'is_primary_dish': recipe['is_primary_dish'] ? 1 : 0,
+                    'notes': recipe['notes'],
+                  });
+                }
+              }
+
+              if (item['ingredients'] != null) {
+                final ingredients = item['ingredients'] as List;
+                for (final ingredient in ingredients) {
+                  await txn.insert('meal_plan_item_ingredients', {
+                    'id': ingredient['id'],
+                    'meal_plan_item_id': ingredient['meal_plan_item_id'],
+                    'ingredient_id': ingredient['ingredient_id'],
+                    'custom_name': ingredient['custom_name'],
+                    'notes': ingredient['notes'],
+                    'quantity': ingredient['quantity'] ?? 1.0,
+                    'unit': ingredient['unit'],
+                  });
+                }
+              }
+            }
+          }
+        }
+      }
+
+      if (backupData['meals'] != null) {
+        final meals = backupData['meals'] as List;
+        for (final meal in meals) {
+          await txn.insert('meals', {
+            'id': meal['id'],
+            'recipe_id': meal['recipe_id'],
+            'cooked_at': meal['cooked_at'],
+            'servings': meal['servings'],
+            'notes': meal['notes'],
+            'was_successful': meal['was_successful'] ? 1 : 0,
+            'actual_prep_time': meal['actual_prep_time'],
+            'actual_cook_time': meal['actual_cook_time'],
+            'modified_at': meal['modified_at'],
+          });
+
+          if (meal['meal_recipes'] != null) {
+            final mealRecipes = meal['meal_recipes'] as List;
+            for (final recipe in mealRecipes) {
+              await txn.insert('meal_recipes', {
+                'id': recipe['id'],
+                'meal_id': recipe['meal_id'],
+                'recipe_id': recipe['recipe_id'],
+                'is_primary_dish': recipe['is_primary_dish'] ? 1 : 0,
+                'notes': recipe['notes'],
+              });
+            }
+          }
+
+          if (meal['meal_ingredients'] != null) {
+            final mealIngredients = meal['meal_ingredients'] as List;
+            for (final ingredient in mealIngredients) {
+              await txn.insert('meal_ingredients', {
+                'id': ingredient['id'],
+                'meal_id': ingredient['meal_id'],
+                'ingredient_id': ingredient['ingredient_id'],
+                'custom_name': ingredient['custom_name'],
+                'notes': ingredient['notes'],
+                'quantity': ingredient['quantity'] ?? 1.0,
+                'unit': ingredient['unit'],
+              });
+            }
+          }
+        }
+      }
+
+      if (backupData['recommendation_history'] != null) {
+        final records = backupData['recommendation_history'] as List;
+        for (final record in records) {
+          await txn.insert('recommendation_history', {
+            'id': record['id'],
+            'result_data': record['result_data'],
+            'created_at': record['created_at'],
+            'context_type': record['context_type'],
+            'target_date': record['target_date'],
+            'meal_type': record['meal_type'],
+            'user_id': record['user_id'],
+          });
+        }
+      }
+    });
+  }
+}
