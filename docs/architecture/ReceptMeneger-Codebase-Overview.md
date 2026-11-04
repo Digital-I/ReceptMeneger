@@ -355,9 +355,9 @@ TextFormField(
 - Interactive buttons in forms (save, cancel, add, remove)
 - Dynamic form sections that can be added/removed
 
-### Code Quality Watchdog
+### Code Quality Guidelines
 
-A Code Quality Watchdog (defined in `lib/CLAUDE.md` and subdirectory `CLAUDE.md` files) automatically flags threshold violations to `.github/refactoring-backlog.md`:
+Code quality thresholds are recommended for keeping the codebase maintainable:
 
 | Smell | Default Threshold | Severity |
 |-------|-------------------|----------|
@@ -366,7 +366,7 @@ A Code Quality Watchdog (defined in `lib/CLAUDE.md` and subdirectory `CLAUDE.md`
 | Method length | > 50 lines | 🟡 High |
 | Method length | > 100 lines | 🔴 Critical |
 
-Services have stricter thresholds (> 200 lines: High, > 350 lines: Critical). The backlog is reviewed during Sprint Planning as part of the 20% quality allocation.
+Services have stricter thresholds (> 200 lines: High, > 350 lines: Critical).
 
 ## Development Tools & Utilities
 

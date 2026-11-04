@@ -106,14 +106,10 @@ lib/l10n/app_localizations*.dart
 coverage/
 *.lcov
 devtools_options.yaml
-.claude/settings.local.json
-.claude/scheduled_tasks.lock
 
 # Test logs from flaky test detection
 test_logs/
 
 # other
-CLAUDE.md
 CHANGELOG.md
-.claude
 .github

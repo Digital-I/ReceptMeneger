@@ -41,7 +41,7 @@ gh issue view {issue-number}
 #### 2. Development Process
 1. **Analyze the Issue**: Read the GitHub issue carefully and understand requirements
 2. **Plan Implementation**: Use TodoWrite tool to break down the work
-3. **Follow Development Workflow**: Apply the step-by-step approach outlined in CLAUDE.md
+3. **Follow Development Workflow**: Apply the step-by-step approach outlined in [Codebase Overview](../architecture/ReceptMeneger-Codebase-Overview.md)
 4. **Commit Regularly**: Make small, focused commits with clear messages
 
 #### 3. Commit Message Format

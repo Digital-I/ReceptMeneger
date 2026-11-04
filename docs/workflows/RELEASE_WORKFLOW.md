@@ -96,7 +96,7 @@ Add release notes to `CHANGELOG.md`:
 
 ### Changed
 - Reorganized docs/ folder into logical subfolders
-- Updated testing patterns in CLAUDE.md
+- Updated testing patterns documentation
 - Enhanced test coverage to 100% for critical paths
 
 ### Fixed

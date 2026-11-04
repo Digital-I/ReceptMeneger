@@ -315,11 +315,10 @@ When adding or updating documentation:
 
 If you can't find what you're looking for:
 - Check the main project [README.md](../README.md)
-- Review [CLAUDE.md](../CLAUDE.md) for development patterns
 - Search across documentation files for keywords
 
 ---
 
 **Maintained by**: Development Team
-**Primary Audience**: Developers, Contributors, Claude Code
+**Primary Audience**: Developers, Contributors
 **Repository**: receptmeneger (private)

@@ -244,13 +244,11 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Acknowledgments
 
-- Inspired by home cooking experiences during COVID-19 lockdown
-- Built with assistance from Anthropic's Claude AI
-- Special thanks to all home cooks who inspired this project
+- Курсовая работа по разработке мобильного приложения.
 
-## Contact
+## Author / Контакт
 
-For questions or feedback, please open an issue in the repository.
+**Екатерина Медведева** — [ketrin.medvegonok@gmail.com](mailto:ketrin.medvegonok@gmail.com)
 
 ---
 
