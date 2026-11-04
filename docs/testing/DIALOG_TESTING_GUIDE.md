@@ -1279,8 +1279,7 @@ When writing tests for a new dialog, ensure you cover:
 
 ## Related Documentation
 
-- **Testing Roadmap Summary**: `docs/testing/TESTING_ROADMAP_SUMMARY.md`
-- **Codebase Overview**: `docs/archive/ReceptMeneger-Codebase-Overview.md`
+- **Codebase Overview**: `docs/architecture/ReceptMeneger-Codebase-Overview.md`
 
 ---
 

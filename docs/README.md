@@ -1,18 +1,16 @@
 # ReceptMeneger Documentation
 
-**Last Updated**: 2026-02-08
+**Last Updated**: 2026-11-05
 
-This directory contains comprehensive documentation for the ReceptMeneger project, organized by category.
+This directory contains documentation for the ReceptMeneger project, organized by category.
 
 ## Quick Links
 
 - **New to the project?** Start with [ReceptMeneger Codebase Overview](architecture/ReceptMeneger-Codebase-Overview.md)
-- **Working on an issue?** Create roadmap in [issues/roadmaps/](issues/roadmaps/) and analysis in [issues/analysis/](issues/analysis/)
 - **Setting up tests?** See [Dialog Testing Guide](testing/DIALOG_TESTING_GUIDE.md) and [Edge Case Testing Guide](testing/EDGE_CASE_TESTING_GUIDE.md)
 - **Writing edge case tests?** Check [Edge Case Catalog](testing/EDGE_CASE_CATALOG.md)
 - **Following workflows?** Check [Issue Workflow](workflows/ISSUE_WORKFLOW.md)
 - **Adding localization?** Read [L10N Protocol](workflows/L10N_PROTOCOL.md)
-- **Planning milestone?** See [planning/milestones/](planning/milestones/)
 - **Designing UI/UX?** Check [design/ux/](design/ux/)
 - **Implementing UI components?** Start with [UI Component Library](design/component_library.md)
 
@@ -24,90 +22,14 @@ This directory contains comprehensive documentation for the ReceptMeneger projec
 docs/
 ├── README.md (this file)
 │
-├── issues/               # Issue-Level Implementation Docs
-│   ├── analysis/         # Phase 1: Understanding existing code
-│   └── roadmaps/         # Phase-based implementation plans
-│
-├── planning/             # Project-Level Planning
-│   ├── milestones/       # Milestone roadmaps (0.1.x)
-│   ├── sprints/          # Sprint planning docs
-│   └── features/         # High-level feature specifications
-│
 ├── design/               # Visual & UX Design
 │   ├── ux/               # Feature-specific UX designs
 │   └── *.md              # Design tokens, theme, visual identity
 │
 ├── architecture/         # System Architecture & Technical Decisions
 ├── testing/              # Testing Guides & Resources
-├── workflows/            # Development Workflows & Processes
-└── archive/              # Historical & Completed Documents
+└── workflows/            # Development Workflows & Processes
 ```
-
----
-
-## Issues (Implementation Documentation)
-
-**Purpose**: Issue-level implementation documentation following the 4-phase roadmap approach.
-
-### Analysis Documents
-
-Analysis documents capture understanding of existing code before implementation.
-
-| Document | Issue | Status |
-|----------|-------|--------|
-| *(no active analysis documents)* | — | — |
-
-**Naming convention**: `issue-{number}-analysis.md`
-
-### Roadmaps
-
-Roadmaps provide phase-based implementation plans with checkbox lists for tracking.
-
-| Document | Issue | Status |
-|----------|-------|--------|
-| *(no active roadmap documents)* | — | — |
-
-**Naming convention**: `issue-{number}-roadmap.md` or `issue-{number}-phase{X}-roadmap.md` for phased work
-
-**When to create**:
-- Create analysis doc when starting Phase 1 (understanding existing code)
-- Create roadmap doc when planning implementation approach
-- Both are **issue-level** documentation (not project-level)
-
----
-
-## Planning (Project-Level Documentation)
-
-**Purpose**: Project-level planning documents for milestones, sprints, and high-level feature specifications.
-
-### Milestone Roadmaps
-
-Strategic roadmaps for complete milestones (version releases).
-
-| Document | Milestone | Status |
-|----------|-----------|--------|
-| *(no active milestone roadmaps — see archive for completed milestones 0.1.4–0.1.6)* | — | — |
-
-**Naming convention**: `roadmap-{version}.md`
-
-### Sprint Planning
-
-Sprint-level planning documents with velocity tracking and issue sequencing.
-
-| Document | Sprint | Status |
-|----------|--------|--------|
-| [sprint-planning-0.1.10.md](planning/sprints/sprint-planning-0.1.10.md) | Milestone 0.1.10 | 📅 Complete |
-| [sprint-planning-0.1.12.md](planning/sprints/sprint-planning-0.1.12.md) | Milestone 0.1.12 | 📅 Complete |
-| [sprint-planning-0.1.13.md](planning/sprints/sprint-planning-0.1.13.md) | Milestone 0.1.13 | 📅 Complete |
-| [sprint-planning-0.1.14.md](planning/sprints/sprint-planning-0.1.14.md) | Milestone 0.1.14 | 🔄 Current |
-
-**Naming convention**: `sprint-planning-{version-or-dates}.md`
-
-### Feature Specifications
-
-High-level feature specifications that may span multiple issues.
-
-**Naming convention**: `feature-spec-{name}.md`
 
 ---
 
@@ -131,16 +53,9 @@ High-level feature specifications that may span multiple issues.
 
 UX designs and user flow documentation for specific features.
 
-| Document | Issue | Status |
-|----------|-------|--------|
-| [meal-plan-summary-design.md](design/ux/meal-plan-summary-design.md) | Meal Plan Summary Feature | ✅ Complete |
-
-**Naming convention**: `issue-{number}-ux-design.md` or `{feature-name}-design.md`
-
-**When to create**:
-- Create UX design doc when planning user flows, wireframes, or interaction patterns
-- Should be created **before** implementation roadmap
-- Focus on "what" and "why", not "how" (implementation is in roadmaps)
+| Document | Feature | Status |
+|----------|---------|--------|
+| [meal-plan-summary-design.md](design/ux/meal-plan-summary-design.md) | Meal Plan Summary Feature | ✅ Current |
 
 ---
 
@@ -148,7 +63,7 @@ UX designs and user flow documentation for specific features.
 
 | Document | Purpose | Status |
 |----------|---------|--------|
-| [ReceptMeneger-Codebase-Overview.md](architecture/ReceptMeneger-Codebase-Overview.md) | Comprehensive architecture overview, data models, services, and patterns | ✅ Current (2026-02-08) |
+| [ReceptMeneger-Codebase-Overview.md](architecture/ReceptMeneger-Codebase-Overview.md) | Comprehensive architecture overview, data models, services, and patterns | ✅ Current |
 | [RECOMMENDATION_ENGINE.md](architecture/RECOMMENDATION_ENGINE.md) | Recommendation service architecture and scoring factors | ✅ Current |
 | [Dependency-Injection-Strategy.md](architecture/Dependency-Injection-Strategy.md) | ServiceProvider pattern and DI approach | ✅ Current |
 
@@ -160,15 +75,17 @@ UX designs and user flow documentation for specific features.
 
 | Document | Purpose | Status |
 |----------|---------|--------|
-| [DIALOG_TESTING_GUIDE.md](testing/DIALOG_TESTING_GUIDE.md) | Comprehensive guide for testing dialogs with DialogTestHelper | ✅ Current (2025-12-29) |
-| [EDGE_CASE_TESTING_GUIDE.md](testing/EDGE_CASE_TESTING_GUIDE.md) | Comprehensive guide for edge case testing patterns and helpers | ✅ Current (2025-12-30) |
-| [EDGE_CASE_CATALOG.md](testing/EDGE_CASE_CATALOG.md) | Catalog of edge cases and EdgeCaseTestHelpers usage | ✅ Current (2025-12-30) |
-| [EDGE_CASE_TEST_REVIEW.md](testing/EDGE_CASE_TEST_REVIEW.md) | Comprehensive review of edge case test suite quality | ✅ Current (2025-12-30) |
+| [DIALOG_TESTING_GUIDE.md](testing/DIALOG_TESTING_GUIDE.md) | Comprehensive guide for testing dialogs with DialogTestHelper | ✅ Current |
+| [EDGE_CASE_TESTING_GUIDE.md](testing/EDGE_CASE_TESTING_GUIDE.md) | Comprehensive guide for edge case testing patterns and helpers | ✅ Current |
+| [EDGE_CASE_CATALOG.md](testing/EDGE_CASE_CATALOG.md) | Catalog of edge cases and EdgeCaseTestHelpers usage | ✅ Current |
+| [MOCK_DATABASE_ERROR_SIMULATION.md](testing/MOCK_DATABASE_ERROR_SIMULATION.md) | Mock database error simulation reference | ✅ Current |
+| [BACKUP_FIXTURE_PROTOCOL.md](testing/BACKUP_FIXTURE_PROTOCOL.md) | Backup fixture protocol | ✅ Current |
 | [E2E_TESTING.md](testing/E2E_TESTING.md) | End-to-end testing guidelines | ✅ Current |
 | [createTestableWidget-pattern.md](testing/createTestableWidget-pattern.md) | Pattern for creating testable widgets | ✅ Current |
 | [RecipeProvider-test-setup.md](testing/RecipeProvider-test-setup.md) | Provider testing setup guide | ✅ Current |
 | [Revised-Flutter-Integration-Testing-Guidelines.md](testing/Revised-Flutter-Integration-Testing-Guidelines.md) | Integration testing approach and guidelines | ✅ Current |
-| [TEST_GOVERNANCE.md](testing/TEST_GOVERNANCE.md) | Governance rules for keeping test counts accurate; log naming conventions; when to update docs | ✅ Current (2026-03-25) |
+| [TEST_COVERAGE_SETUP.md](testing/TEST_COVERAGE_SETUP.md) | Test coverage setup | ✅ Current |
+| [TEST_GOVERNANCE.md](testing/TEST_GOVERNANCE.md) | Governance rules for keeping test counts accurate; log naming conventions; when to update docs | ✅ Current |
 
 ### Testing Documentation Hierarchy
 
@@ -178,15 +95,16 @@ For testing-related work, follow this hierarchy:
 1. Testing Guides (start here for implementation)
    ├─ DIALOG_TESTING_GUIDE.md (for dialog tests)
    ├─ EDGE_CASE_TESTING_GUIDE.md (for edge case tests)
-   ├─ EDGE_CASE_CATALOG.md (edge case reference & helpers)
-   └─ EDGE_CASE_TEST_REVIEW.md (test quality review)
+   └─ EDGE_CASE_CATALOG.md (edge case reference & helpers)
 
 2. Test Files
-   ├─ test/widgets/ (200+ dialog/widget tests across 15 files)
-   ├─ test/edge_cases/ (500+ edge case tests across 30 files)
+   ├─ test/widgets/ (dialog/widget tests)
+   ├─ test/edge_cases/ (edge case tests)
    ├─ test/regression/ (critical regression tests)
    └─ test/edge_cases/performance/ (performance benchmarks)
 ```
+
+---
 
 ## Workflows & Processes
 
@@ -195,23 +113,8 @@ For testing-related work, follow this hierarchy:
 | [ISSUE_WORKFLOW.md](workflows/ISSUE_WORKFLOW.md) | GitHub issue management, Git Flow, branching strategy | ✅ Current |
 | [L10N_PROTOCOL.md](workflows/L10N_PROTOCOL.md) | Localization workflow for English/Portuguese | ✅ Current |
 | [RELEASE_WORKFLOW.md](workflows/RELEASE_WORKFLOW.md) | Release process, versioning, and automated pipeline | ✅ Current |
-
----
-
-## Archive
-
-Historical planning documents and completed project tracking:
-
-| Document | Purpose | Status |
-|----------|---------|--------|
-| [ReceptMeneger-Roadmap-Status.md](archive/ReceptMeneger-Roadmap-Status.md) | Overall project roadmap and milestone tracking | 📅 Historical (2025-12-19) — update when starting 0.2.x |
-| [Sprint-Estimation-Diary.md](archive/Sprint-Estimation-Diary.md) | Sprint estimation tracking and learnings | 📅 Historical |
-| [roadmap-0.1.4.md](archive/roadmap-0.1.4.md) | 0.1.4 - Testing Infrastructure milestone plan | 📅 Complete |
-| [roadmap-0.1.5.md](archive/roadmap-0.1.5.md) | 0.1.5 - Meal Recording Consolidation milestone plan | 📅 Complete |
-| [roadmap-0.1.6.md](archive/roadmap-0.1.6.md) | 0.1.6 - Recipe Management Polish milestone plan | 📅 Complete |
-| [issue-262-navigation-analysis.md](archive/issue-262-navigation-analysis.md) | #262 navigation standardization analysis | 📅 Complete |
-| [issue-262-standardize-navigation-styles.md](archive/issue-262-standardize-navigation-styles.md) | #262 navigation standardization roadmap | 📅 Complete |
-| [issue-292-consolidate-migrations-baseline-roadmap.md](archive/issue-292-consolidate-migrations-baseline-roadmap.md) | #292 migration consolidation roadmap | 📅 Complete |
+| [DATABASE_MIGRATION_WORKFLOW.md](workflows/DATABASE_MIGRATION_WORKFLOW.md) | Database migration workflow | ✅ Current |
+| [SEED_DATA_WORKFLOW.md](workflows/SEED_DATA_WORKFLOW.md) | Seed data workflow | ✅ Current |
 
 ---
 
@@ -219,8 +122,6 @@ Historical planning documents and completed project tracking:
 
 - ✅ **Current**: Up-to-date and actively maintained
 - ⚠️ **May need update**: Potentially outdated, review recommended
-- 📅 **Historical**: Preserved for reference, not actively maintained
-- 🔄 **In Progress**: Currently being updated
 
 ---
 
@@ -233,66 +134,19 @@ Historical planning documents and completed project tracking:
 - **ReceptMeneger-Codebase-Overview.md**: Update when architecture changes
 - **RECOMMENDATION_ENGINE.md**: Update when recommendation factors change
 
-### Archive Policy
-
-Documents are moved to archive/ when:
-- Planning phase is complete (sprint plans, roadmaps)
-- Issue is closed (issue-specific tracking docs)
-- Work is deferred to future milestones (refactoring plans)
-
 ---
 
 ## Naming Conventions
 
-### Issue-Level Documentation
-
-**Analysis**: `docs/issues/analysis/issue-{number}-{short-name}.md`
-- Example: `issue-266-shopping-list-preview-analysis.md`
-
-**Roadmap**: `docs/issues/roadmaps/issue-{number}-roadmap.md`
-- Example: `issue-266-roadmap.md`
-- For phased work: `issue-{number}-phase{X}-roadmap.md`
-
-**UX Design**: `docs/design/ux/issue-{number}-ux-design.md`
-- Example: `issue-258-ux-design.md`
-
-### Project-Level Documentation
-
-**Milestone Roadmap**: `docs/planning/milestones/roadmap-{version}.md`
-- Example: `roadmap-0.1.7.md`
-
-**Sprint Planning**: `docs/planning/sprints/sprint-planning-{version-or-dates}.md`
-- Example: `sprint-planning-0.1.7a-0.1.7b.md`
-
-**Feature Spec**: `docs/planning/features/feature-spec-{name}.md`
-- Example: `feature-spec-recommendation-engine.md`
-
 **Visual Design**: `docs/design/{topic}.md`
 - Example: `design-tokens.md`, `visual_identity.md`
 
----
+**UX Design**: `docs/design/ux/{feature-name}-design.md`
+- Example: `meal-plan-summary-design.md`
 
-## Document Decision Tree
+**Testing Guide**: `docs/testing/{TOPIC}_GUIDE.md` or `{topic}-pattern.md`
 
-**"Where should I put this documentation?"**
-
-```
-Is it about a specific GitHub issue?
-├─ YES → docs/issues/
-│   ├─ Analysis of existing code? → docs/issues/analysis/
-│   ├─ Implementation roadmap? → docs/issues/roadmaps/
-│   └─ UX design/wireframes? → docs/design/ux/
-│
-└─ NO → Is it project-level?
-    ├─ Milestone planning? → docs/planning/milestones/
-    ├─ Sprint planning? → docs/planning/sprints/
-    ├─ Feature specification? → docs/planning/features/
-    ├─ Visual design system? → docs/design/
-    ├─ System architecture? → docs/architecture/
-    ├─ Testing guide? → docs/testing/
-    ├─ Development workflow? → docs/workflows/
-    └─ Historical/completed? → docs/archive/
-```
+**Workflow**: `docs/workflows/{NAME}_WORKFLOW.md` or `{NAME}_PROTOCOL.md`
 
 ---
 
@@ -300,14 +154,13 @@ Is it about a specific GitHub issue?
 
 When adding or updating documentation:
 
-1. **Use the decision tree above** to determine correct location
-2. **Follow naming conventions** strictly for consistency
-3. **Include "Last Updated" date** at the top of the file
-4. **Update this README** if adding new documents
-5. **Cross-reference** related documents with links
-6. **Use clear headers** for easy navigation
-7. **Include examples** where helpful
-8. **Keep format consistent** with existing docs
+1. **Follow naming conventions** above for consistency
+2. **Include "Last Updated" date** at the top of the file
+3. **Update this README** if adding new documents
+4. **Cross-reference** related documents with links
+5. **Use clear headers** for easy navigation
+6. **Include examples** where helpful
+7. **Keep format consistent** with existing docs
 
 ---
 
@@ -319,6 +172,6 @@ If you can't find what you're looking for:
 
 ---
 
-**Maintained by**: Development Team
+**Maintained by**: Екатерина Медведева
 **Primary Audience**: Developers, Contributors
 **Repository**: receptmeneger (private)

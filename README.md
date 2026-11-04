@@ -178,15 +178,12 @@ docs/                     # Documentation
 ├── architecture/         # System architecture & design
 ├── design/               # Visual identity, design tokens, UX
 ├── testing/              # Testing guides & resources
-├── workflows/            # Development processes
-├── planning/             # Milestones, sprints, feature specs
-├── issues/               # Issue-level analysis & roadmaps
-└── archive/              # Historical documents
+└── workflows/            # Development processes
 ```
 
 ## Development Status
 
-**Current Version: v0.1.7** - UI Polish & Design System
+**Current Version: v1.0.0**
 
 ### Major Achievements
 
@@ -232,7 +229,6 @@ docs/                     # Documentation
 - [**Issue Workflow**](docs/workflows/ISSUE_WORKFLOW.md) - Development workflow and Git Flow practices
 - [**Release Workflow**](docs/workflows/RELEASE_WORKFLOW.md) - Release process and versioning
 - [**L10N Protocol**](docs/workflows/L10N_PROTOCOL.md) - Localization guidelines
-- [**Changelog**](CHANGELOG.md) - Release notes and version history
 
 ## Contributing
 
