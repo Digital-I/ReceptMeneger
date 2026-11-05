@@ -5,6 +5,7 @@ import '../../database/database_helper.dart';
 import '../errors/receptmeneger_exceptions.dart';
 import 'ingredient_export_service.dart';
 import 'recipe_import_service.dart' show DuplicateStrategy;
+import 'package:uuid/uuid.dart';
 
 export 'recipe_import_service.dart' show DuplicateStrategy;
 
@@ -132,15 +133,17 @@ class IngredientImportService {
 
   Future<void> _insertIngredient(
       Map<String, dynamic> record, Transaction txn) async {
+    final id = (record['ingredient_id'] as String?) ?? const Uuid().v4();
+
     await txn.insert(
       'ingredients',
       {
-        'id': record['ingredient_id'] as String,
+        'id': id,
         'name': (record['name'] as String).trim(),
         'category': record['category'],
         'unit': record['unit'],
         'protein_type': record['protein_type'],
-        'notes': record['notes'],
+        'notes': record['notes'] ?? null, // Явно ставим null, если ключа нет
       },
       conflictAlgorithm: ConflictAlgorithm.fail,
     );
@@ -163,7 +166,7 @@ class IngredientImportService {
           'category': record['category'],
           'unit': record['unit'],
           'protein_type': record['protein_type'],
-          'notes': record['notes'],
+          'notes': record['notes'] ?? null, // Явно ставим null, если ключа нет
         },
         where: 'id = ?',
         whereArgs: [existingId],

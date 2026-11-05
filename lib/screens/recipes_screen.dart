@@ -135,7 +135,8 @@ class _RecipesScreenState extends State<RecipesScreen> {
     // Map provider state to a virtual dialog key that encodes field + direction
     String? tempSortKey;
     if (currentSortBy == 'created_at') {
-      tempSortKey = currentSortOrder == 'ASC' ? 'created_at_asc' : 'created_at_desc';
+      tempSortKey =
+          currentSortOrder == 'ASC' ? 'created_at_asc' : 'created_at_desc';
     } else {
       tempSortKey = currentSortBy;
     }
@@ -150,34 +151,35 @@ class _RecipesScreenState extends State<RecipesScreen> {
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  RadioGroup<String>(
+                  RadioListTile<String>(
+                    title: Text(AppLocalizations.of(context)!.name),
+                    value: 'name',
                     groupValue: tempSortKey,
-                    onChanged: (value) => setState(() => tempSortKey = value),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        RadioListTile<String>(
-                          title: Text(AppLocalizations.of(context)!.name),
-                          value: 'name',
-                        ),
-                        RadioListTile<String>(
-                          title: Text(AppLocalizations.of(context)!.rating),
-                          value: 'rating',
-                        ),
-                        RadioListTile<String>(
-                          title: Text(AppLocalizations.of(context)!.difficulty),
-                          value: 'difficulty',
-                        ),
-                        RadioListTile<String>(
-                          title: Text(AppLocalizations.of(context)!.sortNewestFirst),
-                          value: 'created_at_desc',
-                        ),
-                        RadioListTile<String>(
-                          title: Text(AppLocalizations.of(context)!.sortOldestFirst),
-                          value: 'created_at_asc',
-                        ),
-                      ],
-                    ),
+                    onChanged: (v) => setState(() => tempSortKey = v),
+                  ),
+                  RadioListTile<String>(
+                    title: Text(AppLocalizations.of(context)!.rating),
+                    value: 'rating',
+                    groupValue: tempSortKey,
+                    onChanged: (v) => setState(() => tempSortKey = v),
+                  ),
+                  RadioListTile<String>(
+                    title: Text(AppLocalizations.of(context)!.difficulty),
+                    value: 'difficulty',
+                    groupValue: tempSortKey,
+                    onChanged: (v) => setState(() => tempSortKey = v),
+                  ),
+                  RadioListTile<String>(
+                    title: Text(AppLocalizations.of(context)!.sortNewestFirst),
+                    value: 'created_at_desc',
+                    groupValue: tempSortKey,
+                    onChanged: (v) => setState(() => tempSortKey = v),
+                  ),
+                  RadioListTile<String>(
+                    title: Text(AppLocalizations.of(context)!.sortOldestFirst),
+                    value: 'created_at_asc',
+                    groupValue: tempSortKey,
+                    onChanged: (v) => setState(() => tempSortKey = v),
                   ),
                 ],
               ),
@@ -251,8 +253,10 @@ class _RecipesScreenState extends State<RecipesScreen> {
       filterParts.add('${l10n.filterByRating}: ${filters['rating']}+');
     }
     if (filters.containsKey('desired_frequency')) {
-      final freq = FrequencyType.fromString(filters['desired_frequency'] as String);
-      filterParts.add(l10n.filterByFrequency(freq.getLocalizedDisplayName(context)));
+      final freq =
+          FrequencyType.fromString(filters['desired_frequency'] as String);
+      filterParts
+          .add(l10n.filterByFrequency(freq.getLocalizedDisplayName(context)));
     }
 
     final tagFilters = provider.tagFilters;
@@ -414,186 +418,197 @@ class _RecipesScreenState extends State<RecipesScreen> {
           Expanded(
             child: Stack(
               children: [
-            Consumer<RecipeProvider>(
-              builder: (context, recipeProvider, child) {
-                // Handle loading state
-                if (recipeProvider.isLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
+                Consumer<RecipeProvider>(
+                  builder: (context, recipeProvider, child) {
+                    // Handle loading state
+                    if (recipeProvider.isLoading) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
 
-                // Handle error state
-                if (recipeProvider.hasError) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.error_outline,
-                          size: 64,
-                          color: Colors.red[300],
+                    // Handle error state
+                    if (recipeProvider.hasError) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.error_outline,
+                              size: 64,
+                              color: Colors.red[300],
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              AppLocalizations.of(context)!.errorOccurred,
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              recipeProvider.error?.message ?? '',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 16),
+                            ElevatedButton(
+                              onPressed: () {
+                                recipeProvider.clearError();
+                                recipeProvider.loadRecipes(forceRefresh: true);
+                              },
+                              child: Text(AppLocalizations.of(context)!.retry),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 16),
-                        Text(
-                          AppLocalizations.of(context)!.errorOccurred,
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          recipeProvider.error?.message ?? '',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: () {
-                            recipeProvider.clearError();
-                            recipeProvider.loadRecipes(forceRefresh: true);
-                          },
-                          child: Text(AppLocalizations.of(context)!.retry),
-                        ),
-                      ],
-                    ),
-                  );
-                }
+                      );
+                    }
 
-                // Handle empty state
-                if (!recipeProvider.hasData) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.restaurant_menu,
-                          size: 64,
-                          color: Colors.grey[400],
+                    // Handle empty state
+                    if (!recipeProvider.hasData) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.restaurant_menu,
+                              size: 64,
+                              color: Colors.grey[400],
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              AppLocalizations.of(context)!.noRecipesFound,
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              AppLocalizations.of(context)!.addFirstRecipe,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 16),
-                        Text(
-                          AppLocalizations.of(context)!.noRecipesFound,
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          AppLocalizations.of(context)!.addFirstRecipe,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ],
-                    ),
-                  );
-                }
+                      );
+                    }
 
-                // Get filtered recipes
-                final filteredRecipes =
-                    _getFilteredRecipes(recipeProvider.recipes);
+                    // Get filtered recipes
+                    final filteredRecipes =
+                        _getFilteredRecipes(recipeProvider.recipes);
 
-                // Build recipes list
-                return RefreshIndicator(
-                  onRefresh: () =>
-                      recipeProvider.loadRecipes(forceRefresh: true),
-                  child: NotificationListener<ScrollMetricsNotification>(
-                    onNotification: (notification) {
-                      final hasAbove =
-                          notification.metrics.extentBefore > 0;
-                      final hasBelow =
-                          notification.metrics.extentAfter > 0;
-                      if (hasAbove != _hasContentAbove ||
-                          hasBelow != _hasContentBelow) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          if (mounted) {
-                            setState(() {
-                              _hasContentAbove = hasAbove;
-                              _hasContentBelow = hasBelow;
+                    // Build recipes list
+                    return RefreshIndicator(
+                      onRefresh: () =>
+                          recipeProvider.loadRecipes(forceRefresh: true),
+                      child: NotificationListener<ScrollMetricsNotification>(
+                        onNotification: (notification) {
+                          final hasAbove =
+                              notification.metrics.extentBefore > 0;
+                          final hasBelow = notification.metrics.extentAfter > 0;
+                          if (hasAbove != _hasContentAbove ||
+                              hasBelow != _hasContentBelow) {
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              if (mounted) {
+                                setState(() {
+                                  _hasContentAbove = hasAbove;
+                                  _hasContentBelow = hasBelow;
+                                });
+                              }
                             });
                           }
-                        });
-                      }
-                      return false;
-                    },
-                    child: ListView.builder(
-                      padding: EdgeInsets.only(
-                        bottom:
-                            max(80.0, MediaQuery.of(context).size.height * 0.3),
-                      ),
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      itemCount: filteredRecipes.length,
-                      itemBuilder: (context, index) {
-                      final recipe = filteredRecipes[index];
-                      return RecipeCard(
-                        recipe: recipe,
-                        onEdit: () => _editRecipe(recipe),
-                        onDelete: () => _deleteRecipe(recipe),
-                        onCooked: () {
-                          Navigator.push<bool>(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  CookMealScreen(recipe: recipe),
-                            ),
-                          ).then((value) {
-                            if (value == true) {
-                              recipeProvider.loadRecipes(forceRefresh: true);
-                            }
-                          });
+                          return false;
                         },
-                        mealCount: recipeProvider.getMealCount(recipe.id),
-                        lastCooked: recipeProvider.getLastCookedDate(recipe.id),
-                      );
-                    },
-                  ),
-                  ),
-                );
-              },
-            ),
-            // Top affordance: fades in when content exists above the viewport
-            Positioned(
-              top: 0, left: 0, right: 0,
-              height: 32,
-              child: IgnorePointer(
-                child: AnimatedOpacity(
-                  opacity: _hasContentAbove ? 1.0 : 0.0,
-                  duration: const Duration(milliseconds: 150),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Theme.of(context).colorScheme.surface,
-                          Theme.of(context).colorScheme.surface.withValues(alpha: 0),
-                        ],
+                        child: ListView.builder(
+                          padding: EdgeInsets.only(
+                            bottom: max(
+                                80.0, MediaQuery.of(context).size.height * 0.3),
+                          ),
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          itemCount: filteredRecipes.length,
+                          itemBuilder: (context, index) {
+                            final recipe = filteredRecipes[index];
+                            return RecipeCard(
+                              recipe: recipe,
+                              onEdit: () => _editRecipe(recipe),
+                              onDelete: () => _deleteRecipe(recipe),
+                              onCooked: () {
+                                Navigator.push<bool>(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        CookMealScreen(recipe: recipe),
+                                  ),
+                                ).then((value) {
+                                  if (value == true) {
+                                    recipeProvider.loadRecipes(
+                                        forceRefresh: true);
+                                  }
+                                });
+                              },
+                              mealCount: recipeProvider.getMealCount(recipe.id),
+                              lastCooked:
+                                  recipeProvider.getLastCookedDate(recipe.id),
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                // Top affordance: fades in when content exists above the viewport
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: 32,
+                  child: IgnorePointer(
+                    child: AnimatedOpacity(
+                      opacity: _hasContentAbove ? 1.0 : 0.0,
+                      duration: const Duration(milliseconds: 150),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Theme.of(context).colorScheme.surface,
+                              Theme.of(context)
+                                  .colorScheme
+                                  .surface
+                                  .withOpacity(0), //.withValues(alpha: 0),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ),
-            // Bottom affordance: fades in when more content exists below the viewport
-            Positioned(
-              bottom: 0, left: 0, right: 0,
-              height: 80,
-              child: IgnorePointer(
-                child: AnimatedOpacity(
-                  opacity: _hasContentBelow ? 1.0 : 0.0,
-                  duration: const Duration(milliseconds: 150),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                        colors: [
-                          Theme.of(context).colorScheme.surface,
-                          Theme.of(context).colorScheme.surface.withValues(alpha: 0),
-                        ],
+                // Bottom affordance: fades in when more content exists below the viewport
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  height: 80,
+                  child: IgnorePointer(
+                    child: AnimatedOpacity(
+                      opacity: _hasContentBelow ? 1.0 : 0.0,
+                      duration: const Duration(milliseconds: 150),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                            colors: [
+                              Theme.of(context).colorScheme.surface,
+                              Theme.of(context)
+                                  .colorScheme
+                                  .surface
+                                  .withOpacity(0), //.withValues(alpha: 0),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
           ),
         ],
       ),

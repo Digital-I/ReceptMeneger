@@ -49,7 +49,8 @@ class _DisplayItem {
   String get category => isManual ? manualItem!.category : dbItem!.category;
   bool get toBuy => dbItem?.toBuy ?? manualItem!.toBuy;
   double get quantity => dbItem?.quantity ?? manualItem!.quantity;
-  double? get quantityMax => dbItem?.quantityMax; // manual items don't support ranges
+  double? get quantityMax =>
+      dbItem?.quantityMax; // manual items don't support ranges
   String get unit => dbItem?.unit ?? manualItem!.unit ?? '';
 }
 
@@ -94,7 +95,8 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
     });
 
     try {
-      final shoppingList = await _dbHelper.getShoppingList(widget.shoppingListId);
+      final shoppingList =
+          await _dbHelper.getShoppingList(widget.shoppingListId);
 
       if (shoppingList == null) {
         if (mounted) {
@@ -165,7 +167,8 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(60),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Row(
               children: [
                 FilterChip(
@@ -280,7 +283,8 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
 
     // Sort items alphabetically within each category
     for (final items in grouped.values) {
-      items.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+      items
+          .sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
     }
 
     final l10nInner = AppLocalizations.of(context)!;
@@ -288,8 +292,8 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       children: grouped.entries.map((entry) {
-        final categoryName =
-            IngredientCategory.fromString(entry.key).getLocalizedDisplayName(context);
+        final categoryName = IngredientCategory.fromString(entry.key)
+            .getLocalizedDisplayName(context);
 
         return ExpansionTile(
           title: Row(
@@ -312,7 +316,8 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
               ),
             ],
           ),
-          tilePadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
+          tilePadding:
+              const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
           childrenPadding: EdgeInsets.zero,
           dense: true,
           initiallyExpanded: true,
@@ -320,7 +325,8 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
             return InkWell(
               onTap: () => _toggleDisplayItem(item),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
                 child: Row(
                   children: [
                     Checkbox(
@@ -335,7 +341,10 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                       Icon(
                         Icons.edit_note,
                         size: 16,
-                        color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.7),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withOpacity(0.7), //.withValues(alpha: 0.7),
                       ),
                       const SizedBox(width: 4),
                     ],
@@ -353,7 +362,8 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                       _formatDisplayQuantity(item),
                       style: TextStyle(
                         fontSize: 14,
-                        color: !item.toBuy ? Colors.grey[500] : Colors.grey[700],
+                        color:
+                            !item.toBuy ? Colors.grey[500] : Colors.grey[700],
                       ),
                     ),
                   ],

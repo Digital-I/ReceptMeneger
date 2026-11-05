@@ -37,10 +37,7 @@ void main() {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: const [
-          Locale('en', ''),
-          Locale('pt', ''),
-        ],
+        supportedLocales: AppLocalizations.supportedLocales,
         home: child,
       ),
     );
@@ -498,7 +495,8 @@ void main() {
       // Calculate the Friday of the current week (weeks start on Friday)
       final daysSinceFriday = (now.weekday + 2) % 7;
       final weekStart = now.subtract(Duration(days: daysSinceFriday));
-      final fridayDate = DateTime(weekStart.year, weekStart.month, weekStart.day);
+      final fridayDate =
+          DateTime(weekStart.year, weekStart.month, weekStart.day);
       final originalCookedAt = fridayDate;
 
       final testRecipe = Recipe(
@@ -1031,7 +1029,8 @@ void main() {
       expect(deletedCount, greaterThanOrEqualTo(0));
     });
 
-    test('DatabaseHelper.insertMealPlanItemRecipe() successfully inserts junction record',
+    test(
+        'DatabaseHelper.insertMealPlanItemRecipe() successfully inserts junction record',
         () async {
       // Setup: Create a meal plan item
       final now = DateTime.now();
@@ -1246,8 +1245,8 @@ void main() {
         final planItem = MealPlanItem(
           id: itemId,
           mealPlanId: mealPlanId,
-          plannedDate: MealPlanItem.formatPlannedDate(
-              weekStart.add(Duration(days: i))),
+          plannedDate:
+              MealPlanItem.formatPlannedDate(weekStart.add(Duration(days: i))),
           mealType: MealPlanItem.lunch,
         );
 
@@ -1324,11 +1323,10 @@ void main() {
       expect(find.byType(WeeklySummaryWidget), findsOneWidget);
 
       // Close via the close button
-      final closeButton = find.byWidgetPredicate(
-        (widget) => widget is IconButton &&
-                     widget.icon is Icon &&
-                     (widget.icon as Icon).icon == Icons.close
-      );
+      final closeButton = find.byWidgetPredicate((widget) =>
+          widget is IconButton &&
+          widget.icon is Icon &&
+          (widget.icon as Icon).icon == Icons.close);
       await tester.tap(closeButton);
       await tester.pumpAndSettle();
 
@@ -1393,11 +1391,10 @@ void main() {
       expect(find.textContaining('1 of 14 meals planned'), findsOneWidget);
 
       // Close the summary sheet
-      final closeButton = find.byWidgetPredicate(
-        (widget) => widget is IconButton &&
-                     widget.icon is Icon &&
-                     (widget.icon as Icon).icon == Icons.close
-      );
+      final closeButton = find.byWidgetPredicate((widget) =>
+          widget is IconButton &&
+          widget.icon is Icon &&
+          (widget.icon as Icon).icon == Icons.close);
       await tester.tap(closeButton);
       await tester.pumpAndSettle();
 
@@ -1565,11 +1562,11 @@ void main() {
       expect(find.textContaining('Spaghetti Bolognese (3×)'), findsOneWidget);
       expect(find.textContaining('Grilled Chicken (2×)'), findsOneWidget);
     });
-
   });
 
   group('FAB + App Bar Actions (#280 Shopping List Redesign)', () {
-    testWidgets('shows planning calendar without tabs', (WidgetTester tester) async {
+    testWidgets('shows planning calendar without tabs',
+        (WidgetTester tester) async {
       // Build the screen
       await tester.pumpWidget(createTestableWidget(
         WeeklyPlanScreen(databaseHelper: mockDbHelper),
@@ -1583,7 +1580,8 @@ void main() {
       expect(find.byType(WeeklyCalendarWidget), findsOneWidget);
     });
 
-    testWidgets('shows FAB and summary icon button instead of bottom bar', (WidgetTester tester) async {
+    testWidgets('shows FAB and summary icon button instead of bottom bar',
+        (WidgetTester tester) async {
       await tester.pumpWidget(createTestableWidget(
         WeeklyPlanScreen(databaseHelper: mockDbHelper),
       ));
@@ -1601,7 +1599,8 @@ void main() {
       expect(find.text('Generate Shopping List'), findsNothing);
     });
 
-    testWidgets('opens summary bottom sheet via app bar icon', (WidgetTester tester) async {
+    testWidgets('opens summary bottom sheet via app bar icon',
+        (WidgetTester tester) async {
       await tester.pumpWidget(createTestableWidget(
         WeeklyPlanScreen(databaseHelper: mockDbHelper),
       ));
@@ -1615,7 +1614,8 @@ void main() {
       expect(find.byType(WeeklySummaryWidget), findsOneWidget);
     });
 
-    testWidgets('dismisses summary bottom sheet on close button tap', (WidgetTester tester) async {
+    testWidgets('dismisses summary bottom sheet on close button tap',
+        (WidgetTester tester) async {
       await tester.pumpWidget(createTestableWidget(
         WeeklyPlanScreen(databaseHelper: mockDbHelper),
       ));
@@ -1629,11 +1629,10 @@ void main() {
       expect(find.byType(WeeklySummaryWidget), findsOneWidget);
 
       // Find and tap close button (IconButton with Icons.close)
-      final closeButton = find.byWidgetPredicate(
-        (widget) => widget is IconButton &&
-                     widget.icon is Icon &&
-                     (widget.icon as Icon).icon == Icons.close
-      );
+      final closeButton = find.byWidgetPredicate((widget) =>
+          widget is IconButton &&
+          widget.icon is Icon &&
+          (widget.icon as Icon).icon == Icons.close);
       expect(closeButton, findsOneWidget);
 
       await tester.tap(closeButton);
@@ -1643,7 +1642,8 @@ void main() {
       expect(find.byType(WeeklySummaryWidget), findsNothing);
     });
 
-    testWidgets('FAB navigates to shopping list flow', (WidgetTester tester) async {
+    testWidgets('FAB navigates to shopping list flow',
+        (WidgetTester tester) async {
       await tester.pumpWidget(createTestableWidget(
         WeeklyPlanScreen(databaseHelper: mockDbHelper),
       ));
@@ -1662,7 +1662,8 @@ void main() {
       expect(find.byType(WeeklyPlanScreen), findsNothing);
     });
 
-    testWidgets('planning calendar remains visible when summary sheet opens', (WidgetTester tester) async {
+    testWidgets('planning calendar remains visible when summary sheet opens',
+        (WidgetTester tester) async {
       await tester.pumpWidget(createTestableWidget(
         WeeklyPlanScreen(databaseHelper: mockDbHelper),
       ));
@@ -1679,24 +1680,28 @@ void main() {
       expect(find.byType(WeeklyCalendarWidget), findsOneWidget);
     });
 
-    testWidgets('FAB and summary icon have tooltips for accessibility', (WidgetTester tester) async {
+    testWidgets('FAB and summary icon have tooltips for accessibility',
+        (WidgetTester tester) async {
       await tester.pumpWidget(createTestableWidget(
         WeeklyPlanScreen(databaseHelper: mockDbHelper),
       ));
       await tester.pumpAndSettle();
 
       // Verify FAB has a tooltip
-      final fab = tester.widget<FloatingActionButton>(find.byType(FloatingActionButton));
+      final fab = tester
+          .widget<FloatingActionButton>(find.byType(FloatingActionButton));
       expect(fab.tooltip, isNotNull);
       expect(fab.tooltip, isNotEmpty);
 
       // Verify summary icon button has a tooltip
-      final summaryButton = tester.widget<IconButton>(find.widgetWithIcon(IconButton, Icons.analytics_outlined));
+      final summaryButton = tester.widget<IconButton>(
+          find.widgetWithIcon(IconButton, Icons.analytics_outlined));
       expect(summaryButton.tooltip, isNotNull);
       expect(summaryButton.tooltip, isNotEmpty);
     });
 
-    testWidgets('FAB is hidden when viewing a past week (#299)', (WidgetTester tester) async {
+    testWidgets('FAB is hidden when viewing a past week (#299)',
+        (WidgetTester tester) async {
       await tester.pumpWidget(createTestableWidget(
         WeeklyPlanScreen(databaseHelper: mockDbHelper),
       ));
@@ -1713,7 +1718,8 @@ void main() {
       expect(find.byIcon(Icons.shopping_cart_outlined), findsNothing);
     });
 
-    testWidgets('FAB reappears when navigating from past back to current week (#299)',
+    testWidgets(
+        'FAB reappears when navigating from past back to current week (#299)',
         (WidgetTester tester) async {
       await tester.pumpWidget(createTestableWidget(
         WeeklyPlanScreen(databaseHelper: mockDbHelper),
@@ -1788,8 +1794,7 @@ void main() {
       await mockDbHelper.insertMealPlanItem(testItem);
     });
 
-    testWidgets(
-        'opens RecipeSelectionDialog in edit mode (not bottom sheet)',
+    testWidgets('opens RecipeSelectionDialog in edit mode (not bottom sheet)',
         (tester) async {
       await tester.pumpWidget(
           createTestableWidget(WeeklyPlanScreen(databaseHelper: mockDbHelper)));
@@ -1846,8 +1851,7 @@ void main() {
 
       expect(find.byType(Dialog), findsOneWidget);
 
-      await tester.tap(
-          find.byKey(const Key('recipe_selection_cancel_button')));
+      await tester.tap(find.byKey(const Key('recipe_selection_cancel_button')));
       await tester.pumpAndSettle();
 
       expect(find.byType(Dialog), findsNothing);

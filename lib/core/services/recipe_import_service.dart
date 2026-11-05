@@ -127,12 +127,12 @@ class RecipeImportService {
               recipesSkipped++;
               continue;
             case DuplicateStrategy.replace:
-              final counts = await _replaceRecipe(
-                  record, txn, warnings);
+              final counts = await _replaceRecipe(record, txn, warnings);
               recipesUpdated++;
               ingredientsAdded += counts['added']!;
               ingredientsUpdated += counts['updated']!;
               ingredientsSkipped += counts['skipped']!;
+              break;
             case DuplicateStrategy.addAsNew:
               final modified = Map<String, dynamic>.from(record);
               modified['name'] = '$importedName (imported)';
@@ -140,13 +140,16 @@ class RecipeImportService {
               final counts = await _insertRecipe(modified, txn, warnings);
               recipesAdded++;
               ingredientsAdded += counts['added']!;
+              ingredientsUpdated += counts['updated']!;
               ingredientsSkipped += counts['skipped']!;
+              break;
           }
         } else {
           try {
             final counts = await _insertRecipe(record, txn, warnings);
             recipesAdded++;
             ingredientsAdded += counts['added']!;
+            ingredientsUpdated += counts['updated']!;
             ingredientsSkipped += counts['skipped']!;
           } catch (e) {
             errors.add('Failed to import recipe "$importedName": $e');
@@ -155,10 +158,9 @@ class RecipeImportService {
       }
 
       // Restore junction rows for recipes that survived.
-      final allRecipeIds =
-          (await txn.query('recipes', columns: ['id']))
-              .map((r) => r['id'] as String)
-              .toSet();
+      final allRecipeIds = (await txn.query('recipes', columns: ['id']))
+          .map((r) => r['id'] as String)
+          .toSet();
 
       for (final row in mealRecipesSnap) {
         if (allRecipeIds.contains(row['recipe_id'])) {
@@ -196,7 +198,9 @@ class RecipeImportService {
     List<String> warnings,
   ) async {
     final metadata = record['metadata'] as Map<String, dynamic>;
-    final recipeId = record['recipe_id'] as String;
+    // Генерируем новый ID, если в файле его нет
+    final recipeId =
+        (record['recipe_id'] as String?) ?? IdGenerator.generateId();
 
     await txn.insert('recipes', {
       'id': recipeId,
@@ -232,16 +236,24 @@ class RecipeImportService {
       'SELECT id FROM recipes WHERE LOWER(name) = LOWER(?)',
       [importedName],
     );
+
     if (existing.isNotEmpty) {
       final existingId = existing.first['id'] as String;
+
+      // Принудительно задаем существующий ID, чтобы сохранить связи с планами питания и историей
+      final modifiedRecord = Map<String, dynamic>.from(record);
+      modifiedRecord['recipe_id'] = existingId;
+
       await txn.delete('recipe_ingredients',
           where: 'recipe_id = ?', whereArgs: [existingId]);
       await txn.delete('recipe_tags',
           where: 'recipe_id = ?', whereArgs: [existingId]);
-      await txn.delete('recipes',
-          where: 'id = ?', whereArgs: [existingId]);
+      await txn.delete('recipes', where: 'id = ?', whereArgs: [existingId]);
+
+      return _insertRecipe(modifiedRecord, txn, warnings);
     }
 
+    // Fallback на случай, если запись вдруг не найдена (защита)
     return _insertRecipe(record, txn, warnings);
   }
 
@@ -255,16 +267,13 @@ class RecipeImportService {
     int added = 0;
     int skipped = 0;
 
-    final ingredients =
-        (record['current_ingredients'] as List? ?? [])
-            .cast<Map<String, dynamic>>();
+    final ingredients = (record['current_ingredients'] as List? ?? [])
+        .cast<Map<String, dynamic>>();
 
     for (final ing in ingredients) {
-      final ingredientId = ing['ingredient_id'] as String?;
-      if (ingredientId == null) {
-        skipped++;
-        continue;
-      }
+      // Генерируем новый ID, если его нет, вместо молчаливого пропуска
+      final ingredientId =
+          (ing['ingredient_id'] as String?) ?? IdGenerator.generateId();
 
       try {
         // Upsert ingredient (insert or ignore if already present).

@@ -8,7 +8,8 @@ import 'package:provider/provider.dart';
 import '../l10n/app_localizations.dart';
 import '../core/di/service_provider.dart';
 import '../core/providers/debug_settings_provider.dart';
-import '../core/services/ingredient_import_service.dart' show IngredientImportResult;
+import '../core/services/ingredient_import_service.dart'
+    show IngredientImportResult;
 import '../core/services/recipe_import_service.dart'
     show DuplicateStrategy, RecipeImportResult;
 import '../core/services/snackbar_service.dart';
@@ -60,13 +61,15 @@ class _ToolsScreenState extends State<ToolsScreen> {
         buf.writeln('(empty)');
       } else {
         for (final r in migrations) {
-          buf.writeln('v${r['version']}  ${r['description']}  applied: ${r['applied_at']}');
+          buf.writeln(
+              'v${r['version']}  ${r['description']}  applied: ${r['applied_at']}');
         }
       }
 
       buf.writeln('\n=== recipes columns ===');
       for (final r in recipeColumns) {
-        buf.writeln('  ${r['name']}  ${r['type']}  notnull=${r['notnull']}  dflt=${r['dflt_value']}');
+        buf.writeln(
+            '  ${r['name']}  ${r['type']}  notnull=${r['notnull']}  dflt=${r['dflt_value']}');
       }
 
       buf.writeln('\n=== tables ===');
@@ -124,6 +127,8 @@ class _ToolsScreenState extends State<ToolsScreen> {
       final exportService = ServiceProvider.export.recipeExport;
       final filePath = await exportService.exportRecipesToJson();
 
+      if (filePath == null) return;
+
       if (mounted) {
         SnackbarService.showSuccess(
           context,
@@ -162,6 +167,8 @@ class _ToolsScreenState extends State<ToolsScreen> {
     try {
       final exportService = ServiceProvider.export.ingredientExport;
       final filePath = await exportService.exportIngredientsToJson();
+
+      if (filePath == null) return;
 
       if (mounted) {
         SnackbarService.showSuccess(
@@ -512,18 +519,15 @@ class _ToolsScreenState extends State<ToolsScreen> {
             child: Text(l10n.cancel),
           ),
           TextButton(
-            onPressed: () =>
-                Navigator.of(ctx).pop(DuplicateStrategy.skip),
+            onPressed: () => Navigator.of(ctx).pop(DuplicateStrategy.skip),
             child: Text(l10n.importStrategySkip),
           ),
           TextButton(
-            onPressed: () =>
-                Navigator.of(ctx).pop(DuplicateStrategy.addAsNew),
+            onPressed: () => Navigator.of(ctx).pop(DuplicateStrategy.addAsNew),
             child: Text(l10n.importStrategyAddAsNew),
           ),
           ElevatedButton(
-            onPressed: () =>
-                Navigator.of(ctx).pop(DuplicateStrategy.replace),
+            onPressed: () => Navigator.of(ctx).pop(DuplicateStrategy.replace),
             child: Text(l10n.importStrategyReplace),
           ),
         ],
@@ -764,11 +768,16 @@ class _ToolsScreenState extends State<ToolsScreen> {
               const SizedBox(height: 8),
               Card(
                 child: ListTile(
-                  leading: Icon(Icons.storage, color: Theme.of(context).colorScheme.primary),
+                  leading: Icon(Icons.storage,
+                      color: Theme.of(context).colorScheme.primary),
                   title: const Text('Schema Inspector'),
-                  subtitle: const Text('Show schema_migrations, recipes columns, and tables'),
+                  subtitle: const Text(
+                      'Show schema_migrations, recipes columns, and tables'),
                   trailing: _isInspectingSchema
-                      ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2))
                       : const Icon(Icons.chevron_right),
                   onTap: _inspectSchema,
                 ),
@@ -969,8 +978,8 @@ class _ToolsScreenState extends State<ToolsScreen> {
                               ? const SizedBox(
                                   width: 20,
                                   height: 20,
-                                  child: CircularProgressIndicator(
-                                      strokeWidth: 2),
+                                  child:
+                                      CircularProgressIndicator(strokeWidth: 2),
                                 )
                               : const Icon(Icons.file_upload),
                           label: Text(_isImportingIngredients
@@ -1138,7 +1147,8 @@ class _ToolsScreenState extends State<ToolsScreen> {
                     child: Text(
                       '${l10n.appVersionLabel} ${_packageInfo!.version} (${_packageInfo!.buildNumber})',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                     ),
                   ),

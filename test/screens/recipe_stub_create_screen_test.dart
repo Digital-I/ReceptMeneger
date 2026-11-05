@@ -13,10 +13,7 @@ Widget _buildTestApp(Widget child) {
       GlobalWidgetsLocalizations.delegate,
       GlobalCupertinoLocalizations.delegate,
     ],
-    supportedLocales: const [
-      Locale('en', ''),
-      Locale('pt', ''),
-    ],
+    supportedLocales: AppLocalizations.supportedLocales,
     home: child,
   );
 }
@@ -39,8 +36,6 @@ void main() {
         expect(find.byType(TextFormField), findsOneWidget);
         expect(find.byType(ElevatedButton), findsOneWidget);
       });
-
-
     });
 
     group('validation', () {
@@ -77,8 +72,7 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        await tester.enterText(
-            find.byType(TextFormField), '  Padded Name  ');
+        await tester.enterText(find.byType(TextFormField), '  Padded Name  ');
         await tester.tap(find.byType(ElevatedButton));
         await tester.pump();
 

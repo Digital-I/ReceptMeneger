@@ -11,7 +11,8 @@ void main() {
   late Recipe testRecipe;
   late RecipeRecommendation testRecommendation;
 
-  Widget createTestableWidget(Widget child, {Locale locale = const Locale('en', '')}) {
+  Widget createTestableWidget(Widget child,
+      {Locale locale = const Locale('en', '')}) {
     return MaterialApp(
       locale: locale,
       localizationsDelegates: const [
@@ -20,10 +21,7 @@ void main() {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('en', ''),
-        Locale('pt', ''),
-      ],
+      supportedLocales: AppLocalizations.supportedLocales,
       home: Scaffold(body: child),
     );
   }
@@ -62,8 +60,7 @@ void main() {
   });
 
   group('RecipeSelectionCard - Basic Rendering', () {
-    testWidgets('displays recipe name',
-        (WidgetTester tester) async {
+    testWidgets('displays recipe name', (WidgetTester tester) async {
       await tester.pumpWidget(
         createTestableWidget(
           RecipeSelectionCard(
@@ -75,7 +72,8 @@ void main() {
       expect(find.text('Test Recipe'), findsOneWidget);
     });
 
-    testWidgets('displays all three badge types when expanded', (WidgetTester tester) async {
+    testWidgets('displays all three badge types when expanded',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         createTestableWidget(
           RecipeSelectionCard(
@@ -94,9 +92,11 @@ void main() {
       await tester.pumpAndSettle();
 
       // Now badges should be visible
-      expect(find.text('Explore'), findsOneWidget); // Timing badge (75% average)
+      expect(
+          find.text('Explore'), findsOneWidget); // Timing badge (75% average)
       expect(find.text('Loved'), findsOneWidget); // Quality badge (85%)
-      expect(find.text('Moderate'), findsOneWidget); // Effort badge (difficulty 3, total time 75min)
+      expect(find.text('Moderate'),
+          findsOneWidget); // Effort badge (difficulty 3, total time 75min)
     });
   });
 
@@ -155,25 +155,25 @@ void main() {
       final scores = [
         (
           score: 90.0,
-          bg: Colors.green.withValues(alpha: 0.26),
+          bg: Colors.green.withOpacity(0.26), //withValues(alpha: 0.26),
           border: Colors.green,
           text: Colors.green.shade800
         ),
         (
           score: 72.0,
-          bg: Colors.amber.withValues(alpha: 0.26),
+          bg: Colors.amber.withOpacity(0.26), //withValues(alpha: 0.26),
           border: Colors.amber,
           text: Colors.amber.shade800
         ),
         (
           score: 30.0,
-          bg: Colors.blueGrey.withValues(alpha: 0.26),
+          bg: Colors.blueGrey.withOpacity(0.26), //.withValues(alpha: 0.26),
           border: Colors.blueGrey.shade700,
           text: Colors.blueGrey.shade700
         ),
         (
           score: 0.0,
-          bg: Colors.grey.withValues(alpha: 0.26),
+          bg: Colors.grey.withOpacity(0.26), //.withValues(alpha: 0.26),
           border: Colors.grey.shade600,
           text: Colors.grey.shade700
         ),
@@ -198,10 +198,12 @@ void main() {
         await expandBadges(tester);
 
         // Find the badge container by its label text (get the first/closest one)
-        final badge = find.ancestor(
-          of: find.text(_getQualityLabel(scoreInfo.score)),
-          matching: find.byType(Container),
-        ).first;
+        final badge = find
+            .ancestor(
+              of: find.text(_getQualityLabel(scoreInfo.score)),
+              matching: find.byType(Container),
+            )
+            .first;
 
         final container = tester.widget<Container>(badge);
         final decoration = container.decoration as BoxDecoration;
@@ -226,19 +228,19 @@ void main() {
       final scores = [
         (
           score: 80.0,
-          bg: Colors.green.withValues(alpha: 0.26),
+          bg: Colors.green.withOpacity(0.26), //.withValues(alpha: 0.26),
           border: Colors.green,
           text: Colors.green.shade800
         ),
         (
           score: 60.0,
-          bg: Colors.amber.withValues(alpha: 0.26),
+          bg: Colors.amber.withOpacity(0.26), //.withValues(alpha: 0.26),
           border: Colors.amber,
           text: Colors.amber.shade800
         ),
         (
           score: 30.0,
-          bg: Colors.red.withValues(alpha: 0.26),
+          bg: Colors.red.withOpacity(0.26), //.withValues(alpha: 0.26),
           border: Colors.red,
           text: Colors.red.shade800
         ),
@@ -267,10 +269,12 @@ void main() {
         await expandBadges(tester);
 
         // Find the badge container by its label text (get the first/closest one)
-        final badge = find.ancestor(
-          of: find.text(_getTimingVarietyLabel(scoreInfo.score)),
-          matching: find.byType(Container),
-        ).first;
+        final badge = find
+            .ancestor(
+              of: find.text(_getTimingVarietyLabel(scoreInfo.score)),
+              matching: find.byType(Container),
+            )
+            .first;
 
         final container = tester.widget<Container>(badge);
         final decoration = container.decoration as BoxDecoration;
@@ -295,7 +299,7 @@ void main() {
           difficulty: 2,
           time: 25,
           expectedLabel: 'Quick',
-          bg: Colors.green.withValues(alpha: 0.26),
+          bg: Colors.green.withOpacity(0.26), //.withValues(alpha: 0.26),
           border: Colors.green,
           text: Colors.green.shade800
         ),
@@ -303,7 +307,7 @@ void main() {
           difficulty: 3,
           time: 45,
           expectedLabel: 'Moderate',
-          bg: Colors.amber.withValues(alpha: 0.26),
+          bg: Colors.amber.withOpacity(0.26), //.withValues(alpha: 0.26),
           border: Colors.amber,
           text: Colors.amber.shade800
         ),
@@ -311,7 +315,7 @@ void main() {
           difficulty: 4,
           time: 90,
           expectedLabel: 'Project',
-          bg: Colors.red.withValues(alpha: 0.26),
+          bg: Colors.red.withOpacity(0.26), //.withValues(alpha: 0.26),
           border: Colors.red,
           text: Colors.red.shade800
         ),
@@ -321,7 +325,7 @@ void main() {
         testRecipe = Recipe(
           id: 'test-recipe',
           name: 'Test Recipe',
-            prepTimeMinutes: testCase.time ~/ 2,
+          prepTimeMinutes: testCase.time ~/ 2,
           cookTimeMinutes: testCase.time ~/ 2,
           difficulty: testCase.difficulty,
           createdAt: DateTime.now(), // Adding required createdAt field
@@ -345,10 +349,12 @@ void main() {
         await expandBadges(tester);
 
         // Find the badge container by its label text (get the first/closest one)
-        final badge = find.ancestor(
-          of: find.text(testCase.expectedLabel),
-          matching: find.byType(Container),
-        ).first;
+        final badge = find
+            .ancestor(
+              of: find.text(testCase.expectedLabel),
+              matching: find.byType(Container),
+            )
+            .first;
 
         final container = tester.widget<Container>(badge);
         final decoration = container.decoration as BoxDecoration;
@@ -557,7 +563,7 @@ void main() {
         testRecipe = Recipe(
           id: 'test-recipe',
           name: 'Test Recipe',
-            createdAt: DateTime.now(),
+          createdAt: DateTime.now(),
           difficulty: test.difficulty,
           prepTimeMinutes: test.time ~/ 2,
           cookTimeMinutes: test.time ~/ 2,

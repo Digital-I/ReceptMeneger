@@ -178,7 +178,7 @@ class AppTheme {
       ),
 
       /// Card Theme
-      cardTheme: CardThemeData(
+      cardTheme: CardTheme(
         color: DesignTokens.surface,
         elevation: DesignTokens.elevation1,
         shadowColor: const Color.fromRGBO(0, 0, 0, 0.08),
@@ -314,7 +314,7 @@ class AppTheme {
       ),
 
       /// Dialog Theme
-      dialogTheme: DialogThemeData(
+      dialogTheme: DialogTheme(
         backgroundColor: DesignTokens.surface,
         elevation: DesignTokens.elevation3,
         shape: RoundedRectangleBorder(
@@ -407,7 +407,7 @@ class AppTheme {
       ),
 
       /// Tab Bar Theme
-      tabBarTheme: const TabBarThemeData(
+      tabBarTheme: const TabBarTheme(
         indicatorColor: DesignTokens.primary,
         indicatorSize: TabBarIndicatorSize.tab,
         labelColor: DesignTokens.primary,

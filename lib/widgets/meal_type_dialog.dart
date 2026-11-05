@@ -31,41 +31,30 @@ class _MealTypeDialogState extends State<MealTypeDialog> {
 
     return AlertDialog(
       title: Text(l10n.mealTypeQuestion),
-      content: RadioGroup<MealType>(
-        groupValue: _selectedType,
-        onChanged: (value) {
-          setState(() {
-            _selectedType = value;
-          });
-        },
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: MealType.values.map((type) {
-            return ListTile(
-              leading: Radio<MealType>(
-                value: type,
-              ),
-              title: Text(type.getDisplayName(l10n)),
-              onTap: () {
-                setState(() {
-                  _selectedType = type;
-                });
-              },
-            );
-          }).toList(),
-        ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: MealType.values.map((type) {
+          return RadioListTile<MealType>(
+            value: type,
+            groupValue: _selectedType,
+            title: Text(type.getDisplayName(l10n)),
+            onChanged: (MealType? value) {
+              setState(() {
+                _selectedType = value;
+              });
+            },
+          );
+        }).toList(), // Важно не забыть .toList()
       ),
       actions: [
         TextButton(
           onPressed: () {
-            // Skip: return null
             Navigator.of(context).pop(null);
           },
           child: Text(l10n.mealTypeSkip),
         ),
         ElevatedButton(
           onPressed: () {
-            // Save: return selected type (may be null if nothing selected)
             Navigator.of(context).pop(_selectedType);
           },
           child: Text(l10n.mealTypeSave),

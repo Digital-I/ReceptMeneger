@@ -241,12 +241,11 @@ class _IngredientParserSectionState extends State<IngredientParserSection> {
 
       // Re-run matching when name changes
       final matches = widget.matchingService.findMatches(name);
-      final selectedMatch =
-          matches.isNotEmpty &&
-                  (widget.matchingService.shouldAutoSelect(matches) ||
-                      matches.length == 1)
-              ? matches.first
-              : null;
+      final selectedMatch = matches.isNotEmpty &&
+              (widget.matchingService.shouldAutoSelect(matches) ||
+                  matches.length == 1)
+          ? matches.first
+          : null;
 
       _ingredients[index] = ParsedIngredient(
         quantity: ing.quantity,
@@ -382,8 +381,7 @@ class _IngredientParserSectionState extends State<IngredientParserSection> {
 
   int get _unresolvedCount => _ingredients.where(_needsAttention).length;
 
-  bool get _canConfirm =>
-      _ingredients.isNotEmpty && _unresolvedCount == 0;
+  bool get _canConfirm => _ingredients.isNotEmpty && _unresolvedCount == 0;
 
   // ── Build ─────────────────────────────────────────────────────────────────
 
@@ -412,15 +410,16 @@ class _IngredientParserSectionState extends State<IngredientParserSection> {
         // ── Action buttons ──────────────────────────────────────────────────
         Row(
           children: [
-            Flexible(
-              child: ElevatedButton.icon(
-                key: const Key('ingredient_parser_parse_button'),
-                onPressed: widget.isServicesReady ? _parseIngredients : null,
-                icon: const Icon(Icons.auto_fix_high, size: 18),
-                label: Text(l10n.ingredientParserParseButton),
-              ),
-            ),
-            const SizedBox(width: 8),
+            // TODO: убрал блок
+            // Flexible(
+            //   child: ElevatedButton.icon(
+            //     key: const Key('ingredient_parser_parse_button'),
+            //     onPressed: widget.isServicesReady ? _parseIngredients : null,
+            //     icon: const Icon(Icons.auto_fix_high, size: 18),
+            //     label: Text(l10n.ingredientParserParseButton),
+            //   ),
+            // ),
+            // const SizedBox(width: 8),
             Flexible(
               child: TextButton.icon(
                 onPressed: _addManualRow,
@@ -445,7 +444,9 @@ class _IngredientParserSectionState extends State<IngredientParserSection> {
             ],
           ),
           const SizedBox(height: 10),
-          ..._ingredients.asMap().entries
+          ..._ingredients
+              .asMap()
+              .entries
               .where((e) => !e.value.isManual)
               .map((entry) {
             final index = entry.key;
@@ -483,7 +484,9 @@ class _IngredientParserSectionState extends State<IngredientParserSection> {
             ],
           ),
           const SizedBox(height: 10),
-          ..._ingredients.asMap().entries
+          ..._ingredients
+              .asMap()
+              .entries
               .where((e) => e.value.isManual)
               .map((entry) {
             final index = entry.key;
@@ -537,7 +540,8 @@ class _IngredientParserSectionState extends State<IngredientParserSection> {
                 foregroundColor: theme.colorScheme.onPrimary,
                 disabledBackgroundColor: _unresolvedCount > 0
                     ? Colors.amber.shade700
-                    : theme.colorScheme.onSurface.withValues(alpha: 0.12),
+                    : theme.colorScheme.onSurface
+                        .withOpacity(0.12), //.withValues(alpha: 0.12),
                 disabledForegroundColor:
                     _unresolvedCount > 0 ? Colors.white : null,
                 padding: const EdgeInsets.symmetric(vertical: 14),

@@ -74,10 +74,7 @@ void main() {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          supportedLocales: const [
-            Locale('en', ''),
-            Locale('pt', ''),
-          ],
+          supportedLocales: AppLocalizations.supportedLocales,
           locale: locale,
           home: WeeklyPlanScreen(databaseHelper: mockDbHelper),
         ),
@@ -270,7 +267,7 @@ void main() {
             id: 'plan-week-$week',
             weekStartDate: weekStart,
             createdAt: now,
-          modifiedAt: now,
+            modifiedAt: now,
           );
           await mockDbHelper.insertMealPlan(mealPlan);
 
@@ -330,7 +327,7 @@ void main() {
             id: 'plan-nav-$week',
             weekStartDate: weekStart,
             createdAt: now,
-          modifiedAt: now,
+            modifiedAt: now,
           );
           await mockDbHelper.insertMealPlan(mealPlan);
 

@@ -53,10 +53,7 @@ void main() {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          supportedLocales: const [
-            Locale('en', ''),
-            Locale('pt', ''),
-          ],
+          supportedLocales: AppLocalizations.supportedLocales,
           locale: locale,
           home: WeeklyPlanScreen(databaseHelper: mockDbHelper),
         ),
@@ -269,10 +266,7 @@ void main() {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          supportedLocales: const [
-            Locale('en', ''),
-            Locale('pt', ''),
-          ],
+          supportedLocales: AppLocalizations.supportedLocales,
           home: WeeklyPlanScreen(databaseHelper: mockDbHelper),
         ),
       );

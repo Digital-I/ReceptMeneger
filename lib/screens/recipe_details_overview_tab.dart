@@ -202,12 +202,18 @@ class RecipeDetailsOverviewTab extends StatelessWidget {
 
   String _typeDisplayName(String typeId, AppLocalizations l10n) {
     switch (typeId) {
-      case 'meal_role': return l10n.tagTypeMealRole;
-      case 'food_type': return l10n.tagTypeFoodType;
-      case 'cuisine': return l10n.tagTypeCuisine;
-      case 'occasion': return l10n.tagTypeOccasion;
-      case 'dietary': return l10n.tagTypeDietary;
-      default: return typeId;
+      case 'meal_role':
+        return l10n.tagTypeMealRole;
+      case 'food_type':
+        return l10n.tagTypeFoodType;
+      case 'cuisine':
+        return l10n.tagTypeCuisine;
+      case 'occasion':
+        return l10n.tagTypeOccasion;
+      case 'dietary':
+        return l10n.tagTypeDietary;
+      default:
+        return typeId;
     }
   }
 
@@ -233,19 +239,22 @@ class RecipeDetailsOverviewTab extends StatelessWidget {
               Text(
                 _typeDisplayName(typeId, l10n),
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
               const SizedBox(height: 4),
               Wrap(
                 spacing: 6,
                 runSpacing: 4,
-                children: group.map((t) => Chip(
-                  label: Text(t.getLocalizedName(l10n)),
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  visualDensity: VisualDensity.compact,
-                )).toList(),
+                children: group
+                    .map((t) => Chip(
+                          label: Text(t.getLocalizedName(l10n)),
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
+                          visualDensity: VisualDensity.compact,
+                        ))
+                    .toList(),
               ),
             ],
           ),
@@ -261,10 +270,12 @@ class RecipeDetailsOverviewTab extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: colorScheme.secondaryContainer.withValues(alpha: 0.4),
+        color: colorScheme.secondaryContainer
+            .withOpacity(0.4), //.withValues(alpha: 0.4),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: colorScheme.secondary.withValues(alpha: 0.25),
+          color: colorScheme.secondary
+              .withOpacity(0.25), //.withValues(alpha: 0.25),
         ),
       ),
       child: Column(
@@ -293,7 +304,8 @@ class RecipeDetailsOverviewTab extends StatelessWidget {
           MarkdownBody(
             data: recipe.story,
             shrinkWrap: true,
-            styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
+            styleSheet:
+                MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
               p: TextStyle(
                 fontSize: 15,
                 height: 1.65,
@@ -317,8 +329,7 @@ class RecipeDetailsOverviewTab extends StatelessWidget {
     return Row(
       children: [
         Icon(icon,
-            size: 20,
-            color: Theme.of(context).colorScheme.onSurfaceVariant),
+            size: 20, color: Theme.of(context).colorScheme.onSurfaceVariant),
         const SizedBox(width: 8),
         Text(
           '$label: ',

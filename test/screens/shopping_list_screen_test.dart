@@ -24,10 +24,7 @@ void main() {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('en', ''),
-        Locale('pt', ''),
-      ],
+      supportedLocales: AppLocalizations.supportedLocales,
       home: child,
     );
   }
@@ -61,7 +58,8 @@ void main() {
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
-    testWidgets('displays error message when shopping list not found', (tester) async {
+    testWidgets('displays error message when shopping list not found',
+        (tester) async {
       // Don't add any shopping list to the mock database
 
       await tester.pumpWidget(
@@ -80,7 +78,8 @@ void main() {
       expect(find.textContaining('Shopping list not found'), findsOneWidget);
     });
 
-    testWidgets('displays shopping list items grouped by category', (tester) async {
+    testWidgets('displays shopping list items grouped by category',
+        (tester) async {
       // Create shopping list
       final shoppingList = ShoppingList(
         name: 'Weekly List',
@@ -138,7 +137,8 @@ void main() {
       expect(find.text('3 Pieces'), findsOneWidget);
     });
 
-    testWidgets('displays "to taste" items without warning icon', (tester) async {
+    testWidgets('displays "to taste" items without warning icon',
+        (tester) async {
       // Create shopping list
       final shoppingList = ShoppingList(
         name: 'Weekly List',
@@ -179,7 +179,8 @@ void main() {
       expect(find.textContaining('⚠️'), findsNothing);
     });
 
-    testWidgets('displays empty shopping list message when no items', (tester) async {
+    testWidgets('displays empty shopping list message when no items',
+        (tester) async {
       // Create shopping list without items
       final shoppingList = ShoppingList(
         name: 'Empty List',
@@ -228,7 +229,8 @@ void main() {
       expect(find.text('Add item'), findsOneWidget);
     });
 
-    testWidgets('filters items when "To Buy Only" chip is selected', (tester) async {
+    testWidgets('filters items when "To Buy Only" chip is selected',
+        (tester) async {
       // Create shopping list
       final shoppingList = ShoppingList(
         name: 'Test List',
@@ -285,7 +287,8 @@ void main() {
       expect(find.text('Salt'), findsNothing);
     });
 
-    testWidgets('displays formatted quantities (fractions and clean decimals)', (tester) async {
+    testWidgets('displays formatted quantities (fractions and clean decimals)',
+        (tester) async {
       // Create shopping list
       final shoppingList = ShoppingList(
         name: 'Test List',
@@ -346,7 +349,6 @@ void main() {
       expect(find.text('½ Cups'), findsOneWidget);
       expect(find.text('100 g'), findsOneWidget);
     });
-
   });
 
   group('Manual shopping items (#312)', () {
@@ -386,8 +388,8 @@ void main() {
       expect(find.text('Add Item'), findsOneWidget);
 
       // Add button should be disabled (nothing typed yet)
-      final addButton = tester.widget<ElevatedButton>(
-          find.widgetWithText(ElevatedButton, 'Add'));
+      final addButton = tester
+          .widget<ElevatedButton>(find.widgetWithText(ElevatedButton, 'Add'));
       expect(addButton.onPressed, isNull);
     });
 
@@ -496,5 +498,4 @@ void main() {
       expect(find.text('Foil wrap'), findsNothing);
     });
   });
-
 }

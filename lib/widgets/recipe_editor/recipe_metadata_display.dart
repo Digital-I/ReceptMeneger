@@ -58,7 +58,6 @@ class RecipeMetadataDisplay extends StatelessWidget {
               ),
             ),
           ),
-
           if (isExpanded)
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
@@ -67,7 +66,6 @@ class RecipeMetadataDisplay extends StatelessWidget {
                 children: [
                   const Divider(),
                   const SizedBox(height: 12),
-
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
@@ -79,20 +77,19 @@ class RecipeMetadataDisplay extends StatelessWidget {
                         backgroundColor: Theme.of(context)
                             .colorScheme
                             .secondaryContainer
-                            .withValues(alpha: 0.5),
+                            .withOpacity(0.5), //.withValues(alpha: 0.5),
                       ),
                       if (recipe.rating > 0)
                         Chip(
                           avatar: const Icon(Icons.star, size: 18),
                           label: Text(
                               '${localizations.rating}: ${recipe.rating}/5'),
-                          backgroundColor:
-                              Colors.amber.withValues(alpha: 0.3),
+                          backgroundColor: Colors.amber
+                              .withOpacity(0.3), //.withValues(alpha: 0.3),
                         ),
                     ],
                   ),
                   const SizedBox(height: 12),
-
                   Row(
                     children: [
                       Icon(Icons.schedule,
@@ -106,27 +103,25 @@ class RecipeMetadataDisplay extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 12),
-
                   ServingsStepper(
                     key: const Key('recipe_editor_servings_stepper'),
                     value: servings,
                     onChanged: onServingsChanged,
                   ),
                   const SizedBox(height: 12),
-
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: Theme.of(context)
                           .colorScheme
                           .errorContainer
-                          .withValues(alpha: 0.3),
+                          .withOpacity(0.3), //.withValues(alpha: 0.3),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
                         color: Theme.of(context)
                             .colorScheme
                             .error
-                            .withValues(alpha: 0.3),
+                            .withOpacity(0.3), //.withValues(alpha: 0.3),
                       ),
                     ),
                     child: Row(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sqflite/sqflite.dart';
 import 'database/database_helper.dart';
 import 'screens/home_screen.dart';
 import 'screens/recipe_stub_create_screen.dart';
@@ -9,10 +10,15 @@ import 'core/providers/meal_provider.dart';
 import 'core/providers/meal_plan_provider.dart';
 import 'core/providers/debug_settings_provider.dart';
 import 'core/theme/app_theme.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart'; // <-- Добавь этот импорт
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  if (kIsWeb) {
+    databaseFactory = databaseFactoryFfiWeb;
+  }
   // Initialize database
   final dbHelper = DatabaseHelper();
 
@@ -60,7 +66,7 @@ class ReceptMenegerApp extends StatelessWidget {
         theme: AppTheme.lightTheme,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        locale: const Locale('pt', 'BR'), // Set Portuguese Brazil as default
+        locale: const Locale('ru'), // Set Portuguese Brazil as default
         home: const HomePage(),
         routes: {
           '/recipe-editor': (context) => const RecipeStubCreateScreen(),

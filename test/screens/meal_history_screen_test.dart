@@ -46,10 +46,7 @@ void main() {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('en', ''),
-        Locale('pt', ''),
-      ],
+      supportedLocales: AppLocalizations.supportedLocales,
       home: child,
     );
   }
@@ -70,10 +67,7 @@ void main() {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: const [
-          Locale('en', ''),
-          Locale('pt', ''),
-        ],
+        supportedLocales: AppLocalizations.supportedLocales,
         home: child,
       ),
     );
@@ -481,8 +475,7 @@ void main() {
       expect(find.textContaining('25/12/2023'), findsOneWidget);
     });
 
-    testWidgets(
-        'displays recipe when it was used as a side dish (not primary)',
+    testWidgets('displays recipe when it was used as a side dish (not primary)',
         (WidgetTester tester) async {
       // This tests the use case where we're viewing the history of a recipe
       // that's often used as a SIDE DISH (like Rice or Salad)
@@ -567,8 +560,7 @@ void main() {
       expect(find.byType(CircularProgressIndicator), findsNothing);
     });
 
-    testWidgets('loading indicator is centered',
-        (WidgetTester tester) async {
+    testWidgets('loading indicator is centered', (WidgetTester tester) async {
       // For this test, we verify the structure when loading state exists
       // Build the widget
       await tester.pumpWidget(
@@ -675,7 +667,8 @@ void main() {
       expect(iconWidget.size, 64);
 
       // Verify message is grey colored
-      final textWidget = tester.widget<Text>(find.text('No meals recorded yet'));
+      final textWidget =
+          tester.widget<Text>(find.text('No meals recorded yet'));
       expect(textWidget.style?.color, Colors.grey);
       expect(textWidget.style?.fontSize, 18);
 
@@ -744,7 +737,8 @@ void main() {
   });
 
   group('Error State', () {
-    testWidgets('displays error view when getMealsForRecipe throws NotFoundException',
+    testWidgets(
+        'displays error view when getMealsForRecipe throws NotFoundException',
         (WidgetTester tester) async {
       // Configure mock to throw NotFoundException
       mockDbHelper.failOnOperation('getMealsForRecipe',
@@ -771,11 +765,13 @@ void main() {
       expect(find.text('Try Again'), findsOneWidget);
     });
 
-    testWidgets('displays error view when getMealsForRecipe throws ReceptMenegerException',
+    testWidgets(
+        'displays error view when getMealsForRecipe throws ReceptMenegerException',
         (WidgetTester tester) async {
       // Configure mock to throw ReceptMenegerException
       mockDbHelper.failOnOperation('getMealsForRecipe',
-          exception: const ReceptMenegerException('Database connection failed'));
+          exception:
+              const ReceptMenegerException('Database connection failed'));
 
       await tester.pumpWidget(
         createTestableWidget(
@@ -799,7 +795,8 @@ void main() {
       expect(find.text('Try Again'), findsOneWidget);
     });
 
-    testWidgets('displays error view when getMealsForRecipe throws generic exception',
+    testWidgets(
+        'displays error view when getMealsForRecipe throws generic exception',
         (WidgetTester tester) async {
       // Configure mock to throw generic exception
       mockDbHelper.failOnOperation('getMealsForRecipe');
@@ -998,7 +995,8 @@ void main() {
       await tester.pumpAndSettle();
 
       // Should show Portuguese error prefix
-      expect(find.textContaining('Erro ao carregar refeições:'), findsOneWidget);
+      expect(
+          find.textContaining('Erro ao carregar refeições:'), findsOneWidget);
 
       // Should show Portuguese "Try Again" button
       expect(find.text('Tentar Novamente'), findsOneWidget);
@@ -1022,8 +1020,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Should show Portuguese generic error message
-      expect(
-          find.text('Ocorreu um erro inesperado ao carregar as refeições'),
+      expect(find.text('Ocorreu um erro inesperado ao carregar as refeições'),
           findsOneWidget);
     });
 
@@ -1167,8 +1164,8 @@ void main() {
         expect(find.byIcon(Icons.timer), findsOneWidget);
 
         // Should show times in Portuguese format
-        expect(find.text('Preparo: 20.0min, Cozimento: 45.0min'),
-            findsOneWidget);
+        expect(
+            find.text('Preparo: 20.0min, Cozimento: 45.0min'), findsOneWidget);
       });
 
       testWidgets('hides prep/cook time row when both times are zero',
@@ -1317,12 +1314,12 @@ void main() {
         await tester.pumpAndSettle();
 
         // Should show notes text
-        expect(find.text('This was delicious! Will make again.'),
-            findsOneWidget);
+        expect(
+            find.text('This was delicious! Will make again.'), findsOneWidget);
 
         // Verify notes text styling
-        final notesText = tester.widget<Text>(
-            find.text('This was delicious! Will make again.'));
+        final notesText = tester
+            .widget<Text>(find.text('This was delicious! Will make again.'));
         expect(notesText.style, isNotNull);
         // The style should match bodySmall from the theme
       });

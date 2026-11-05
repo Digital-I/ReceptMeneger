@@ -41,9 +41,9 @@ void main() {
       // Using icons (locale-independent) rather than label text.
       // findsWidgets (≥1) because BottomNavigationBar renders the active tab's
       // icon twice (regular + tinted), so the count varies by selected tab.
-      expect(find.byIcon(Icons.home), findsWidgets);           // Dashboard tab
+      expect(find.byIcon(Icons.home), findsWidgets); // Dashboard tab
       expect(find.byIcon(Icons.calendar_today), findsWidgets); // Meal Plan tab
-      expect(find.byIcon(Icons.menu_book), findsWidgets);      // Content tab
+      expect(find.byIcon(Icons.menu_book), findsWidgets); // Content tab
     });
   });
 }

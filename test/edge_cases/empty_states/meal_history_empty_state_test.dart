@@ -61,10 +61,7 @@ void main() {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          supportedLocales: const [
-            Locale('en', ''),
-            Locale('pt', ''),
-          ],
+          supportedLocales: AppLocalizations.supportedLocales,
           locale: locale,
           home: MealHistoryScreen(
             recipe: recipe ?? testRecipe,
@@ -108,8 +105,7 @@ void main() {
           reason: 'App bar should display recipe name as title');
     });
 
-    testWidgets('shows refresh button in app bar',
-        (WidgetTester tester) async {
+    testWidgets('shows refresh button in app bar', (WidgetTester tester) async {
       // Build the MealHistoryScreen
       await tester.pumpWidget(buildMealHistoryScreen());
       await tester.pumpAndSettle();
@@ -284,10 +280,7 @@ void main() {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          supportedLocales: const [
-            Locale('en', ''),
-            Locale('pt', ''),
-          ],
+          supportedLocales: AppLocalizations.supportedLocales,
           home: MealHistoryScreen(
             recipe: testRecipe,
             databaseHelper: mockDbHelper,

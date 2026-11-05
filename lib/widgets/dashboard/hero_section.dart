@@ -33,39 +33,41 @@ class HeroSection extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(DesignTokens.borderRadiusLarge),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            l10n.dashboardTagline,
-            style: theme.textTheme.headlineMedium?.copyWith(
-              color: DesignTokens.textOnPrimary,
-              fontWeight: DesignTokens.weightBold,
-            ),
-          ),
-          const SizedBox(height: DesignTokens.spacingSm),
-          Text(
-            l10n.dashboardSubtitle,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: DesignTokens.textOnPrimary.withValues(alpha: 0.9),
-            ),
-          ),
-          const SizedBox(height: DesignTokens.spacingMd),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton.icon(
-              onPressed: onPlanThisWeek,
-              icon: const Icon(Icons.calendar_today),
-              label: Text(l10n.planThisWeek),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: DesignTokens.surface,
-                foregroundColor: DesignTokens.primary,
-                padding: DesignTokens.buttonLargePadding,
-              ),
-            ),
-          ),
-        ],
-      ),
+      // TODO: удалил блок
+      // child: Column(
+      //   crossAxisAlignment: CrossAxisAlignment.start,
+      //   children: [
+      //     Text(
+      //       l10n.dashboardTagline,
+      //       style: theme.textTheme.headlineMedium?.copyWith(
+      //         color: DesignTokens.textOnPrimary,
+      //         fontWeight: DesignTokens.weightBold,
+      //       ),
+      //     ),
+      //     const SizedBox(height: DesignTokens.spacingSm),
+      //     Text(
+      //       l10n.dashboardSubtitle,
+      //       style: theme.textTheme.bodyMedium?.copyWith(
+      //         color: DesignTokens.textOnPrimary
+      //             .withOpacity(0.9), //.withValues(alpha: 0.9),
+      //       ),
+      //     ),
+      //     const SizedBox(height: DesignTokens.spacingMd),
+      //     SizedBox(
+      //       width: double.infinity,
+      //       child: ElevatedButton.icon(
+      //         onPressed: onPlanThisWeek,
+      //         icon: const Icon(Icons.calendar_today),
+      //         label: Text(l10n.planThisWeek),
+      //         style: ElevatedButton.styleFrom(
+      //           backgroundColor: DesignTokens.surface,
+      //           foregroundColor: DesignTokens.primary,
+      //           padding: DesignTokens.buttonLargePadding,
+      //         ),
+      //       ),
+      //     ),
+      //   ],
+      // ),
     );
   }
 }

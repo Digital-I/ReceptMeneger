@@ -178,12 +178,11 @@ class _ShoppingListPreviewScreenState extends State<ShoppingListPreviewScreen> {
           : _groupedIngredients == null || _groupedIngredients!.isEmpty
               ? _buildEmptyState(context)
               : _buildIngredientList(context),
-      bottomNavigationBar:
-          (!_isLoading &&
-                  _groupedIngredients != null &&
-                  _groupedIngredients!.isNotEmpty)
-              ? _buildActionBar(context)
-              : null,
+      bottomNavigationBar: (!_isLoading &&
+              _groupedIngredients != null &&
+              _groupedIngredients!.isNotEmpty)
+          ? _buildActionBar(context)
+          : null,
     );
   }
 
@@ -228,7 +227,9 @@ class _ShoppingListPreviewScreenState extends State<ShoppingListPreviewScreen> {
     final filtered = <String, List<Map<String, dynamic>>>{};
     for (final entry in _groupedIngredients!.entries) {
       final items = _hideToTaste
-          ? entry.value.where((item) => (item['quantity'] as double) != 0).toList()
+          ? entry.value
+              .where((item) => (item['quantity'] as double) != 0)
+              .toList()
           : entry.value;
       if (items.isNotEmpty) {
         filtered[entry.key] = items;
@@ -308,7 +309,7 @@ class _ShoppingListPreviewScreenState extends State<ShoppingListPreviewScreen> {
         color: Theme.of(context).colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Colors.black.withOpacity(0.5), //.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, -2),
           ),

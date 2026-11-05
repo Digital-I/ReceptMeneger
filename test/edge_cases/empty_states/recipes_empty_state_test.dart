@@ -43,10 +43,7 @@ void main() {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          supportedLocales: const [
-            Locale('en', ''),
-            Locale('pt', ''),
-          ],
+          supportedLocales: AppLocalizations.supportedLocales,
           locale: locale,
           home: const RecipesScreen(),
         ),
@@ -137,7 +134,8 @@ void main() {
     testWidgets('empty state message is localized',
         (WidgetTester tester) async {
       // Test with Portuguese locale
-      await tester.pumpWidget(buildRecipesScreen(locale: const Locale('pt', '')));
+      await tester
+          .pumpWidget(buildRecipesScreen(locale: const Locale('pt', '')));
       await tester.pumpAndSettle();
 
       // Verify Portuguese empty state message

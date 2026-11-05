@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
+import 'package:file_picker/file_picker.dart';
+
 import '../../database/database_helper.dart';
 import '../errors/receptmeneger_exceptions.dart';
 import '../repositories/tag_repository.dart';
@@ -19,7 +20,7 @@ class RecipeExportService {
   /// Export all recipes to JSON (v2 format).
   ///
   /// Returns the path to the exported file.
-  Future<String> exportRecipesToJson() async {
+  Future<String?> exportRecipesToJson() async {
     try {
       final recipes = await _databaseHelper.getAllRecipes();
       final exportData = <Map<String, dynamic>>[];
@@ -33,16 +34,18 @@ class RecipeExportService {
         final timesCookedCount =
             await _databaseHelper.getTimesCookedCount(recipe.id);
 
-        final currentIngredientsData = currentIngredients.map((ing) => {
-              'ingredient_id': ing['ingredient_id'],
-              'name': ing['name'],
-              'quantity': ing['quantity'],
-              'quantity_max': ing['quantity_max'],
-              'unit': ing['unit'],
-              'category': ing['category'],
-              'protein_type': ing['protein_type'],
-              'preparation_notes': ing['preparation_notes'],
-            }).toList();
+        final currentIngredientsData = currentIngredients
+            .map((ing) => {
+                  'ingredient_id': ing['ingredient_id'],
+                  'name': ing['name'],
+                  'quantity': ing['quantity'],
+                  'quantity_max': ing['quantity_max'],
+                  'unit': ing['unit'],
+                  'category': ing['category'],
+                  'protein_type': ing['protein_type'],
+                  'preparation_notes': ing['preparation_notes'],
+                })
+            .toList();
 
         exportData.add({
           'export_version': 2,
@@ -66,9 +69,7 @@ class RecipeExportService {
             'times_cooked': timesCookedCount,
             'last_cooked_date': lastCookedDate?.toIso8601String(),
           },
-          'tags': tags
-              .map((t) => {'type': t.typeId, 'name': t.name})
-              .toList(),
+          'tags': tags.map((t) => {'type': t.typeId, 'name': t.name}).toList(),
         });
       }
 
@@ -79,16 +80,23 @@ class RecipeExportService {
     }
   }
 
-  Future<String> _writeJsonToFile(String jsonString) async {
+  Future<String?> _writeJsonToFile(String jsonString) async {
     try {
       final timestamp = DateTime.now().millisecondsSinceEpoch;
       final fileName = 'recipe_export_$timestamp.json';
-      final file = File('/sdcard/Download/$fileName');
-      await file.parent.create(recursive: true);
-      await file.writeAsString(jsonString);
-      return file.path;
+
+      final outputPath = await FilePicker.platform.saveFile(
+        dialogTitle: 'Сохранить экспорт рецептов',
+        fileName: fileName,
+        type: FileType.custom,
+        allowedExtensions: ['json'],
+        bytes: utf8.encode(jsonString),
+      );
+
+      return outputPath; // Вернет путь к файлу или null, если пользователь отменил
     } catch (e) {
-      throw ReceptMenegerException('Failed to write export file: ${e.toString()}');
+      throw ReceptMenegerException(
+          'Failed to write export file: ${e.toString()}');
     }
   }
 

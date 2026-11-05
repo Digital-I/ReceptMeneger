@@ -38,10 +38,7 @@ void main() {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: const [
-          Locale('en', ''),
-          Locale('pt', ''),
-        ],
+        supportedLocales: AppLocalizations.supportedLocales,
         home: child,
       ),
     );
@@ -190,10 +187,7 @@ void main() {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            supportedLocales: const [
-              Locale('en', ''),
-              Locale('pt', ''),
-            ],
+            supportedLocales: AppLocalizations.supportedLocales,
             locale: const Locale('en', ''), // Explicitly set English locale
             home: MealHistoryScreen(
               recipe: testRecipe,
@@ -260,10 +254,7 @@ void main() {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            supportedLocales: const [
-              Locale('en', ''),
-              Locale('pt', ''),
-            ],
+            supportedLocales: AppLocalizations.supportedLocales,
             locale: const Locale('pt', ''), // Explicitly set Portuguese locale
             home: MealHistoryScreen(
               recipe: testRecipe,

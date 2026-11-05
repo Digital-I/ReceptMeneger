@@ -15,7 +15,8 @@ class ParserReviewRow extends StatefulWidget {
   final ParsedIngredient ingredient;
   final int parseGeneration;
   final bool initiallyExpanded;
-  final void Function(double qty, double? qtyMax, String? error) onQuantityChanged;
+  final void Function(double qty, double? qtyMax, String? error)
+      onQuantityChanged;
   final void Function(String? unit) onUnitChanged;
   final void Function(String name) onNameChanged;
   final void Function(String? notes) onNotesChanged;
@@ -156,7 +157,8 @@ class _ParserReviewRowState extends State<ParserReviewRow> {
                   IconButton(
                     icon: const Icon(Icons.close, size: 18),
                     padding: const EdgeInsets.all(4),
-                    constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
+                    constraints:
+                        const BoxConstraints(minWidth: 28, minHeight: 28),
                     color: theme.colorScheme.onSurfaceVariant,
                     tooltip: l10n.remove,
                     onPressed: widget.onRemove,
@@ -183,7 +185,8 @@ class _ParserReviewRowState extends State<ParserReviewRow> {
                       SizedBox(
                         width: 72,
                         child: TextFormField(
-                          key: ValueKey('qty_${widget.index}_${widget.parseGeneration}'),
+                          key: ValueKey(
+                              'qty_${widget.index}_${widget.parseGeneration}'),
                           decoration: InputDecoration(
                             labelText: l10n.simpleSideQuantityLabel,
                             hintText: 'e.g. 2 or 2–3',
@@ -198,18 +201,21 @@ class _ParserReviewRowState extends State<ParserReviewRow> {
                               ? QuantityFormatter.formatRange(
                                   widget.ingredient.quantity,
                                   widget.ingredient.quantityMax!)
-                              : QuantityFormatter.format(widget.ingredient.quantity),
+                              : QuantityFormatter.format(
+                                  widget.ingredient.quantity),
                           onChanged: (value) {
                             final trimmed = value.trim();
                             final rangeMatch = RegExp(
                               r'^(\d+(?:[.,]\d+)?)\s*[–-]\s*(\d+(?:[.,]\d+)?)$',
                             ).firstMatch(trimmed);
                             if (rangeMatch != null) {
-                              final min = double.tryParse(
-                                      rangeMatch.group(1)!.replaceAll(',', '.')) ??
+                              final min = double.tryParse(rangeMatch
+                                      .group(1)!
+                                      .replaceAll(',', '.')) ??
                                   0.0;
-                              final max = double.tryParse(
-                                      rangeMatch.group(2)!.replaceAll(',', '.')) ??
+                              final max = double.tryParse(rangeMatch
+                                      .group(2)!
+                                      .replaceAll(',', '.')) ??
                                   0.0;
                               if (max > min) {
                                 widget.onQuantityChanged(min, max, null);
@@ -219,7 +225,8 @@ class _ParserReviewRowState extends State<ParserReviewRow> {
                               }
                             } else {
                               widget.onQuantityChanged(
-                                double.tryParse(trimmed.replaceAll(',', '.')) ?? 0.0,
+                                double.tryParse(trimmed.replaceAll(',', '.')) ??
+                                    0.0,
                                 null,
                                 null,
                               );
@@ -228,11 +235,11 @@ class _ParserReviewRowState extends State<ParserReviewRow> {
                         ),
                       ),
                       const SizedBox(width: 6),
-
                       SizedBox(
                         width: 64,
                         child: TextFormField(
-                          key: ValueKey('unit_${widget.index}_${widget.parseGeneration}'),
+                          key: ValueKey(
+                              'unit_${widget.index}_${widget.parseGeneration}'),
                           decoration: InputDecoration(
                             labelText: l10n.unit,
                             border: const OutlineInputBorder(),
@@ -240,15 +247,15 @@ class _ParserReviewRowState extends State<ParserReviewRow> {
                                 horizontal: 8, vertical: 8),
                           ),
                           initialValue: widget.ingredient.unit ?? '',
-                          onChanged: (value) =>
-                              widget.onUnitChanged(value.isEmpty ? null : value),
+                          onChanged: (value) => widget
+                              .onUnitChanged(value.isEmpty ? null : value),
                         ),
                       ),
                       const SizedBox(width: 6),
-
                       Expanded(
                         child: TextFormField(
-                          key: ValueKey('name_${widget.index}_${widget.parseGeneration}'),
+                          key: ValueKey(
+                              'name_${widget.index}_${widget.parseGeneration}'),
                           decoration: InputDecoration(
                             labelText: l10n.ingredientParserNameLabel,
                             border: const OutlineInputBorder(),
@@ -265,13 +272,14 @@ class _ParserReviewRowState extends State<ParserReviewRow> {
                   // Notes field (always shown in expanded state)
                   const SizedBox(height: 8),
                   TextFormField(
-                    key: ValueKey('notes_${widget.index}_${widget.parseGeneration}'),
+                    key: ValueKey(
+                        'notes_${widget.index}_${widget.parseGeneration}'),
                     decoration: InputDecoration(
                       labelText: l10n.notes,
                       hintText: 'e.g. diced, room temperature',
                       border: const OutlineInputBorder(),
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 8),
                       isDense: true,
                     ),
                     initialValue: widget.ingredient.notes ?? '',
@@ -310,13 +318,12 @@ class _ParserReviewRowState extends State<ParserReviewRow> {
       statusColor = Colors.red;
       statusText = l10n.ingredientParserMatchNone;
     }
-
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: statusColor.withValues(alpha: 0.08),
+        color: statusColor.withOpacity(0.08),
         borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: statusColor.withValues(alpha: 0.3)),
+        border: Border.all(color: statusColor.withOpacity(0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -353,8 +360,9 @@ class _ParserReviewRowState extends State<ParserReviewRow> {
           // Match dropdown (when multiple candidates)
           if (ing.matches.length > 1) ...[
             const SizedBox(height: 8),
-            DropdownButtonFormField<IngredientMatch>(
-              initialValue: ing.selectedMatch,
+            // ВАЖНО: Используем IngredientMatch? (с вопросиком), так как значение может быть null
+            DropdownButtonFormField<IngredientMatch?>(
+              value: ing.selectedMatch,
               hint: Text(
                 l10n.ingredientParserSelectMatchHint,
                 style: const TextStyle(fontSize: 12),
@@ -366,7 +374,7 @@ class _ParserReviewRowState extends State<ParserReviewRow> {
                 isDense: true,
               ),
               items: ing.matches.map((match) {
-                return DropdownMenuItem<IngredientMatch>(
+                return DropdownMenuItem<IngredientMatch?>(
                   value: match,
                   child: Row(
                     children: [
@@ -446,7 +454,8 @@ class _ParserReviewRowState extends State<ParserReviewRow> {
     if (ing.selectedMatch != null) {
       return _matchIcon(ing.selectedMatch!.confidenceLevel);
     }
-    if (ing.matches.isNotEmpty) return _matchIcon(ing.matches.first.confidenceLevel);
+    if (ing.matches.isNotEmpty)
+      return _matchIcon(ing.matches.first.confidenceLevel);
     return Icons.error_outline;
   }
 
@@ -463,7 +472,8 @@ class _ParserReviewRowState extends State<ParserReviewRow> {
         MatchConfidence.low => Icons.error_outline,
       };
 
-  static String _matchLabel(MatchConfidence confidence, AppLocalizations l10n) =>
+  static String _matchLabel(
+          MatchConfidence confidence, AppLocalizations l10n) =>
       switch (confidence) {
         MatchConfidence.high => l10n.ingredientParserMatchHigh,
         MatchConfidence.medium => l10n.ingredientParserMatchMedium,

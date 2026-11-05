@@ -18,9 +18,8 @@ import '../core/di/service_provider.dart';
 /// Accepts: `2`, `1.5`, `2-3`, `1.5–2` (hyphen or en-dash).
 (double, double?) _parseQuantityText(String text) {
   final trimmed = text.trim();
-  final rangeMatch =
-      RegExp(r'^(\d+(?:[.,]\d+)?)\s*[–-]\s*(\d+(?:[.,]\d+)?)$')
-          .firstMatch(trimmed);
+  final rangeMatch = RegExp(r'^(\d+(?:[.,]\d+)?)\s*[–-]\s*(\d+(?:[.,]\d+)?)$')
+      .firstMatch(trimmed);
   if (rangeMatch != null) {
     final min =
         double.tryParse(rangeMatch.group(1)!.replaceAll(',', '.')) ?? 0.0;
@@ -33,14 +32,11 @@ import '../core/di/service_provider.dart';
 
 bool _isValidQuantityText(String text) {
   final trimmed = text.trim();
-  final rangeMatch =
-      RegExp(r'^(\d+(?:[.,]\d+)?)\s*[–-]\s*(\d+(?:[.,]\d+)?)$')
-          .firstMatch(trimmed);
+  final rangeMatch = RegExp(r'^(\d+(?:[.,]\d+)?)\s*[–-]\s*(\d+(?:[.,]\d+)?)$')
+      .firstMatch(trimmed);
   if (rangeMatch != null) {
-    final min =
-        double.tryParse(rangeMatch.group(1)!.replaceAll(',', '.'));
-    final max =
-        double.tryParse(rangeMatch.group(2)!.replaceAll(',', '.'));
+    final min = double.tryParse(rangeMatch.group(1)!.replaceAll(',', '.'));
+    final max = double.tryParse(rangeMatch.group(2)!.replaceAll(',', '.'));
     return min != null && max != null && max > min;
   }
   return double.tryParse(trimmed.replaceAll(',', '.')) != null;
@@ -370,10 +366,10 @@ class _AddIngredientDialogState extends State<AddIngredientDialog> {
                         },
                       ),
                       const SizedBox(height: 16),
-                      // Custom Ingredient Category
-                      DropdownButtonFormField<IngredientCategory>(
+                      // Custom Ingredient Category TODO: ?
+                      DropdownButtonFormField<IngredientCategory?>(
                         key: const Key('add_ingredient_custom_category_field'),
-                        initialValue: _selectedCategory,
+                        value: _selectedCategory,
                         decoration: InputDecoration(
                           labelText:
                               AppLocalizations.of(context)!.categoryLabel,
@@ -475,7 +471,7 @@ class _AddIngredientDialogState extends State<AddIngredientDialog> {
                                   AppLocalizations.of(context)!.ingredientLabel,
                               hintText: AppLocalizations.of(context)!
                                   .searchOrCreateIngredient,
-                                  prefixIcon: const Icon(Icons.search),
+                              prefixIcon: const Icon(Icons.search),
                             ),
                             onFieldSubmitted: (value) {
                               // Auto-select ingredient if there's an exact match
@@ -573,8 +569,7 @@ class _AddIngredientDialogState extends State<AddIngredientDialog> {
                         alignment: Alignment.centerLeft,
                         child: InputChip(
                           key: const Key('add_ingredient_to_taste_chip'),
-                          label:
-                              Text(AppLocalizations.of(context)!.toTaste),
+                          label: Text(AppLocalizations.of(context)!.toTaste),
                           avatar: const Icon(Icons.check, size: 16),
                           deleteIcon: const Icon(
                             Icons.cancel,
@@ -625,11 +620,11 @@ class _AddIngredientDialogState extends State<AddIngredientDialog> {
                           // Unit Section
                           Expanded(
                             child: _isCustomIngredient
-                                // Custom ingredient: optional unit selection
-                                ? DropdownButtonFormField<String>(
+                                // Custom ingredient: optional unit selection TODO: ?
+                                ? DropdownButtonFormField<String?>(
                                     key: const Key(
                                         'add_ingredient_custom_unit_field'),
-                                    initialValue: _selectedUnitOverride,
+                                    value: _selectedUnitOverride,
                                     decoration: InputDecoration(
                                       labelText: AppLocalizations.of(context)!
                                           .unitOptional,
@@ -660,10 +655,10 @@ class _AddIngredientDialogState extends State<AddIngredientDialog> {
                                       });
                                     },
                                   )
-                                // Database ingredient: always show dropdown, pre-filled with default
-                                : DropdownButtonFormField<String>(
+                                // Database ingredient: always show dropdown, pre-filled with default TODO: ?
+                                : DropdownButtonFormField<String?>(
                                     key: const Key('add_ingredient_unit_field'),
-                                    initialValue: _selectedUnitOverride ??
+                                    value: _selectedUnitOverride ??
                                         _selectedIngredient?.unit?.value,
                                     decoration: InputDecoration(
                                       labelText:
@@ -694,8 +689,7 @@ class _AddIngredientDialogState extends State<AddIngredientDialog> {
                         alignment: Alignment.centerLeft,
                         child: ActionChip(
                           key: const Key('add_ingredient_to_taste_toggle'),
-                          label:
-                              Text(AppLocalizations.of(context)!.toTaste),
+                          label: Text(AppLocalizations.of(context)!.toTaste),
                           avatar: const Icon(Icons.auto_awesome, size: 14),
                           onPressed: () {
                             setState(() {

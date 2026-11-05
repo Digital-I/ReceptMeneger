@@ -38,10 +38,7 @@ void main() {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: const [
-          Locale('en', ''),
-          Locale('pt', ''),
-        ],
+        supportedLocales: AppLocalizations.supportedLocales,
         home: child,
       ),
     );
@@ -302,7 +299,8 @@ void main() {
   });
 
   group('Editing Workflow', () {
-    testWidgets('edits servings and saves changes', (WidgetTester tester) async {
+    testWidgets('edits servings and saves changes',
+        (WidgetTester tester) async {
       // Create a meal with specific servings
       final meal = Meal(
         id: 'edit-servings-meal',
@@ -336,7 +334,8 @@ void main() {
       // Tap the menu button - there are 2 meals, we want the second one (our test meal)
       final menuButtons = find.byIcon(Icons.more_vert);
       expect(menuButtons, findsWidgets);
-      await tester.tap(menuButtons.last); // Use 'last' to get our test meal, not the setUp meal
+      await tester.tap(menuButtons
+          .last); // Use 'last' to get our test meal, not the setUp meal
       await tester.pumpAndSettle();
 
       // Tap Edit
@@ -425,7 +424,8 @@ void main() {
           reason: 'Notes should be updated to new text');
     });
 
-    testWidgets('edits prep time and saves changes', (WidgetTester tester) async {
+    testWidgets('edits prep time and saves changes',
+        (WidgetTester tester) async {
       // Create a meal with specific prep time
       final meal = Meal(
         id: 'edit-prep-time-meal',
@@ -490,7 +490,8 @@ void main() {
           reason: 'Prep time should be updated to 22.5');
     });
 
-    testWidgets('edits cook time and saves changes', (WidgetTester tester) async {
+    testWidgets('edits cook time and saves changes',
+        (WidgetTester tester) async {
       // Create a meal with specific cook time
       final meal = Meal(
         id: 'edit-cook-time-meal',
@@ -555,7 +556,8 @@ void main() {
           reason: 'Cook time should be updated to 35.5');
     });
 
-    testWidgets('edits success flag and saves changes', (WidgetTester tester) async {
+    testWidgets('edits success flag and saves changes',
+        (WidgetTester tester) async {
       // Create a meal with wasSuccessful = true
       final meal = Meal(
         id: 'edit-success-flag-meal',
@@ -596,7 +598,8 @@ void main() {
       await tester.pumpAndSettle();
 
       // Find and toggle the success switch (scroll to it — dialog is taller with per-recipe note fields)
-      final successSwitch = find.byKey(const Key('edit_meal_recording_success_switch'));
+      final successSwitch =
+          find.byKey(const Key('edit_meal_recording_success_switch'));
       expect(successSwitch, findsOneWidget);
       await tester.ensureVisible(successSwitch);
       await tester.pumpAndSettle();
@@ -617,7 +620,8 @@ void main() {
           reason: 'Success flag should be toggled to false');
     });
 
-    testWidgets('cancel button dismisses dialog without saving', (WidgetTester tester) async {
+    testWidgets('cancel button dismisses dialog without saving',
+        (WidgetTester tester) async {
       // Create a meal with known values
       final meal = Meal(
         id: 'cancel-test-meal',
@@ -677,7 +681,8 @@ void main() {
           reason: 'Notes should remain unchanged after cancel');
     });
 
-    testWidgets('back button dismisses dialog without saving', (WidgetTester tester) async {
+    testWidgets('back button dismisses dialog without saving',
+        (WidgetTester tester) async {
       // Create a meal with known values
       final meal = Meal(
         id: 'back-button-test-meal',
@@ -736,9 +741,8 @@ void main() {
           reason: 'Servings should remain unchanged after back button');
     });
 
-
-
-    testWidgets('handles large servings value correctly', (WidgetTester tester) async {
+    testWidgets('handles large servings value correctly',
+        (WidgetTester tester) async {
       // Create a meal with normal servings
       final meal = Meal(
         id: 'large-servings-meal',
@@ -796,7 +800,8 @@ void main() {
       final updatedMeal = mockDbHelper.meals[meal.id];
       expect(updatedMeal, isNotNull);
       expect(updatedMeal!.servings, equals(10),
-          reason: 'Should handle high servings value via stepper (3 + 7 taps = 10)');
+          reason:
+              'Should handle high servings value via stepper (3 + 7 taps = 10)');
     });
 
     testWidgets('edits very old meal correctly', (WidgetTester tester) async {
@@ -804,7 +809,8 @@ void main() {
       final meal = Meal(
         id: 'old-meal',
         recipeId: null,
-        cookedAt: DateTime.now().subtract(const Duration(days: 730)), // 2 years ago
+        cookedAt:
+            DateTime.now().subtract(const Duration(days: 730)), // 2 years ago
         servings: 4,
         notes: 'Old meal notes',
         wasSuccessful: true,
@@ -903,7 +909,8 @@ void main() {
       await tester.pumpAndSettle();
 
       // Create very long notes (500+ characters)
-      final longNotes = 'This is a very long notes text. ' * 20; // ~640 characters
+      final longNotes =
+          'This is a very long notes text. ' * 20; // ~640 characters
 
       // Update with long notes
       await tester.enterText(
@@ -928,7 +935,8 @@ void main() {
           reason: 'Notes should be longer than 500 characters');
     });
 
-    testWidgets('edits multi-recipe meal correctly', (WidgetTester tester) async {
+    testWidgets('edits multi-recipe meal correctly',
+        (WidgetTester tester) async {
       // Create a meal with multiple recipes (primary + side)
       final meal = Meal(
         id: 'multi-recipe-meal',

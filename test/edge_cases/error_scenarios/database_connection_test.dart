@@ -51,10 +51,7 @@ void main() {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          supportedLocales: [
-            Locale('en', ''),
-            Locale('pt', ''),
-          ],
+          supportedLocales: AppLocalizations.supportedLocales,
           home: HomePage(),
         ),
       );
@@ -85,7 +82,8 @@ void main() {
             reason: 'HomePage should render despite database error');
       });
 
-      testWidgets('shows appropriate error message when database not initialized',
+      testWidgets(
+          'shows appropriate error message when database not initialized',
           (WidgetTester tester) async {
         // Simulate database not initialized error
         ErrorInjectionHelpers.injectDatabaseError(
@@ -401,7 +399,8 @@ void main() {
         expect(find.byType(HomePage), findsOneWidget);
       });
 
-      testWidgets('concurrent operations handle connection errors independently',
+      testWidgets(
+          'concurrent operations handle connection errors independently',
           (WidgetTester tester) async {
         // Inject error for specific operation only
         ErrorInjectionHelpers.injectOperationError(

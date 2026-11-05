@@ -198,10 +198,10 @@ class _AddNewIngredientDialogState extends State<AddNewIngredientDialog> {
               ),
               _buildDuplicateFeedback(context),
               const SizedBox(height: 16),
-
-              DropdownButtonFormField<IngredientCategory>(
+              // TODO: ?
+              DropdownButtonFormField<IngredientCategory?>(
                 key: const Key('add_new_ingredient_category_field'),
-                initialValue: _selectedCategory,
+                value: _selectedCategory,
                 decoration: InputDecoration(
                   labelText: AppLocalizations.of(context)!.categoryLabel,
                 ),
@@ -230,11 +230,11 @@ class _AddNewIngredientDialogState extends State<AddNewIngredientDialog> {
                 },
               ),
               const SizedBox(height: 16),
-
               if (_selectedCategory == IngredientCategory.protein)
-                DropdownButtonFormField<ProteinType>(
+                // TODO: ?
+                DropdownButtonFormField<ProteinType?>(
                   key: const Key('add_new_ingredient_protein_type_field'),
-                  initialValue: _selectedProteinType,
+                  value: _selectedProteinType,
                   decoration: InputDecoration(
                     labelText: AppLocalizations.of(context)!.proteinTypeLabel,
                   ),
@@ -256,13 +256,12 @@ class _AddNewIngredientDialogState extends State<AddNewIngredientDialog> {
                     return null;
                   },
                 ),
-
               if (_selectedCategory == IngredientCategory.protein)
                 const SizedBox(height: 16),
-
+              // TODO: ? но не я его ставил
               DropdownButtonFormField<MeasurementUnit?>(
                 key: const Key('add_new_ingredient_unit_field'),
-                initialValue: _selectedUnit,
+                value: _selectedUnit,
                 decoration: InputDecoration(
                   labelText: AppLocalizations.of(context)!.unitOptional,
                 ),
@@ -283,7 +282,6 @@ class _AddNewIngredientDialogState extends State<AddNewIngredientDialog> {
                 },
               ),
               const SizedBox(height: 16),
-
               TextFormField(
                 key: const Key('add_new_ingredient_notes_field'),
                 controller: _notesController,
@@ -295,15 +293,13 @@ class _AddNewIngredientDialogState extends State<AddNewIngredientDialog> {
                 maxLines: 2,
               ),
               const SizedBox(height: 16),
-
               TextFormField(
                 key: const Key('add_new_ingredient_aliases_field'),
                 controller: _aliasesController,
                 decoration: InputDecoration(
                   labelText:
                       AppLocalizations.of(context)!.ingredientAliasesLabel,
-                  hintText:
-                      AppLocalizations.of(context)!.ingredientAliasesHint,
+                  hintText: AppLocalizations.of(context)!.ingredientAliasesHint,
                 ),
               ),
             ],

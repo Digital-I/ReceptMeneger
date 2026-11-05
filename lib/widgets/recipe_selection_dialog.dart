@@ -55,7 +55,8 @@ class RecipeSelectionDialogState extends State<RecipeSelectionDialog>
   late TabController _tabController;
   bool _isLoading = false;
   late List<RecipeRecommendation> _recommendations;
-  late Set<String> _sessionExcludedIds; // IDs shown or dismissed in this session
+  late Set<String>
+      _sessionExcludedIds; // IDs shown or dismissed in this session
   String? _recommendationHistoryId; // Store the history ID for feedback
   Recipe? _selectedRecipe;
   bool _showingMenu = false;
@@ -72,7 +73,8 @@ class RecipeSelectionDialogState extends State<RecipeSelectionDialog>
       _selectedRecipe = widget.initialPrimaryRecipe;
       _additionalRecipes = List.from(widget.initialAdditionalRecipes ?? []);
       _showingMenu = true;
-      _plannedServings = widget.initialPlannedServings ?? widget.initialPrimaryRecipe!.servings;
+      _plannedServings = widget.initialPlannedServings ??
+          widget.initialPrimaryRecipe!.servings;
     } else {
       _tabController.index = widget.detailedRecommendations.isNotEmpty ? 0 : 1;
     }
@@ -160,7 +162,8 @@ class RecipeSelectionDialogState extends State<RecipeSelectionDialog>
   Widget build(BuildContext context) {
     final debugMode = context.watch<DebugSettingsProvider>().debugScoringMode;
     return Dialog(
-      insetPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+      insetPadding:
+          const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -174,7 +177,9 @@ class RecipeSelectionDialogState extends State<RecipeSelectionDialog>
             ),
             const SizedBox(height: 8),
             Expanded(
-              child: _showingMenu ? _buildMenu() : _buildRecipeSelection(debugMode),
+              child: _showingMenu
+                  ? _buildMenu()
+                  : _buildRecipeSelection(debugMode),
             ),
             TextButton(
               key: const Key('recipe_selection_cancel_button'),
@@ -216,7 +221,8 @@ class RecipeSelectionDialogState extends State<RecipeSelectionDialog>
                           Icons.refresh,
                           size: 18,
                           color: _isLoading
-                              ? Colors.grey.withValues(alpha: 128)
+                              ? Colors.grey
+                                  .withOpacity(0.128) //.withValues(alpha: 128)
                               : Theme.of(context).colorScheme.primary,
                         ),
                       ),
@@ -392,8 +398,7 @@ class RecipeSelectionDialogState extends State<RecipeSelectionDialog>
                             const SizedBox(width: 8),
                             Expanded(
                               child: Text(recipe.name,
-                                  style:
-                                      Theme.of(context).textTheme.bodySmall),
+                                  style: Theme.of(context).textTheme.bodySmall),
                             ),
                             IconButton(
                               icon: const Icon(Icons.close, size: 18),
@@ -421,8 +426,7 @@ class RecipeSelectionDialogState extends State<RecipeSelectionDialog>
                             const SizedBox(width: 8),
                             Expanded(
                               child: Text(_resolveSideName(side),
-                                  style:
-                                      Theme.of(context).textTheme.bodySmall),
+                                  style: Theme.of(context).textTheme.bodySmall),
                             ),
                             IconButton(
                               icon: const Icon(Icons.close, size: 18),
@@ -431,8 +435,8 @@ class RecipeSelectionDialogState extends State<RecipeSelectionDialog>
                               visualDensity: VisualDensity.compact,
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
-                              onPressed: () => setState(
-                                  () => _simpleSides.remove(side)),
+                              onPressed: () =>
+                                  setState(() => _simpleSides.remove(side)),
                             ),
                           ],
                         ),
@@ -470,8 +474,7 @@ class RecipeSelectionDialogState extends State<RecipeSelectionDialog>
             child: ElevatedButton.icon(
               key: const Key('recipe_selection_save_button'),
               icon: const Icon(Icons.save),
-              label: Text(
-                  widget.isEditMode ? l10n.saveChanges : l10n.saveMeal),
+              label: Text(widget.isEditMode ? l10n.saveChanges : l10n.saveMeal),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -513,17 +516,15 @@ class RecipeSelectionDialogState extends State<RecipeSelectionDialog>
                         : l10n.markAsCooked,
                   ),
                   onPressed: () => Navigator.pop(context, {
-                    'action': widget.initialMealCooked
-                        ? 'edit_cooked'
-                        : 'cooked',
+                    'action':
+                        widget.initialMealCooked ? 'edit_cooked' : 'cooked',
                   }),
                 ),
                 const SizedBox(height: 8),
                 OutlinedButton.icon(
                   icon: const Icon(Icons.swap_horiz),
                   label: Text(l10n.changeRecipe),
-                  onPressed: () =>
-                      Navigator.pop(context, {'action': 'change'}),
+                  onPressed: () => Navigator.pop(context, {'action': 'change'}),
                 ),
               ],
             ),

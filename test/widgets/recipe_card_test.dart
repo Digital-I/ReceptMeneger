@@ -25,10 +25,7 @@ void main() {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: const [
-          Locale('en', ''),
-          Locale('pt', ''),
-        ],
+        supportedLocales: AppLocalizations.supportedLocales,
         home: ChangeNotifierProvider<RecipeProvider>.value(
           value: mockRecipeProvider,
           child: Scaffold(body: child),
@@ -67,7 +64,8 @@ void main() {
 
       // Should display recipe name
       expect(
-          find.text('Test Recipe with a Very Long Name That Might Cause Issues'),
+          find.text(
+              'Test Recipe with a Very Long Name That Might Cause Issues'),
           findsOneWidget);
     });
 

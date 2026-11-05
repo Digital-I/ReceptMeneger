@@ -71,7 +71,8 @@ class _RecipeFilterDialogState extends State<RecipeFilterDialog> {
         'is_hard': typeIsHard[typeId] == true ? 'true' : 'false',
       };
     }).toList();
-    Navigator.pop(context, RecipeFilterResult(filters: filters, tagFilters: tagFilters));
+    Navigator.pop(
+        context, RecipeFilterResult(filters: filters, tagFilters: tagFilters));
   }
 
   @override
@@ -96,10 +97,10 @@ class _RecipeFilterDialogState extends State<RecipeFilterDialog> {
                 const SizedBox(height: 16),
                 const Divider(),
                 const SizedBox(height: 4),
-                Text(l10n.filterByTags, style: Theme.of(context).textTheme.titleSmall),
+                Text(l10n.filterByTags,
+                    style: Theme.of(context).textTheme.titleSmall),
                 const SizedBox(height: 8),
-                for (final type in widget.tagTypes)
-                  _buildTagSection(type),
+                for (final type in widget.tagTypes) _buildTagSection(type),
               ],
             ],
           ),
@@ -107,7 +108,8 @@ class _RecipeFilterDialogState extends State<RecipeFilterDialog> {
       ),
       actions: [
         TextButton(onPressed: _clear, child: Text(l10n.clear)),
-        TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.cancel)),
+        TextButton(
+            onPressed: () => Navigator.pop(context), child: Text(l10n.cancel)),
         TextButton(onPressed: _apply, child: Text(l10n.apply)),
       ],
     );
@@ -120,15 +122,21 @@ class _RecipeFilterDialogState extends State<RecipeFilterDialog> {
         Text(l10n.maxDifficulty),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: List.generate(5, (i) => IconButton(
-            icon: Icon(
-              i < (_difficulty ?? -1) ? Icons.battery_full : Icons.battery_0_bar,
-              color: i < (_difficulty ?? -1) ? DesignTokens.success : DesignTokens.textSecondary,
-            ),
-            onPressed: () => setState(
-              () => _difficulty = (_difficulty == i + 1) ? null : i + 1,
-            ),
-          )),
+          children: List.generate(
+              5,
+              (i) => IconButton(
+                    icon: Icon(
+                      i < (_difficulty ?? -1)
+                          ? Icons.battery_full
+                          : Icons.battery_0_bar,
+                      color: i < (_difficulty ?? -1)
+                          ? DesignTokens.success
+                          : DesignTokens.textSecondary,
+                    ),
+                    onPressed: () => setState(
+                      () => _difficulty = (_difficulty == i + 1) ? null : i + 1,
+                    ),
+                  )),
         ),
       ],
     );
@@ -141,23 +149,28 @@ class _RecipeFilterDialogState extends State<RecipeFilterDialog> {
         Text(l10n.minimumRating),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: List.generate(5, (i) => IconButton(
-            icon: Icon(
-              i < (_rating ?? -1) ? Icons.star : Icons.star_border,
-              color: i < (_rating ?? -1) ? Colors.amber : DesignTokens.textSecondary,
-            ),
-            onPressed: () => setState(
-              () => _rating = (_rating == i + 1) ? null : i + 1,
-            ),
-          )),
+          children: List.generate(
+              5,
+              (i) => IconButton(
+                    icon: Icon(
+                      i < (_rating ?? -1) ? Icons.star : Icons.star_border,
+                      color: i < (_rating ?? -1)
+                          ? Colors.amber
+                          : DesignTokens.textSecondary,
+                    ),
+                    onPressed: () => setState(
+                      () => _rating = (_rating == i + 1) ? null : i + 1,
+                    ),
+                  )),
         ),
       ],
     );
   }
 
   Widget _buildFrequency(AppLocalizations l10n) {
-    return DropdownButtonFormField<String>(
-      initialValue: _frequency,
+    //TODO: возможны проблемы с тем что я поставил ? у String
+    return DropdownButtonFormField<String?>(
+      value: _frequency,
       decoration: InputDecoration(labelText: l10n.minimumFrequency),
       items: [
         DropdownMenuItem(value: null, child: Text(l10n.any)),
@@ -178,7 +191,8 @@ class _RecipeFilterDialogState extends State<RecipeFilterDialog> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(type.getLocalizedName(AppLocalizations.of(context)!), style: const TextStyle(fontWeight: FontWeight.w500)),
+          Text(type.getLocalizedName(AppLocalizations.of(context)!),
+              style: const TextStyle(fontWeight: FontWeight.w500)),
           const SizedBox(height: 4),
           Wrap(
             spacing: 6,
@@ -186,7 +200,8 @@ class _RecipeFilterDialogState extends State<RecipeFilterDialog> {
               final key = '${type.id}::${tag.name}';
               final selected = _selectedTagKeys.contains(key);
               return FilterChip(
-                label: Text(tag.getLocalizedName(AppLocalizations.of(context)!)),
+                label:
+                    Text(tag.getLocalizedName(AppLocalizations.of(context)!)),
                 selected: selected,
                 onSelected: (v) => setState(() {
                   v ? _selectedTagKeys.add(key) : _selectedTagKeys.remove(key);

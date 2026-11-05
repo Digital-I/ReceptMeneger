@@ -16,10 +16,7 @@ Widget _buildTestApp(Widget child) {
       GlobalWidgetsLocalizations.delegate,
       GlobalCupertinoLocalizations.delegate,
     ],
-    supportedLocales: const [
-      Locale('en', ''),
-      Locale('pt', ''),
-    ],
+    supportedLocales: AppLocalizations.supportedLocales,
     home: Scaffold(body: child),
   );
 }
@@ -55,7 +52,8 @@ void main() {
   group('RecipeDetailsOverviewTab', () {
     testWidgets('displays servings row', (tester) async {
       await tester.pumpWidget(
-        _buildTestApp(RecipeDetailsOverviewTab(recipe: _makeRecipe(servings: 4))),
+        _buildTestApp(
+            RecipeDetailsOverviewTab(recipe: _makeRecipe(servings: 4))),
       );
       await tester.pumpAndSettle();
 
@@ -63,7 +61,8 @@ void main() {
       expect(find.text('4'), findsOneWidget);
     });
 
-    testWidgets('shows marinating time row when marinatingTimeMinutes > 0', (tester) async {
+    testWidgets('shows marinating time row when marinatingTimeMinutes > 0',
+        (tester) async {
       final recipe = Recipe(
         id: 'test-id',
         name: 'Overnight Chicken',
@@ -80,7 +79,8 @@ void main() {
       expect(find.text('480 min'), findsOneWidget);
     });
 
-    testWidgets('hides marinating time row when marinatingTimeMinutes is 0', (tester) async {
+    testWidgets('hides marinating time row when marinatingTimeMinutes is 0',
+        (tester) async {
       final recipe = Recipe(
         id: 'test-id',
         name: 'Quick Pasta',
@@ -96,9 +96,11 @@ void main() {
       expect(find.text('Marinate Time (min): '), findsNothing);
     });
 
-    testWidgets('servings row is always visible regardless of value', (tester) async {
+    testWidgets('servings row is always visible regardless of value',
+        (tester) async {
       await tester.pumpWidget(
-        _buildTestApp(RecipeDetailsOverviewTab(recipe: _makeRecipe(servings: 1))),
+        _buildTestApp(
+            RecipeDetailsOverviewTab(recipe: _makeRecipe(servings: 1))),
       );
       await tester.pumpAndSettle();
 
@@ -206,7 +208,8 @@ void main() {
       mockDb.resetAllData();
     });
 
-    testWidgets('shows empty state when recipe has no instructions', (tester) async {
+    testWidgets('shows empty state when recipe has no instructions',
+        (tester) async {
       final recipe = _makeRecipe();
       await mockDb.insertRecipe(recipe);
 
@@ -221,7 +224,8 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('No instructions available for this recipe.'), findsOneWidget);
+      expect(find.text('No instructions available for this recipe.'),
+          findsOneWidget);
       expect(find.text('Add Instructions'), findsOneWidget);
     });
 
@@ -276,7 +280,8 @@ void main() {
       mockDb.resetAllData();
     });
 
-    testWidgets('preserves servings when instructions are updated', (tester) async {
+    testWidgets('preserves servings when instructions are updated',
+        (tester) async {
       final recipe = _makeRecipe(servings: 6);
       await mockDb.insertRecipe(recipe);
 
@@ -307,7 +312,8 @@ void main() {
       final stored = mockDb.recipes['test-id'];
       expect(stored, isNotNull);
       expect(stored!.servings, equals(6),
-          reason: '_saveInstructions dropped servings — data loss bug regressed');
+          reason:
+              '_saveInstructions dropped servings — data loss bug regressed');
     });
   });
 
@@ -324,7 +330,8 @@ void main() {
       mockDb.resetAllData();
     });
 
-    testWidgets('Add Ingredient button opens parser bottom sheet', (tester) async {
+    testWidgets('Add Ingredient button opens parser bottom sheet',
+        (tester) async {
       final recipe = _makeRecipe();
       await mockDb.insertRecipe(recipe);
 
@@ -342,11 +349,13 @@ void main() {
       await tester.tap(find.text('Add Ingredient'));
       await tester.pumpAndSettle();
 
-      expect(find.byKey(const Key('ingredient_parser_parse_button')), findsOneWidget,
+      expect(find.byKey(const Key('ingredient_parser_parse_button')),
+          findsOneWidget,
           reason: 'IngredientParserSection should be shown in bottom sheet');
     });
 
-    testWidgets('empty-state Add Ingredient button also opens parser bottom sheet',
+    testWidgets(
+        'empty-state Add Ingredient button also opens parser bottom sheet',
         (tester) async {
       final recipe = _makeRecipe();
       await mockDb.insertRecipe(recipe);
@@ -367,7 +376,8 @@ void main() {
       await tester.tap(find.text('Add Ingredient'));
       await tester.pumpAndSettle();
 
-      expect(find.byKey(const Key('ingredient_parser_parse_button')), findsOneWidget,
+      expect(find.byKey(const Key('ingredient_parser_parse_button')),
+          findsOneWidget,
           reason: 'Parser bottom sheet should open from empty-state button');
     });
 
@@ -392,7 +402,8 @@ void main() {
       expect(find.text('Add Ingredients'), findsOneWidget);
     });
 
-    testWidgets('closing bottom sheet without confirming leaves ingredients unchanged',
+    testWidgets(
+        'closing bottom sheet without confirming leaves ingredients unchanged',
         (tester) async {
       final recipe = _makeRecipe();
       await mockDb.insertRecipe(recipe);
@@ -418,7 +429,8 @@ void main() {
       // No ingredients should be in the mock DB
       final ingredients = await mockDb.getRecipeIngredients(recipe.id);
       expect(ingredients, isEmpty,
-          reason: 'No ingredient should be saved when sheet dismissed without confirm');
+          reason:
+              'No ingredient should be saved when sheet dismissed without confirm');
     });
   });
 }

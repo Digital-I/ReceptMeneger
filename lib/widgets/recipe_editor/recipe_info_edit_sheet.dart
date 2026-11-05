@@ -63,7 +63,8 @@ class _RecipeInfoEditSheetState extends State<RecipeInfoEditSheet> {
     if (!_formKey.currentState!.validate()) return;
     final updated = widget.recipe.copyWith(
       name: _nameCtrl.text.trim(),
-      servings: int.tryParse(_servingsCtrl.text.trim()) ?? widget.recipe.servings,
+      servings:
+          int.tryParse(_servingsCtrl.text.trim()) ?? widget.recipe.servings,
       difficulty: _difficulty,
       prepTimeMinutes: int.tryParse(_prepCtrl.text.trim()) ?? 0,
       cookTimeMinutes: int.tryParse(_cookCtrl.text.trim()) ?? 0,
@@ -217,9 +218,9 @@ class _RecipeInfoEditSheetState extends State<RecipeInfoEditSheet> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Desired frequency
+                    // Desired frequency TODO: тут тоже наверно надо ?
                     DropdownButtonFormField<FrequencyType>(
-                      initialValue: _frequency,
+                      value: _frequency,
                       decoration: InputDecoration(
                         labelText: l10n.desiredFrequency,
                         border: const OutlineInputBorder(),

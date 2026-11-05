@@ -276,9 +276,18 @@ class _RecipeSelectionCardState extends State<RecipeSelectionCard> {
           Row(
             children: [
               Expanded(flex: 5, child: Text('factor', style: headerStyle)),
-              Expanded(flex: 2, child: Text('score', style: headerStyle, textAlign: TextAlign.right)),
-              Expanded(flex: 2, child: Text('wt%', style: headerStyle, textAlign: TextAlign.right)),
-              Expanded(flex: 3, child: Text('contrib', style: headerStyle, textAlign: TextAlign.right)),
+              Expanded(
+                  flex: 2,
+                  child: Text('score',
+                      style: headerStyle, textAlign: TextAlign.right)),
+              Expanded(
+                  flex: 2,
+                  child: Text('wt%',
+                      style: headerStyle, textAlign: TextAlign.right)),
+              Expanded(
+                  flex: 3,
+                  child: Text('contrib',
+                      style: headerStyle, textAlign: TextAlign.right)),
             ],
           ),
           const SizedBox(height: 2),
@@ -290,10 +299,22 @@ class _RecipeSelectionCardState extends State<RecipeSelectionCard> {
               padding: const EdgeInsets.only(top: 1),
               child: Row(
                 children: [
-                  Expanded(flex: 5, child: Text(entry.key, style: textStyle, overflow: TextOverflow.ellipsis)),
-                  Expanded(flex: 2, child: Text(entry.value.toStringAsFixed(1), style: textStyle, textAlign: TextAlign.right)),
-                  Expanded(flex: 2, child: Text('$weight%', style: textStyle, textAlign: TextAlign.right)),
-                  Expanded(flex: 3, child: Text(contribution.toStringAsFixed(2), style: textStyle, textAlign: TextAlign.right)),
+                  Expanded(
+                      flex: 5,
+                      child: Text(entry.key,
+                          style: textStyle, overflow: TextOverflow.ellipsis)),
+                  Expanded(
+                      flex: 2,
+                      child: Text(entry.value.toStringAsFixed(1),
+                          style: textStyle, textAlign: TextAlign.right)),
+                  Expanded(
+                      flex: 2,
+                      child: Text('$weight%',
+                          style: textStyle, textAlign: TextAlign.right)),
+                  Expanded(
+                      flex: 3,
+                      child: Text(contribution.toStringAsFixed(2),
+                          style: textStyle, textAlign: TextAlign.right)),
                 ],
               ),
             );
@@ -489,25 +510,33 @@ class _RecipeSelectionCardState extends State<RecipeSelectionCard> {
     switch (badgeType) {
       case 'quality':
         // Quality: Green → Amber → Blue-grey → Light grey
-        if (score >= 85) return Colors.green.withValues(alpha: 0.26);
-        if (score >= 70) return Colors.amber.withValues(alpha: 0.26);
-        if (score > 0) return Colors.blueGrey.withValues(alpha: 0.26);
-        return Colors.grey.withValues(alpha: 0.26); // New/unrated
+        if (score >= 85)
+          return Colors.green.withOpacity(0.26); //.withValues(alpha: 0.26);
+        if (score >= 70)
+          return Colors.amber.withOpacity(0.26); //.withValues(alpha: 0.26);
+        if (score > 0)
+          return Colors.blueGrey.withOpacity(0.26); //.withValues(alpha: 0.26);
+        return Colors.grey
+            .withOpacity(0.26); //.withValues(alpha: 0.26); // New/unrated
 
       case 'timing':
         // Timing/Variety: Green → Amber → Red
-        if (score >= 75) return Colors.green.withValues(alpha: 0.26);
-        if (score >= 50) return Colors.amber.withValues(alpha: 0.26);
-        return Colors.red.withValues(alpha: 0.26);
+        if (score >= 75)
+          return Colors.green.withOpacity(0.26); //.withValues(alpha: 0.26);
+        if (score >= 50)
+          return Colors.amber.withOpacity(0.26); //.withValues(alpha: 0.26);
+        return Colors.red.withOpacity(0.26); //.withValues(alpha: 0.26);
 
       case 'effort':
         // Effort: Green → Amber → Red (based on ease of preparation)
-        if (score >= 75) return Colors.green.withValues(alpha: 0.26);
-        if (score >= 50) return Colors.amber.withValues(alpha: 0.26);
-        return Colors.red.withValues(alpha: 0.26);
+        if (score >= 75)
+          return Colors.green.withOpacity(0.26); //.withValues(alpha: 0.26);
+        if (score >= 50)
+          return Colors.amber.withOpacity(0.26); //.withValues(alpha: 0.26);
+        return Colors.red.withOpacity(0.26); //.withValues(alpha: 0.26);
 
       default:
-        return Colors.grey.withValues(alpha: 0.26);
+        return Colors.grey.withOpacity(0.26); //.withValues(alpha: 0.26);
     }
   }
 

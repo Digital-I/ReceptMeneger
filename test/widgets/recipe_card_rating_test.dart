@@ -18,10 +18,7 @@ void main() {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: const [
-          Locale('en', ''),
-          Locale('pt', ''),
-        ],
+        supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(body: child),
       );
     }
@@ -38,7 +35,7 @@ void main() {
         rating: 0,
         createdAt: DateTime.now(),
       );
-      
+
       await tester.pumpWidget(
         createTestableWidget(
           SizedBox(
@@ -71,7 +68,7 @@ void main() {
         rating: 3,
         createdAt: DateTime.now(),
       );
-      
+
       await tester.pumpWidget(
         createTestableWidget(
           SizedBox(
@@ -105,7 +102,7 @@ void main() {
         rating: 5,
         createdAt: DateTime.now(),
       );
-      
+
       await tester.pumpWidget(
         createTestableWidget(
           SizedBox(
@@ -138,7 +135,7 @@ void main() {
         rating: 1,
         createdAt: DateTime.now(),
       );
-      
+
       await tester.pumpWidget(
         createTestableWidget(
           SizedBox(
@@ -172,7 +169,7 @@ void main() {
         rating: 4,
         createdAt: DateTime.now(),
       );
-      
+
       await tester.pumpWidget(
         createTestableWidget(
           SizedBox(

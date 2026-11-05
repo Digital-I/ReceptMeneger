@@ -20,6 +20,7 @@ class WeeklyCalendarWidget extends StatefulWidget {
   final Function(DateTime selectedDate, int selectedDayIndex)? onDaySelected;
   final ScrollController? scrollController;
   final DatabaseHelper? databaseHelper;
+
   /// Map of ingredient id → name for resolving DB-linked simple sides.
   final Map<String, String> ingredientNames;
 
@@ -227,8 +228,8 @@ class _WeeklyCalendarWidgetState extends State<WeeklyCalendarWidget>
   Color _getContextBackgroundColor(BuildContext context) {
     switch (widget.timeContext) {
       case TimeContext.past:
-        return DesignTokens.textSecondary
-            .withValues(alpha: 0.1); // Very subtle gray background
+        return DesignTokens.textSecondary.withOpacity(0.1);
+      // .withValues(alpha: 0.1); // Very subtle gray background
       case TimeContext.current:
         return Colors.transparent; // No special background
       case TimeContext.future:
@@ -523,8 +524,8 @@ class _WeeklyCalendarWidgetState extends State<WeeklyCalendarWidget>
     final parts = <String>[];
 
     if (plannedMeal.mealPlanItemRecipes != null) {
-      for (final r in plannedMeal.mealPlanItemRecipes!
-          .where((r) => !r.isPrimaryDish)) {
+      for (final r
+          in plannedMeal.mealPlanItemRecipes!.where((r) => !r.isPrimaryDish)) {
         final name = _recipes[r.recipeId]?.name;
         if (name != null) parts.add(name);
       }

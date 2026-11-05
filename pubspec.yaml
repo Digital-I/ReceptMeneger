@@ -1,6 +1,6 @@
 name: receptmeneger
 description: "Курсовая работа"
-author: "Екатерина Медведева <ketrin.medvegonok@gmail.com>"
+# author: "Екатерина Медведева <ketrin.medvegonok@gmail.com>"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -50,7 +50,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ">=1.0.0 <2.0.0"  # Flexible range
-  uuid: ">=4.0.0 <5.0.0"     # Flexible range
+  uuid: ^4.6.0     # Flexible range
   provider: ">=6.0.0 <7.0.0"  # State management solution
   string_similarity: ">=2.0.0 <3.0.0"  # For fuzzy ingredient matching
   diacritic: ^0.1.6
@@ -59,6 +59,7 @@ dependencies:
   file_picker: ">=8.0.0 <10.0.0"     # SAF-compliant file picker for restore
   flutter_markdown: ">=0.6.0 <1.0.0" # Markdown rendering for recipe instructions
   package_info_plus: ">=8.0.0 <9.0.0" # Read version from pubspec at runtime
+  sqflite_common_ffi_web: ^0.4.5+4
 
 dev_dependencies:
   flutter_test:

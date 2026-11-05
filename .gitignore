@@ -113,3 +113,7 @@ test_logs/
 # other
 CHANGELOG.md
 .github
+CLAUDE.md
+.claude
+.venv/
+*.py

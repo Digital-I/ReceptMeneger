@@ -120,10 +120,11 @@ class WeekNavigationWidget extends StatelessWidget {
               children: [
                 // Context badge with combined message
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 12, vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: _getContextColor(context).withValues(alpha: 0.2),
+                    color: _getContextColor(context)
+                        .withOpacity(0.2), //.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(DesignTokens.spacingXs),
                   ),
                   child: Row(
@@ -137,10 +138,7 @@ class WeekNavigationWidget extends StatelessWidget {
                       const SizedBox(width: 6),
                       Text(
                         _getRelativeTimeDistance(context),
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: _getContextTextColor(context),
                               fontWeight: FontWeight.w500,
                             ),
@@ -155,10 +153,15 @@ class WeekNavigationWidget extends StatelessWidget {
                     Icons.today,
                     size: 20,
                     color: timeContext == TimeContext.current
-                        ? Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.3)
+                        ? Theme.of(context)
+                            .colorScheme
+                            .onSurfaceVariant
+                            .withOpacity(0.3) //.withValues(alpha: 0.3)
                         : null,
                   ),
-                  onPressed: timeContext == TimeContext.current ? null : onJumpToCurrentWeek,
+                  onPressed: timeContext == TimeContext.current
+                      ? null
+                      : onJumpToCurrentWeek,
                   tooltip: timeContext == TimeContext.current
                       ? null
                       : AppLocalizations.of(context)!.tapToJumpToCurrentWeek,

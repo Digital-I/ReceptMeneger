@@ -103,8 +103,7 @@ class _ShoppingListRefinementScreenState
       if (items == null) return;
 
       final keys = items.map((item) => '$category:${item['name']}').toList();
-      final allSelected =
-          keys.every((key) => _checkedState[key] ?? true);
+      final allSelected = keys.every((key) => _checkedState[key] ?? true);
       for (final key in keys) {
         _checkedState[key] = !allSelected;
       }
@@ -226,11 +225,11 @@ class _ShoppingListRefinementScreenState
             value: _getCheckboxState(),
             onChanged: (_) => _toggleAll(),
             title: Text(l10n.selectAll),
-            subtitle: Text(l10n.shoppingListRefinementSubtitle(
-                selectedCount, totalCount)),
+            subtitle: Text(
+                l10n.shoppingListRefinementSubtitle(selectedCount, totalCount)),
             controlAffinity: ListTileControlAffinity.leading,
-            contentPadding: const EdgeInsets.symmetric(
-                horizontal: DesignTokens.spacingLg),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: DesignTokens.spacingLg),
           ),
           const Divider(height: 1),
 
@@ -279,7 +278,9 @@ class _ShoppingListRefinementScreenState
     final filtered = <String, List<Map<String, dynamic>>>{};
     for (final entry in widget.groupedIngredients.entries) {
       final items = _hideToTaste
-          ? entry.value.where((item) => (item['quantity'] as double) != 0).toList()
+          ? entry.value
+              .where((item) => (item['quantity'] as double) != 0)
+              .toList()
           : entry.value;
       if (items.isNotEmpty) {
         filtered[entry.key] = items;
@@ -355,8 +356,7 @@ class _ShoppingListRefinementScreenState
                       color: isChecked
                           ? Colors.grey[700]
                           : Theme.of(context).colorScheme.onSurfaceVariant,
-                      decoration:
-                          isChecked ? null : TextDecoration.lineThrough,
+                      decoration: isChecked ? null : TextDecoration.lineThrough,
                     ),
                   ),
                 ],
@@ -382,7 +382,7 @@ class _ShoppingListRefinementScreenState
         color: Theme.of(context).colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Colors.black.withOpacity(0.05), //.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, -2),
           ),

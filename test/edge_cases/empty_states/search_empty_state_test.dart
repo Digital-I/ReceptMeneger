@@ -41,10 +41,7 @@ void main() {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          supportedLocales: [
-            Locale('en', ''),
-            Locale('pt', ''),
-          ],
+          supportedLocales: AppLocalizations.supportedLocales,
           home: RecipesScreen(),
         ),
       );
@@ -99,7 +96,8 @@ void main() {
 
       // Verify no exceptions occurred
       expect(tester.takeException(), isNull,
-          reason: 'Search should handle text input without errors in empty state');
+          reason:
+              'Search should handle text input without errors in empty state');
 
       // Empty state should still be shown
       expect(find.text('No recipes found'), findsOneWidget,

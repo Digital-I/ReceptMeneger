@@ -1,17 +1,18 @@
 import 'dart:convert';
-import 'dart:io';
+import 'package:file_picker/file_picker.dart';
+
 import '../../database/database_helper.dart';
 import '../errors/receptmeneger_exceptions.dart';
 
 /// Service for exporting ingredient data to JSON format
-/// 
+///
 /// Usage:
 /// ```dart
 /// final exportService = ServiceProvider.export.ingredientExport;
 /// final filePath = await exportService.exportIngredientsToJson();
 /// print('Ingredients exported to: $filePath');
 /// ```
-/// 
+///
 /// The exported JSON structure includes:
 /// - ingredient_id: Unique identifier
 /// - name: Ingredient name
@@ -25,74 +26,79 @@ class IngredientExportService {
   IngredientExportService(this._databaseHelper);
 
   /// Export all ingredients to JSON format
-  /// 
+  ///
   /// Returns the path to the exported JSON file
-  Future<String> exportIngredientsToJson() async {
+  Future<String?> exportIngredientsToJson() async {
     try {
       // Get all ingredients from database
       final ingredients = await _databaseHelper.getAllIngredients();
-      
+
       // Convert ingredients to export format
-      final exportData = ingredients.map((ingredient) => {
-        'ingredient_id': ingredient.id,
-        'name': ingredient.name,
-        'category': ingredient.category.value,
-        'unit': ingredient.unit?.value,
-        'protein_type': ingredient.proteinType?.name,
-        'notes': ingredient.notes,
-      }).toList();
-      
+      final exportData = ingredients
+          .map((ingredient) => {
+                'ingredient_id': ingredient.id,
+                'name': ingredient.name,
+                'category': ingredient.category.value,
+                'unit': ingredient.unit?.value,
+                'protein_type': ingredient.proteinType?.name,
+                'notes': ingredient.notes,
+              })
+          .toList();
+
       // Generate JSON
       final jsonString = const JsonEncoder.withIndent('  ').convert(exportData);
-      
+
       // Write to file
       final filePath = await _writeJsonToFile(jsonString);
-      
+
       return filePath;
     } catch (e) {
-      throw ReceptMenegerException('Failed to export ingredients: ${e.toString()}');
+      throw ReceptMenegerException(
+          'Failed to export ingredients: ${e.toString()}');
     }
   }
 
   /// Write JSON string to file in Downloads directory
-  Future<String> _writeJsonToFile(String jsonString) async {
+  Future<String?> _writeJsonToFile(String jsonString) async {
     try {
-      // Export to Downloads directory for easy access on device
       final timestamp = DateTime.now().millisecondsSinceEpoch;
       final fileName = 'ingredient_export_$timestamp.json';
-      final file = File('/sdcard/Download/$fileName');
-      
-      // Create Downloads directory if it doesn't exist
-      await file.parent.create(recursive: true);
-      
-      // Write JSON to file
-      await file.writeAsString(jsonString);
-      
-      return file.path;
+
+      // Открываем системный диалог сохранения (работает на Android, Linux, Web, iOS)
+      final outputPath = await FilePicker.platform.saveFile(
+        dialogTitle: 'Сохранить экспорт ингредиентов',
+        fileName: fileName,
+        type: FileType.custom,
+        allowedExtensions: ['json'],
+        bytes: utf8.encode(jsonString), // file_picker сам запишет байты
+      );
+
+      return outputPath; // Вернет путь или null, если пользователь отменил
     } catch (e) {
-      throw ReceptMenegerException('Failed to write export file: ${e.toString()}');
+      throw ReceptMenegerException(
+          'Failed to write export file: ${e.toString()}');
     }
   }
 
   /// Validate the structure of exported JSON data
   static bool validateExportStructure(List<dynamic> jsonData) {
     if (jsonData.isEmpty) return true; // Empty data is valid
-    
+
     for (final item in jsonData) {
       if (item is! Map<String, dynamic>) return false;
-      
+
       // Check required fields
       final requiredFields = ['ingredient_id', 'name', 'category'];
       for (final field in requiredFields) {
         if (!item.containsKey(field)) return false;
       }
-      
+
       // Check that category is not null/empty
       if (item['category'] == null || item['category'].toString().isEmpty) {
         return false;
       }
     }
-    
+
     return true;
   }
 }
