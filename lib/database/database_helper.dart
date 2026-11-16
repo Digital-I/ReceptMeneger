@@ -21,8 +21,6 @@ import '../models/meal_plan_item.dart';
 import '../models/meal_plan_item_recipe.dart';
 import '../models/meal_plan_item_ingredient.dart';
 import '../models/meal_ingredient.dart';
-import '../models/recipe_recommendation.dart';
-import '../models/recommendation_results.dart';
 import '../models/shopping_list.dart';
 import '../models/shopping_list_item.dart';
 import '../core/errors/receptmeneger_exceptions.dart';
@@ -45,7 +43,6 @@ import '../core/repositories/base_repository.dart';
 import 'daos/ingredient_dao.dart';
 import 'daos/meal_dao.dart';
 import 'daos/meal_plan_dao.dart';
-import 'daos/recommendation_dao.dart';
 import 'daos/recipe_dao.dart';
 import 'daos/shopping_list_dao.dart';
 
@@ -61,7 +58,6 @@ class DatabaseHelper {
   late final IngredientDao _ingredientDao = IngredientDao(() => database);
   late final MealDao _mealDao = MealDao(() => database);
   late final MealPlanDao _mealPlanDao = MealPlanDao(() => database);
-  late final RecommendationDao _recommendationDao = RecommendationDao(() => database);
   late final RecipeDao _recipeDao = RecipeDao(() => database);
   late final ShoppingListDao _shoppingListDao = ShoppingListDao(() => database);
 
@@ -429,19 +425,6 @@ class DatabaseHelper {
         FOREIGN KEY (recipe_id) REFERENCES recipes (id) ON DELETE CASCADE
       )
     ''');
-    // Create recommendation_history table
-    await db.execute('''
-      CREATE TABLE recommendation_history(
-        id TEXT PRIMARY KEY,
-        result_data TEXT NOT NULL,
-        created_at TEXT NOT NULL,
-        context_type TEXT NOT NULL,
-        target_date TEXT,
-        meal_type TEXT,
-        user_id TEXT
-      );
-    ''');
-
     // Create shopping_lists table
     await db.execute('''
       CREATE TABLE shopping_lists(
@@ -544,18 +527,8 @@ class DatabaseHelper {
           'ALTER TABLE meal_plan_items ADD COLUMN has_been_cooked INTEGER DEFAULT 0');
     }
     if (oldVersion < 14) {
-      // Add recommendation_history table
-      await db.execute('''
-        CREATE TABLE IF NOT EXISTS recommendation_history(
-          id TEXT PRIMARY KEY,
-          result_data TEXT NOT NULL,
-          created_at TEXT NOT NULL,
-          context_type TEXT NOT NULL,
-          target_date TEXT,
-          meal_type TEXT,
-          user_id TEXT
-        );
-      ''');
+      // recommendation_history table was removed together with the
+      // recommendation engine; nothing to create for this version anymore.
     }
     if (oldVersion < 15) {
       // Add category column to recipes table
@@ -819,71 +792,6 @@ class DatabaseHelper {
         sortBy: sortBy, sortOrder: sortOrder, filters: filters);
 
   Future<int> deleteRecipeIngredient(String id) => _ingredientDao.deleteRecipeIngredient(id);
-
-  // Recommendation history — simple ops delegated to RecommendationDao
-  Future<String> saveRecommendationHistory(RecommendationResults results, String contextType,
-          {DateTime? targetDate, String? mealType}) =>
-      _recommendationDao.saveRecommendationHistory(results, contextType,
-          targetDate: targetDate, mealType: mealType);
-
-  Future<List<Map<String, dynamic>>> getRecommendationHistory({
-    int limit = 10,
-    String? contextType,
-    DateTime? startDate,
-    DateTime? endDate,
-  }) =>
-      _recommendationDao.getRecommendationHistory(
-          limit: limit, contextType: contextType, startDate: startDate, endDate: endDate);
-
-  Future<int> cleanupRecommendationHistory({int daysToKeep = 14}) =>
-      _recommendationDao.cleanupRecommendationHistory(daysToKeep: daysToKeep);
-
-  // getRecommendationById and updateRecommendationResponse stay here because
-  // RecommendationResults.fromJson requires the full DatabaseHelper for recipe lookups.
-  Future<RecommendationResults?> getRecommendationById(String id) async {
-    final rawData = await _recommendationDao.getRawRecommendationById(id);
-    if (rawData == null) return null;
-    final map = jsonDecode(rawData) as Map<String, dynamic>;
-    return await RecommendationResults.fromJson(map, this);
-  }
-
-  Future<bool> updateRecommendationResponse(
-    String historyId,
-    String recipeId,
-    UserResponse response,
-  ) async {
-    final results = await getRecommendationById(historyId);
-    if (results == null) return false;
-
-    final updatedRecommendations = <RecipeRecommendation>[];
-    bool found = false;
-    for (final rec in results.recommendations) {
-      if (rec.recipe.id == recipeId) {
-        updatedRecommendations.add(RecipeRecommendation(
-          recipe: rec.recipe,
-          totalScore: rec.totalScore,
-          factorScores: rec.factorScores,
-          metadata: rec.metadata,
-          userResponse: response,
-          respondedAt: DateTime.now(),
-        ));
-        found = true;
-      } else {
-        updatedRecommendations.add(rec);
-      }
-    }
-    if (!found) return false;
-
-    final updatedResults = RecommendationResults(
-      recommendations: updatedRecommendations,
-      totalEvaluated: results.totalEvaluated,
-      queryParameters: results.queryParameters,
-      generatedAt: results.generatedAt,
-    );
-    await _recommendationDao.updateRecommendationResultData(
-        historyId, jsonEncode(updatedResults.toJson()));
-    return true;
-  }
 
   // === MIGRATION MANAGEMENT METHODS ===
 

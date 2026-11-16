@@ -8,15 +8,11 @@ import '../models/meal_plan_summary.dart';
 import '../models/recipe.dart';
 import '../models/time_context.dart';
 import '../database/database_helper.dart';
-import '../core/di/service_provider.dart';
-import '../core/services/recommendation_service.dart';
 import '../core/services/snackbar_service.dart';
-import '../core/services/meal_plan_analysis_service.dart';
 import '../core/services/meal_plan_summary_service.dart';
 import '../core/services/meal_plan_service.dart';
 import '../core/services/meal_action_service.dart';
 import '../core/services/meal_edit_service.dart';
-import '../core/services/recommendation_cache_service.dart';
 import '../core/theme/design_tokens.dart';
 import '../core/providers/recipe_provider.dart';
 import '../core/providers/meal_provider.dart';
@@ -50,12 +46,9 @@ class WeeklyPlanScreen extends StatefulWidget {
 
 class WeeklyPlanScreenState extends State<WeeklyPlanScreen> {
   late DatabaseHelper _dbHelper;
-  late RecommendationService _recommendationService;
-  late MealPlanAnalysisService _mealPlanAnalysis;
   late MealPlanSummaryService _mealPlanSummary;
   late MealPlanService _mealPlanService;
   late MealActionService _mealActionService;
-  late RecommendationCacheService _recommendationCache;
   DateTime _currentWeekStart = _getFriday(DateTime.now());
   MealPlan? _currentMealPlan;
   bool _isLoading = true;
@@ -76,18 +69,10 @@ class WeeklyPlanScreenState extends State<WeeklyPlanScreen> {
   @override
   void initState() {
     super.initState();
-    _dbHelper = widget.databaseHelper ?? ServiceProvider.database.dbHelper;
-    _recommendationService =
-        ServiceProvider.recommendations.recommendationService;
-    _mealPlanAnalysis = MealPlanAnalysisService(_dbHelper);
+    _dbHelper = widget.databaseHelper ?? DatabaseHelper();
     _mealPlanSummary = MealPlanSummaryService(_dbHelper);
     _mealPlanService = MealPlanService(_dbHelper);
     _mealActionService = MealActionService(_dbHelper);
-    _recommendationCache = RecommendationCacheService(
-      _dbHelper,
-      _recommendationService,
-      _mealPlanAnalysis,
-    );
     _loadData();
   }
 
@@ -186,7 +171,6 @@ class WeeklyPlanScreenState extends State<WeeklyPlanScreen> {
   }
 
   Future<void> _loadData() async {
-    _recommendationCache.clearAllCache();
     setState(() {
       _isLoading = true;
     });
@@ -206,9 +190,6 @@ class WeeklyPlanScreenState extends State<WeeklyPlanScreen> {
           _availableIngredients = ingredients;
           _isLoading = false;
         });
-
-        // Clear the recommendation cache when meal plan changes
-        _recommendationCache.clearAllCache();
 
         // Calculate summary data
         await _calculateSummaryData();
@@ -236,7 +217,6 @@ class WeeklyPlanScreenState extends State<WeeklyPlanScreen> {
   }
 
   void _changeWeek(int weekOffset) {
-    _recommendationCache.clearAllCache();
     setState(() {
       _currentWeekStart = _currentWeekStart.add(Duration(days: weekOffset * 7));
       _currentMealPlan = null;
@@ -255,44 +235,11 @@ class WeeklyPlanScreenState extends State<WeeklyPlanScreen> {
       return;
     }
 
-    // Get detailed recommendations with scores for this slot
-    final recommendationContext =
-        await _recommendationCache.buildRecommendationContext(
-      mealPlan: _currentMealPlan,
-      forDate: date,
-      mealType: mealType,
-    );
-
-    final isWeekday = date.weekday >= 1 && date.weekday <= 5;
-
-    final allRecommendations =
-        await _recommendationService.getDetailedRecommendations(
-      count: 999, // Get all recommendations for selection
-      excludeIds: recommendationContext['excludeIds'] ?? [],
-      avoidProteinTypes: recommendationContext['avoidProteinTypes'],
-      mealPlan: _currentMealPlan, // Pass meal plan for protein rotation
-      forDate: date,
-      mealType: mealType,
-      weekdayMeal: isWeekday,
-      maxDifficulty: isWeekday ? 4 : null,
-    );
-    // Keep top 8 for "Try This" tab
-    final topRecommendations =
-        allRecommendations.recommendations.take(8).toList();
-
-    // Check if widget is still mounted before showing dialog
-    if (!mounted) return;
-
-    // Show recipe selection dialog with detailed recommendations
+    // Show recipe selection dialog
     final mealData = await showDialog<Map<String, dynamic>>(
       context: context,
       builder: (context) => RecipeSelectionDialog(
         recipes: recipes,
-        detailedRecommendations: topRecommendations,
-        allScoredRecipes: allRecommendations.recommendations,
-        onRefreshDetailedRecommendations: () =>
-            _recommendationCache.refreshDetailedRecommendations(
-                mealPlan: _currentMealPlan, date: date, mealType: mealType),
         availableIngredients: _availableIngredients,
       ),
     );
@@ -432,7 +379,6 @@ class WeeklyPlanScreenState extends State<WeeklyPlanScreen> {
             context: context,
             builder: (context) => RecipeSelectionDialog(
               recipes: _availableRecipes,
-              detailedRecommendations: const [],
               initialPrimaryRecipe: mealItemData.primary,
               initialAdditionalRecipes: mealItemData.additional,
               initialPlannedServings: mealItemData.item.plannedServings,
@@ -987,8 +933,6 @@ class WeeklyPlanScreenState extends State<WeeklyPlanScreen> {
   @override
   void dispose() {
     _scrollController.dispose();
-    // Clear any resources used by the recommendation service if needed
-    _recommendationCache.clearAllCache();
     super.dispose();
   }
 }
