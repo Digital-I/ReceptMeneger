@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../models/ingredient.dart';
 import '../models/recipe.dart';
-import '../models/recipe_recommendation.dart';
-import '../core/di/service_provider.dart';
-import '../core/providers/debug_settings_provider.dart';
 import '../l10n/app_localizations.dart';
-import '../widgets/recipe_selection_card.dart';
 import '../widgets/unified_add_side_dialog.dart';
 import '../utils/sorting_utils.dart';
 import 'servings_stepper.dart';
@@ -14,14 +9,10 @@ import 'servings_stepper.dart';
 /// Dialog for selecting recipes for meal planning slots.
 ///
 /// Provides two modes:
-/// - Selection mode: Browse recommended or all recipes
+/// - Selection mode: Browse all recipes
 /// - Menu mode: Manage selected recipe and side dishes
 class RecipeSelectionDialog extends StatefulWidget {
   final List<Recipe> recipes;
-  final List<RecipeRecommendation> detailedRecommendations;
-  final List<RecipeRecommendation> allScoredRecipes;
-  final Future<({List<RecipeRecommendation> recommendations, String historyId})>
-      Function()? onRefreshDetailedRecommendations;
   final Recipe? initialPrimaryRecipe;
   final List<Recipe>? initialAdditionalRecipes;
   final int? initialPlannedServings;
@@ -33,9 +24,6 @@ class RecipeSelectionDialog extends StatefulWidget {
   const RecipeSelectionDialog({
     super.key,
     required this.recipes,
-    this.detailedRecommendations = const [],
-    this.allScoredRecipes = const [],
-    this.onRefreshDetailedRecommendations,
     this.initialPrimaryRecipe,
     this.initialAdditionalRecipes,
     this.initialPlannedServings,
@@ -49,15 +37,8 @@ class RecipeSelectionDialog extends StatefulWidget {
   RecipeSelectionDialogState createState() => RecipeSelectionDialogState();
 }
 
-class RecipeSelectionDialogState extends State<RecipeSelectionDialog>
-    with SingleTickerProviderStateMixin {
+class RecipeSelectionDialogState extends State<RecipeSelectionDialog> {
   String _searchQuery = '';
-  late TabController _tabController;
-  bool _isLoading = false;
-  late List<RecipeRecommendation> _recommendations;
-  late Set<String>
-      _sessionExcludedIds; // IDs shown or dismissed in this session
-  String? _recommendationHistoryId; // Store the history ID for feedback
   Recipe? _selectedRecipe;
   bool _showingMenu = false;
   List<Recipe> _additionalRecipes = [];
@@ -67,7 +48,6 @@ class RecipeSelectionDialogState extends State<RecipeSelectionDialog>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
 
     if (widget.initialPrimaryRecipe != null) {
       _selectedRecipe = widget.initialPrimaryRecipe;
@@ -75,92 +55,13 @@ class RecipeSelectionDialogState extends State<RecipeSelectionDialog>
       _showingMenu = true;
       _plannedServings = widget.initialPlannedServings ??
           widget.initialPrimaryRecipe!.servings;
-    } else {
-      _tabController.index = widget.detailedRecommendations.isNotEmpty ? 0 : 1;
     }
 
     _simpleSides = List.from(widget.initialSimpleSides);
-    _recommendations = List.from(widget.detailedRecommendations);
-    _sessionExcludedIds =
-        widget.detailedRecommendations.map((r) => r.recipe.id).toSet();
-  }
-
-  void _showFeedbackError() {
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(AppLocalizations.of(context)!.feedbackSaveError),
-        backgroundColor: Colors.red));
-  }
-
-  Future<void> _handleFeedback(
-      String recipeId, UserResponse userResponse) async {
-    if (userResponse == UserResponse.notToday ||
-        userResponse == UserResponse.lessOften ||
-        userResponse == UserResponse.moreOften ||
-        userResponse == UserResponse.neverAgain) {
-      _sessionExcludedIds.add(recipeId);
-
-      final replacement = widget.allScoredRecipes
-          .where((r) => !_sessionExcludedIds.contains(r.recipe.id))
-          .firstOrNull;
-
-      setState(() {
-        _recommendations.removeWhere((rec) => rec.recipe.id == recipeId);
-        if (replacement != null) {
-          _sessionExcludedIds.add(replacement.recipe.id);
-          _recommendations.add(replacement);
-        }
-      });
-    }
-
-    if (_recommendationHistoryId == null) return;
-
-    try {
-      final dbHelper = ServiceProvider.database.dbHelper;
-      final success = await dbHelper.updateRecommendationResponse(
-        _recommendationHistoryId!,
-        recipeId,
-        userResponse,
-      );
-      if (!success) _showFeedbackError();
-    } catch (e) {
-      _showFeedbackError();
-    }
-  }
-
-  Future<void> _handleRefresh() async {
-    if (widget.onRefreshDetailedRecommendations == null) return;
-    setState(() => _isLoading = true);
-    try {
-      final result = await widget.onRefreshDetailedRecommendations!();
-      if (mounted) {
-        setState(() {
-          _recommendations = result.recommendations;
-          _recommendationHistoryId = result.historyId;
-          _sessionExcludedIds =
-              result.recommendations.map((r) => r.recipe.id).toSet();
-          _isLoading = false;
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() => _isLoading = false);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(
-                '${AppLocalizations.of(context)!.errorRefreshingRecommendations} $e')));
-      }
-    }
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final debugMode = context.watch<DebugSettingsProvider>().debugScoringMode;
     return Dialog(
       insetPadding:
           const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
@@ -177,9 +78,7 @@ class RecipeSelectionDialogState extends State<RecipeSelectionDialog>
             ),
             const SizedBox(height: 8),
             Expanded(
-              child: _showingMenu
-                  ? _buildMenu()
-                  : _buildRecipeSelection(debugMode),
+              child: _showingMenu ? _buildMenu() : _buildRecipeSelection(),
             ),
             TextButton(
               key: const Key('recipe_selection_cancel_button'),
@@ -192,7 +91,7 @@ class RecipeSelectionDialogState extends State<RecipeSelectionDialog>
     );
   }
 
-  Widget _buildRecipeSelection(bool debugMode) {
+  Widget _buildRecipeSelection() {
     final filtered = widget.recipes
         .where((recipe) =>
             recipe.name.toLowerCase().contains(_searchQuery.toLowerCase()))
@@ -201,104 +100,28 @@ class RecipeSelectionDialogState extends State<RecipeSelectionDialog>
 
     return Column(
       children: [
-        // Tab bar for switching between Recommended and All Recipes
-        TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(
-              key: const Key('recipe_selection_recommended_tab'),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(AppLocalizations.of(context)!.tryThis),
-                  if (widget.onRefreshDetailedRecommendations != null)
-                    GestureDetector(
-                      onTap: _isLoading ? null : _handleRefresh,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 4.0),
-                        child: Icon(
-                          Icons.refresh,
-                          size: 18,
-                          color: _isLoading
-                              ? Colors.grey
-                                  .withOpacity(0.128) //.withValues(alpha: 128)
-                              : Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-            Tab(
-              key: const Key('recipe_selection_all_tab'),
-              text: AppLocalizations.of(context)!.allRecipes,
-            ),
-          ],
+        // Search field
+        TextField(
+          key: const Key('recipe_selection_all_tab'),
+          decoration: InputDecoration(
+            hintText: AppLocalizations.of(context)!.searchRecipesHint,
+            prefixIcon: const Icon(Icons.search),
+          ),
+          onChanged: (value) {
+            setState(() {
+              _searchQuery = value.trim();
+            });
+          },
         ),
         const SizedBox(height: 16),
 
-        // Only show search on All Recipes tab
-        AnimatedBuilder(
-          animation: _tabController,
-          builder: (context, child) {
-            if (_tabController.index != 1) return const SizedBox.shrink();
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context)!.searchRecipesHint,
-                    prefixIcon: const Icon(Icons.search),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      _searchQuery = value.trim();
-                    });
-                  },
-                ),
-                const SizedBox(height: 16),
-              ],
-            );
-          },
-        ),
-
         Expanded(
-          child: TabBarView(
-            controller: _tabController,
-            children: [
-              // Recommended tab
-              _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : _recommendations.isEmpty
-                      ? Center(
-                          child: Text(AppLocalizations.of(context)!
-                              .noRecommendationsAvailable))
-                      : ListView.builder(
-                          itemCount: _recommendations.length,
-                          itemBuilder: (context, index) {
-                            final recommendation = _recommendations[index];
-                            return RecipeSelectionCard(
-                              key: Key(
-                                  'recipe_card_${recommendation.recipe.id}'),
-                              recommendation: recommendation,
-                              onTap: () =>
-                                  _handleRecipeSelection(recommendation.recipe),
-                              onFeedback: (userResponse) => _handleFeedback(
-                                  recommendation.recipe.id, userResponse),
-                              debugMode: debugMode,
-                            );
-                          },
-                        ),
-              // All Recipes tab
-              ListView.builder(
-                itemCount: filteredRecipes.length,
-                itemBuilder: (context, index) {
-                  final recipe = filteredRecipes[index];
-                  return _buildRecipeListTile(recipe, debugMode);
-                },
-              ),
-            ],
+          child: ListView.builder(
+            itemCount: filteredRecipes.length,
+            itemBuilder: (context, index) {
+              final recipe = filteredRecipes[index];
+              return _buildRecipeListTile(recipe);
+            },
           ),
         ),
       ],
@@ -565,29 +388,13 @@ class RecipeSelectionDialogState extends State<RecipeSelectionDialog>
   }
 
   // Helper method to build consistent recipe list tiles
-  Widget _buildRecipeListTile(Recipe recipe, bool debugMode) {
-    // Find the real recommendation for this recipe
-    final realRecommendation = widget.allScoredRecipes
-        .where((rec) => rec.recipe.id == recipe.id)
-        .firstOrNull;
-
-    final recommendation = realRecommendation ??
-        RecipeRecommendation(
-          recipe: recipe,
-          totalScore: 50.0,
-          factorScores: {
-            'frequency': 50.0,
-            'protein_rotation': 50.0,
-            'variety_encouragement': 50.0,
-            'rating': 50.0,
-          },
-        );
-
-    return RecipeSelectionCard(
+  Widget _buildRecipeListTile(Recipe recipe) {
+    return ListTile(
       key: Key('recipe_card_${recipe.id}'),
-      recommendation: recommendation,
+      leading: const Icon(Icons.restaurant_menu),
+      title: Text(recipe.name),
+      trailing: const Icon(Icons.chevron_right),
       onTap: () => _handleRecipeSelection(recipe),
-      debugMode: debugMode,
     );
   }
 
