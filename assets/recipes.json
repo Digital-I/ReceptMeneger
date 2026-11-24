@@ -1,0 +1,222 @@
+[
+  {
+    "name ": "гаспачо",
+    "desired_frequency ": "monthly",
+    "notes ": "",
+    "created_at ": "2026-11-05T10:00:00.000000",
+    "difficulty ": 1,
+    "prep_time_minutes ": 40,
+    "cook_time_minutes ": 0,
+    "rating ": 4,
+    "instructions ": "1. Помойте и высушите помидоры, перец и огурец. Разрежьте помидоры пополам, удалите семена и нарежьте кусочками. Огурец очистите и нарежьте. Отрежьте четверть перца.\n2. В блендере смешайте все ингредиенты до однородности.\n3. Подавайте с поджаренными кубиками хлеба.",
+    "category ": "soups_stews",
+    "ingredients ": [
+      { "name ": "помидор", "quantity ": 5.0, "unit ": "piece", "unit_override ": null, "category ": "vegetable" },
+      { "name ": "огурец", "quantity ": 1.0, "unit ": "piece", "unit_override ": null, "category ": "vegetable" },
+      { "name ": "красный болгарский перец", "quantity ": 0.25, "unit ": "piece", "unit_override ": null, "category ": "vegetable" },
+      { "name ": "хлеб", "quantity ": 1.0, "unit ": "slice", "unit_override ": null, "category ": "other" },
+      { "name ": "чеснок", "quantity ": 1.0, "unit ": "clove", "unit_override ": null, "category ": "vegetable" },
+      { "name ": "уксус", "quantity ": 2.0, "unit ": "tbsp", "unit_override ": null, "category ": "other" },
+      { "name ": "оливковое масло", "quantity ": 0.5, "unit ": "tbsp", "unit_override ": null, "category ": "seasoning" },
+      { "name ": "соль", "quantity ": 1.0, "unit ": null, "unit_override ": null, "category ": "other" }
+    ]
+  },
+  {
+    "name ": "гуакамоле",
+    "desired_frequency ": "bimonthly",
+    "notes ": "",
+    "created_at ": "2026-11-05T10:00:00.000000",
+    "difficulty ": 2,
+    "prep_time_minutes ": 15,
+    "cook_time_minutes ": 0,
+    "rating ": 5,
+    "instructions ": "1. Нарежьте помидор и отложите. Помойте кинзу.\n2. Нарежьте авокадо и разомните вилкой, оставляя небольшие кусочки.\n3. Смешайте помидор с авокадо.\n4. Щедро посолите и добавьте сок лимона.\n5. Украсьте кинзой и оставшимся помидором.",
+    "category ": "dips",
+    "ingredients ": [
+      { "name ": "авокадо", "quantity ": 2.0, "unit ": "piece", "unit_override ": null, "category ": "fruit" },
+      { "name ": "помидор", "quantity ": 2.0, "unit ": "piece", "unit_override ": null, "category ": "vegetable" },
+      { "name ": "кинза", "quantity ": 1.0, "unit ": "cup", "unit_override ": null, "category ": "herb" },
+      { "name ": "лимон", "quantity ": 1.0, "unit ": "piece", "unit_override ": null, "category ": "fruit" },
+      { "name ": "соль", "quantity ": 1.0, "unit ": null, "unit_override ": null, "category ": "other" }
+    ]
+  },
+  {
+    "name ": "запеченная тыква",
+    "desired_frequency ": "weekly",
+    "notes ": "",
+    "created_at ": "2026-11-05T10:00:00.000000",
+    "difficulty ": 2,
+    "prep_time_minutes ": 15,
+    "cook_time_minutes ": 30,
+    "rating ": 4,
+    "instructions ": "1. Разогрейте духовку на максимум.\n2. Нарежьте тыкву кубиками по 2 см.\n3. Смешайте тыкву с бальзамическим уксусом и оливковым маслом.\n4. Посолите, добавьте мускатный орех и перемешайте.\n5. Выложите на противень и запекайте 15 минут. Перемешайте, убавьте огонь и готовьте еще 15 минут.",
+    "category ": "side_dishes",
+    "ingredients ": [
+      { "name ": "тыква", "quantity ": 1000.0, "unit ": "g", "unit_override ": null, "category ": "vegetable" },
+      { "name ": "мускатный орех", "quantity ": 1.0, "unit ": "tsp", "unit_override ": null, "category ": "seasoning" },
+      { "name ": "оливковое масло", "quantity ": 1.0, "unit ": "tbsp", "unit_override ": null, "category ": "seasoning" },
+      { "name ": "соль", "quantity ": 1.0, "unit ": null, "unit_override ": null, "category ": "other" },
+      { "name ": "бальзамический уксус", "quantity ": 1.0, "unit ": "tbsp", "unit_override ": null, "category ": "seasoning" }
+    ]
+  },
+  {
+    "name ": "баклажаны с мисо",
+    "desired_frequency ": "bimonthly",
+    "notes ": "",
+    "created_at ": "2026-11-05T10:00:00.000000",
+    "difficulty ": 3,
+    "prep_time_minutes ": 30,
+    "cook_time_minutes ": 15,
+    "rating ": 5,
+    "instructions ": "1. Разрежьте баклажаны вдоль и сделайте сетчатые надрезы на мякоти.\n2. Обжарьте на масле кожей вниз, затем переверните, накройте крышкой и готовьте до мягкости.\n3. Смешайте мисо, мирин и сахар до состояния глазури.\n4. Выложите баклажаны на противень мякотью вверх, покройте глазурью.\n5. Запекайте в режиме гриля 4 минуты. Посыпьте кунжутом.",
+    "category ": "side_dishes",
+    "ingredients ": [
+      { "name ": "баклажан", "quantity ": 2.0, "unit ": "piece", "unit_override ": null, "category ": "vegetable" },
+      { "name ": "растительное масло", "quantity ": 2.0, "unit ": "tbsp", "unit_override ": null, "category ": "oil" },
+      { "name ": "мисо", "quantity ": 3.0, "unit ": "tbsp", "unit_override ": null, "category ": "seasoning" },
+      { "name ": "мирин", "quantity ": 2.0, "unit ": "tbsp", "unit_override ": null, "category ": "seasoning" },
+      { "name ": "сахар", "quantity ": 1.0, "unit ": "tbsp", "unit_override ": null, "category ": "sugar_products" },
+      { "name ": "кунжутное масло", "quantity ": 1.0, "unit ": "tbsp", "unit_override ": null, "category ": "oil" },
+      { "name ": "кунжут", "quantity ": 1.0, "unit ": "tbsp", "unit_override ": null, "category ": "nuts_and_seeds" }
+    ]
+  },
+  {
+    "name ": "паста карбонара",
+    "desired_frequency ": "monthly",
+    "notes ": "",
+    "created_at ": "2026-11-05T10:00:00.000000",
+    "difficulty ": 2,
+    "prep_time_minutes ": 15,
+    "cook_time_minutes ": 20,
+    "rating ": 5,
+    "instructions ": "1. Отварите спагетти в подсоленной воде.\n2. Нарежьте бекон и обжарьте до хруста. Добавьте измельченный чеснок.\n3. В миске взбейте яйца с тертым пармезаном и черным перцем.\n4. Смешайте горячую пасту с беконом, снимите с огня.\n5. Быстро влейте яичную смесь, интенсивно перемешивая, чтобы получился кремовый соус. Посыпьте петрушкой.",
+    "category ": "main_dishes",
+    "ingredients ": [
+      { "name ": "яйца", "quantity ": 2.0, "unit ": "piece", "unit_override ": null, "category ": "protein" },
+      { "name ": "спагетти", "quantity ": 200.0, "unit ": "g", "unit_override ": null, "category ": "other" },
+      { "name ": "бекон", "quantity ": 150.0, "unit ": "g", "unit_override ": null, "category ": "protein" },
+      { "name ": "чеснок", "quantity ": 2.0, "unit ": "clove", "unit_override ": null, "category ": "vegetable" },
+      { "name ": "сыр пармезан", "quantity ": 5.0, "unit ": "tbsp", "unit_override ": null, "category ": "dairy" },
+      { "name ": "черный перец", "quantity ": 1.0, "unit ": "tsp", "unit_override ": null, "category ": "seasoning" },
+      { "name ": "петрушка", "quantity ": 0.5, "unit ": "cup", "unit_override ": null, "category ": "herb" },
+      { "name ": "соль", "quantity ": 1.0, "unit ": null, "unit_override ": null, "category ": "other" }
+    ]
+  },
+  {
+    "name ": "рататуй",
+    "desired_frequency ": "monthly",
+    "notes ": "",
+    "created_at ": "2026-11-05T10:00:00.000000",
+    "difficulty ": 2,
+    "prep_time_minutes ": 20,
+    "cook_time_minutes ": 40,
+    "rating ": 4,
+    "instructions ": "1. Нарежьте все овощи. Каждый овощ обжаривается на оливковом масле отдельно.\n2. Обжарьте лук, переложите в чугунную кастрюлю.\n3. Обжарьте баклажан с чесноком, переложите.\n4. Обжарьте перец, переложите.\n5. Обжарьте кабачок, переложите.\n6. Обжарьте помидоры, добавьте в кастрюлю.\n7. Добавьте тимьян, лавровый лист и базилик. Готовьте на медленном огне под крышкой 40 минут.",
+    "category ": "side_dishes",
+    "ingredients ": [
+      { "name ": "баклажан", "quantity ": 1.0, "unit ": "piece", "unit_override ": null, "category ": "vegetable" },
+      { "name ": "репчатый лук", "quantity ": 2.0, "unit ": "piece", "unit_override ": null, "category ": "vegetable" },
+      { "name ": "красный болгарский перец", "quantity ": 1.0, "unit ": "piece", "unit_override ": null, "category ": "vegetable" },
+      { "name ": "кабачок", "quantity ": 1.0, "unit ": "piece", "unit_override ": null, "category ": "vegetable" },
+      { "name ": "помидор", "quantity ": 3.0, "unit ": "piece", "unit_override ": null, "category ": "vegetable" },
+      { "name ": "чеснок", "quantity ": 3.0, "unit ": "clove", "unit_override ": null, "category ": "vegetable" },
+      { "name ": "тимьян", "quantity ": 1.0, "unit ": "piece", "unit_override ": null, "category ": "vegetable" },
+      { "name ": "лавровый лист", "quantity ": 2.0, "unit ": "leaves", "unit_override ": null, "category ": "seasoning" },
+      { "name ": "базилик", "quantity ": 0.5, "unit ": "cup", "unit_override ": null, "category ": "herb" },
+      { "name ": "оливковое масло", "quantity ": 3.0, "unit ": "tbsp", "unit_override ": null, "category ": "seasoning" },
+      { "name ": "соль", "quantity ": 1.0, "unit ": null, "unit_override ": null, "category ": "other" },
+      { "name ": "черный перец", "quantity ": 1.0, "unit ": "tsp", "unit_override ": null, "category ": "seasoning" }
+    ]
+  },
+  {
+    "name ": "фалафель",
+    "desired_frequency ": "bimonthly",
+    "notes ": "",
+    "created_at ": "2026-11-05T10:00:00.000000",
+    "difficulty ": 4,
+    "prep_time_minutes ": 90,
+    "cook_time_minutes ": 30,
+    "rating ": 5,
+    "instructions ": "1. Замочите нут на 24 часа. Высушите.\n2. В процессоре измельчите лук, чеснок, петрушку и кинзу. Добавьте половину нута, специи и соль, взбейте в пасту.\n3. Добавьте оставшийся нут и взбейте пульсами, чтобы остались кусочки.\n4. Вмешайте соду и муку.\n5. Жарьте во фритюре небольшими партиями по 1.5 минуты до золотистого цвета.",
+    "category ": "main_dishes",
+    "ingredients ": [
+      { "name ": "нут", "quantity ": 250.0, "unit ": "g", "unit_override ": null, "category ": "pulse" },
+      { "name ": "репчатый лук", "quantity ": 0.5, "unit ": "piece", "unit_override ": null, "category ": "vegetable" },
+      { "name ": "петрушка", "quantity ": 0.25, "unit ": "cup", "unit_override ": null, "category ": "herb" },
+      { "name ": "кинза", "quantity ": 0.25, "unit ": "cup", "unit_override ": null, "category ": "herb" },
+      { "name ": "чеснок", "quantity ": 1.0, "unit ": "clove", "unit_override ": null, "category ": "vegetable" },
+      { "name ": "тмин", "quantity ": 1.0, "unit ": "tsp", "unit_override ": null, "category ": "seasoning" },
+      { "name ": "семена кориандра", "quantity ": 1.0, "unit ": "tsp", "unit_override ": null, "category ": "seasoning" },
+      { "name ": "соль", "quantity ": 0.5, "unit ": "tsp", "unit_override ": null, "category ": "other" },
+      { "name ": "пищевая сода", "quantity ": 0.5, "unit ": "tsp", "unit_override ": null, "category ": "other" },
+      { "name ": "пшеничная мука", "quantity ": 1.5, "unit ": "tbsp", "unit_override ": null, "category ": "grain" },
+      { "name ": "растительное масло", "quantity ": 50.0, "unit ": "tbsp", "unit_override ": null, "category ": "oil" }
+    ]
+  },
+  {
+    "name ": "суп с имбирем и лапшой",
+    "desired_frequency ": "monthly",
+    "notes ": "",
+    "created_at ": "2026-11-05T10:00:00.000000",
+    "difficulty ": 3,
+    "prep_time_minutes ": 40,
+    "cook_time_minutes ": 40,
+    "rating ": 5,
+    "instructions ": "1. Нарежьте имбирь и лук. Обжарьте на масле до хруста, добавьте панко и кунжут, toasted.\n2. В кастрюле сварите бульон с имбирем, луком и чесноком (25 минут). Процедите.\n3. Отварите лапшу соба, промойте холодной водой, заправьте соевым соусом и лимонным соком.\n4. Разлейте бульон по тарелкам, добавьте лапшу. Посыпьте хрустящей смесью и кинзой.",
+    "category ": "soups_stews",
+    "ingredients ": [
+      { "name ": "имбирь", "quantity ": 10.0, "unit ": "cm", "unit_override ": null, "category ": "seasoning" },
+      { "name ": "оливковое масло", "quantity ": 6.0, "unit ": "tbsp", "unit_override ": null, "category ": "seasoning" },
+      { "name ": "репчатый лук", "quantity ": 1.0, "unit ": "piece", "unit_override ": null, "category ": "vegetable" },
+      { "name ": "чеснок", "quantity ": 1.0, "unit ": "clove", "unit_override ": null, "category ": "vegetable" },
+      { "name ": "овощной бульон", "quantity ": 2.0, "unit ": "cup", "unit_override ": null, "category ": "other" },
+      { "name ": "лапша соба", "quantity ": 200.0, "unit ": "g", "unit_override ": null, "category ": "other" },
+      { "name ": "соевый соус", "quantity ": 2.0, "unit ": "tbsp", "unit_override ": null, "category ": "seasoning" },
+      { "name ": "кинза", "quantity ": 0.5, "unit ": "cup", "unit_override ": null, "category ": "herb" },
+      { "name ": "лимон", "quantity ": 1.0, "unit ": "piece", "unit_override ": null, "category ": "fruit" }
+    ]
+  },
+  {
+    "name ": "крем в стакане",
+    "desired_frequency ": "rarely",
+    "notes ": "",
+    "created_at ": "2026-11-05T10:00:00.000000",
+    "difficulty ": 3,
+    "prep_time_minutes ": 30,
+    "cook_time_minutes ": 30,
+    "rating ": 4,
+    "instructions ": "1. Взбейте яичные желтки с сахаром до однородности.\n2. Добавьте молоко и кукурузный крахмал, хорошо перемешайте.\n3. Разделите смесь на две части. В одну добавьте какао-порошок.\n4. Варите обе смеси на среднем огне, постоянно помешивая, до загустения.\n5. Выложите в стаканы слоями: обычный крем, затем шоколадный.",
+    "category ": "desserts",
+    "ingredients ": [
+      { "name ": "яичные желтки", "quantity ": 2.0, "unit ": "piece", "unit_override ": null, "category ": "protein" },
+      { "name ": "сахар", "quantity ": 2.5, "unit ": "cup", "unit_override ": null, "category ": "sugar_products" },
+      { "name ": "молоко", "quantity ": 2.0, "unit ": "cup", "unit_override ": null, "category ": "dairy" },
+      { "name ": "кукурузный крахмал", "quantity ": 1.0, "unit ": "tbsp", "unit_override ": null, "category ": "grain" },
+      { "name ": "какао-порошок", "quantity ": 1.0, "unit ": "tbsp", "unit_override ": null, "category ": "other" }
+    ]
+  },
+  {
+    "name ": "жареный рис с курицей",
+    "desired_frequency ": "weekly",
+    "notes ": "",
+    "created_at ": "2026-11-05T10:00:00.000000",
+    "difficulty ": 2,
+    "prep_time_minutes ": 20,
+    "cook_time_minutes ": 20,
+    "rating ": 4,
+    "instructions ": "1. Отварите рис и остудите.\n2. Нарежьте курицу, морковь и лук. Обжарьте курицу на масле до золотистости, добавьте овощи и чеснок.\n3. Сдвиньте овощи, влейте взбитые яйца и быстро перемешайте.\n4. Добавьте рис, соевый соус и кунжутное масло. Жарьте, постоянно помешивая, 3 минуты.\n5. Подавайте, посыпав кунжутом.",
+    "category ": "complete_meals",
+    "ingredients ": [
+      { "name ": "белый рис", "quantity ": 1.5, "unit ": "cup", "unit_override ": null, "category ": "grain" },
+      { "name ": "курица", "quantity ": 150.0, "unit ": "g", "unit_override ": null, "category ": "protein" },
+      { "name ": "соевый соус", "quantity ": 2.0, "unit ": "tbsp", "unit_override ": null, "category ": "seasoning" },
+      { "name ": "чеснок", "quantity ": 2.0, "unit ": "clove", "unit_override ": null, "category ": "vegetable" },
+      { "name ": "морковь", "quantity ": 1.0, "unit ": "piece", "unit_override ": null, "category ": "vegetable" },
+      { "name ": "яйца", "quantity ": 2.0, "unit ": "piece", "unit_override ": null, "category ": "protein" },
+      { "name ": "кунжутное масло", "quantity ": 1.0, "unit ": "tbsp", "unit_override ": null, "category ": "oil" },
+      { "name ": "репчатый лук", "quantity ": 1.0, "unit ": "piece", "unit_override ": null, "category ": "vegetable" },
+      { "name ": "растительное масло", "quantity ": 1.0, "unit ": "tbsp", "unit_override ": null, "category ": "oil" },
+      { "name ": "соль", "quantity ": 1.0, "unit ": null, "unit_override ": null, "category ": "other" }
+    ]
+  }
+]

@@ -1,0 +1,234 @@
+[
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000017",
+    "name": "Говядина",
+    "category": "protein",
+    "unit": "g",
+    "protein_type": "beef",
+    "notes": "нарезать кубиками"
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000005",
+    "name": "Свекла",
+    "category": "vegetable",
+    "unit": "piece",
+    "protein_type": null,
+    "notes": "натереть на терке"
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000006",
+    "name": "Капуста белокочанная",
+    "category": "vegetable",
+    "unit": "g",
+    "protein_type": null,
+    "notes": "нашинковать"
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000001",
+    "name": "Картофель",
+    "category": "vegetable",
+    "unit": "piece",
+    "protein_type": null,
+    "notes": "нарезать кубиками"
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000003",
+    "name": "Морковь",
+    "category": "vegetable",
+    "unit": "piece",
+    "protein_type": null,
+    "notes": "натереть на терке"
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000002",
+    "name": "Лук репчатый",
+    "category": "vegetable",
+    "unit": "piece",
+    "protein_type": null,
+    "notes": "мелко нарезать"
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000035",
+    "name": "Томатная паста",
+    "category": "seasoning",
+    "unit": "tbsp",
+    "protein_type": null,
+    "notes": null
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000025",
+    "name": "Соль",
+    "category": "other",
+    "unit": null,
+    "protein_type": null,
+    "notes": "по вкусу"
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000014",
+    "name": "Сметана",
+    "category": "dairy",
+    "unit": "g",
+    "protein_type": null,
+    "notes": "для подачи"
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000010",
+    "name": "Мука пшеничная",
+    "category": "grain",
+    "unit": "g",
+    "protein_type": null,
+    "notes": "просеять"
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000011",
+    "name": "Яйца",
+    "category": "protein",
+    "unit": "piece",
+    "protein_type": "other",
+    "notes": null
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000049",
+    "name": "Вода",
+    "category": "other",
+    "unit": "ml",
+    "protein_type": null,
+    "notes": "теплая"
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000018",
+    "name": "Свинина",
+    "category": "protein",
+    "unit": "g",
+    "protein_type": "pork",
+    "notes": "пропустить через мясорубку"
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000013",
+    "name": "Сливочное масло",
+    "category": "dairy",
+    "unit": "g",
+    "protein_type": null,
+    "notes": "для подачи"
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000008",
+    "name": "Гречка",
+    "category": "grain",
+    "unit": "g",
+    "protein_type": null,
+    "notes": "промыть"
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000022",
+    "name": "Грибы",
+    "category": "vegetable",
+    "unit": "g",
+    "protein_type": null,
+    "notes": "нарезать пластинками"
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000028",
+    "name": "Растительное масло",
+    "category": "oil",
+    "unit": "tbsp",
+    "protein_type": null,
+    "notes": null
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000021",
+    "name": "Сельдь",
+    "category": "protein",
+    "unit": "g",
+    "protein_type": "fish",
+    "notes": "филе"
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000034",
+    "name": "Майонез",
+    "category": "seasoning",
+    "unit": "g",
+    "protein_type": null,
+    "notes": null
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000012",
+    "name": "Молоко",
+    "category": "dairy",
+    "unit": "ml",
+    "protein_type": null,
+    "notes": "теплое"
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000031",
+    "name": "Сахар",
+    "category": "sugar_products",
+    "unit": "tbsp",
+    "protein_type": null,
+    "notes": null
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000019",
+    "name": "Курица",
+    "category": "protein",
+    "unit": "g",
+    "protein_type": "chicken",
+    "notes": "отварить"
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000007",
+    "name": "Огурец",
+    "category": "vegetable",
+    "unit": "piece",
+    "protein_type": null,
+    "notes": "свежий или соленый"
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000042",
+    "name": "Горох",
+    "category": "pulse",
+    "unit": "g",
+    "protein_type": null,
+    "notes": "консервированный"
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000023",
+    "name": "Укроп",
+    "category": "herb",
+    "unit": "g",
+    "protein_type": null,
+    "notes": "мелко нарезать"
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000041",
+    "name": "Панировочные сухари",
+    "category": "grain",
+    "unit": "g",
+    "protein_type": null,
+    "notes": null
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000015",
+    "name": "Творог",
+    "category": "dairy",
+    "unit": "g",
+    "protein_type": null,
+    "notes": "сухой, 9%"
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000036",
+    "name": "Сливки",
+    "category": "dairy",
+    "unit": "ml",
+    "protein_type": null,
+    "notes": "20%"
+  },
+  {
+    "ingredient_id": "10000000-0000-4000-8000-000000000027",
+    "name": "Лавровый лист",
+    "category": "seasoning",
+    "unit": "piece",
+    "protein_type": null,
+    "notes": null
+  }
+]

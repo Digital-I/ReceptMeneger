@@ -1,0 +1,290 @@
+
+[
+  {
+    "recipe_id": "20000000-0000-4000-8000-000000000001",
+    "name": "Борщ",
+    "instructions": "1. Сварить говяжий бульон, мясо вынуть и нарезать.\n2. Свеклу натереть и потушить с томатной пастой и уксусом.\n3. В кипящий бульон добавить нарезанный картофель и капусту.\n4. Сделать зажарку из лука и моркови, добавить к свекле.\n5. За 10 минут до готовности добавить зажарку, лавровый лист, соль и перец.\n6. Подавать со сметаной и свежим укропом.",
+    "current_ingredients": [
+      { "ingredient_id": "10000000-0000-4000-8000-000000000017", "name": "Говядина", "quantity": 500.0, "unit": "g", "category": "protein", "protein_type": "beef", "preparation_notes": "нарезать кубиками" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000005", "name": "Свекла", "quantity": 2.0, "unit": "piece", "category": "vegetable", "protein_type": null, "preparation_notes": "натереть на терке" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000006", "name": "Капуста белокочанная", "quantity": 300.0, "unit": "g", "category": "vegetable", "protein_type": null, "preparation_notes": "нашинковать" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000001", "name": "Картофель", "quantity": 4.0, "unit": "piece", "category": "vegetable", "protein_type": null, "preparation_notes": "нарезать кубиками" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000003", "name": "Морковь", "quantity": 1.0, "unit": "piece", "category": "vegetable", "protein_type": null, "preparation_notes": "натереть на терке" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000002", "name": "Лук репчатый", "quantity": 1.0, "unit": "piece", "category": "vegetable", "protein_type": null, "preparation_notes": "мелко нарезать" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000035", "name": "Томатная паста", "quantity": 2.0, "unit": "tbsp", "category": "seasoning", "protein_type": null, "preparation_notes": null },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000025", "name": "Соль", "quantity": 1.0, "unit": null, "category": "other", "protein_type": null, "preparation_notes": "по вкусу" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000014", "name": "Сметана", "quantity": 50.0, "unit": "g", "category": "dairy", "protein_type": null, "preparation_notes": "для подачи" }
+    ],
+    "enhanced_ingredients": [],
+    "metadata": {
+      "difficulty": 3,
+      "prep_time_minutes": 30,
+      "cook_time_minutes": 90,
+      "rating": 5,
+      "category": "soups_stews",
+      "desired_frequency": "weekly",
+      "notes": "Классический украинско-русский рецепт",
+      "created_at": "2026-11-05T10:00:00.000000"
+    },
+    "cooking_history": {
+      "times_cooked": 0,
+      "last_cooked_date": null
+    }
+  },
+  {
+    "recipe_id": "20000000-0000-4000-8000-000000000002",
+    "name": "Пельмени",
+    "instructions": "1. Замесить тесто из муки, яйца, воды и соли. Дать отдохнуть 30 минут.\n2. Приготовить фарш из говядины, свинины, лука, соли и перца.\n3. Раскатать тесто, вырезать кружочки, положить фарш и защипнуть края.\n4. Варить в кипящей подсоленной воде 7-10 минут после всплытия.\n5. Подавать со сливочным маслом и сметаной.",
+    "current_ingredients": [
+      { "ingredient_id": "10000000-0000-4000-8000-000000000010", "name": "Мука пшеничная", "quantity": 400.0, "unit": "g", "category": "grain", "protein_type": null, "preparation_notes": "просеять" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000011", "name": "Яйца", "quantity": 1.0, "unit": "piece", "category": "protein", "protein_type": "other", "preparation_notes": null },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000049", "name": "Вода", "quantity": 150.0, "unit": "ml", "category": "other", "protein_type": null, "preparation_notes": "теплая" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000017", "name": "Говядина", "quantity": 250.0, "unit": "g", "category": "protein", "protein_type": "beef", "preparation_notes": "пропустить через мясорубку" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000018", "name": "Свинина", "quantity": 250.0, "unit": "g", "category": "protein", "protein_type": "pork", "preparation_notes": "пропустить через мясорубку" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000002", "name": "Лук репчатый", "quantity": 1.0, "unit": "piece", "category": "vegetable", "protein_type": null, "preparation_notes": "мелко нарезать" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000013", "name": "Сливочное масло", "quantity": 30.0, "unit": "g", "category": "dairy", "protein_type": null, "preparation_notes": "для подачи" }
+    ],
+    "enhanced_ingredients": [],
+    "metadata": {
+      "difficulty": 4,
+      "prep_time_minutes": 60,
+      "cook_time_minutes": 15,
+      "rating": 5,
+      "category": "main_dishes",
+      "desired_frequency": "monthly",
+      "notes": "Можно заморозить впрок",
+      "created_at": "2026-11-05T10:00:00.000000"
+    },
+    "cooking_history": {
+      "times_cooked": 0,
+      "last_cooked_date": null
+    }
+  },
+  {
+    "recipe_id": "20000000-0000-4000-8000-000000000003",
+    "name": "Гречка с грибами",
+    "instructions": "1. Гречку промыть и отварить до готовности.\n2. Лук и морковь нарезать, обжарить на растительном масле.\n3. Добавить нарезанные грибы, жарить до испарения жидкости.\n4. Смешать гречку с грибной зажаркой, посолить и поперчить.\n5. Томить под крышкой 5 минут.",
+    "current_ingredients": [
+      { "ingredient_id": "10000000-0000-4000-8000-000000000008", "name": "Гречка", "quantity": 200.0, "unit": "g", "category": "grain", "protein_type": null, "preparation_notes": "промыть" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000022", "name": "Грибы", "quantity": 300.0, "unit": "g", "category": "vegetable", "protein_type": null, "preparation_notes": "нарезать пластинками" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000002", "name": "Лук репчатый", "quantity": 1.0, "unit": "piece", "category": "vegetable", "protein_type": null, "preparation_notes": "нарезать кубиками" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000003", "name": "Морковь", "quantity": 1.0, "unit": "piece", "category": "vegetable", "protein_type": null, "preparation_notes": "натереть на терке" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000028", "name": "Растительное масло", "quantity": 2.0, "unit": "tbsp", "category": "oil", "protein_type": null, "preparation_notes": null },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000025", "name": "Соль", "quantity": 1.0, "unit": null, "category": "other", "protein_type": null, "preparation_notes": "по вкусу" }
+    ],
+    "enhanced_ingredients": [],
+    "metadata": {
+      "difficulty": 1,
+      "prep_time_minutes": 15,
+      "cook_time_minutes": 30,
+      "rating": 4,
+      "category": "side_dishes",
+      "desired_frequency": "weekly",
+      "notes": "Постное и сытное блюдо",
+      "created_at": "2026-11-05T10:00:00.000000"
+    },
+    "cooking_history": {
+      "times_cooked": 0,
+      "last_cooked_date": null
+    }
+  },
+  {
+    "recipe_id": "20000000-0000-4000-8000-000000000004",
+    "name": "Селедка под шубой",
+    "instructions": "1. Отварить картофель, морковь и свеклу до готовности, остудить и натереть на терке.\n2. Яйца сварить вкрутую и натереть.\n3. Сельдь очистить от костей и мелко нарезать.\n4. Выложить слоями: сельдь, лук, картофель, морковь, яйца, свекла.\n5. Каждый слой промазать майонезом. Убрать в холодильник на 2 часа.",
+    "current_ingredients": [
+      { "ingredient_id": "10000000-0000-4000-8000-000000000021", "name": "Сельдь", "quantity": 300.0, "unit": "g", "category": "protein", "protein_type": "fish", "preparation_notes": "филе" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000001", "name": "Картофель", "quantity": 3.0, "unit": "piece", "category": "vegetable", "protein_type": null, "preparation_notes": "отварить" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000003", "name": "Морковь", "quantity": 2.0, "unit": "piece", "category": "vegetable", "protein_type": null, "preparation_notes": "отварить" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000005", "name": "Свекла", "quantity": 2.0, "unit": "piece", "category": "vegetable", "protein_type": null, "preparation_notes": "отварить" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000011", "name": "Яйца", "quantity": 3.0, "unit": "piece", "category": "protein", "protein_type": "other", "preparation_notes": "сварить вкрутую" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000034", "name": "Майонез", "quantity": 150.0, "unit": "g", "category": "seasoning", "protein_type": null, "preparation_notes": null }
+    ],
+    "enhanced_ingredients": [],
+    "metadata": {
+      "difficulty": 2,
+      "prep_time_minutes": 40,
+      "cook_time_minutes": 60,
+      "rating": 5,
+      "category": "salads",
+      "desired_frequency": "rarely",
+      "notes": "Традиционный новогодний салат",
+      "created_at": "2026-11-05T10:00:00.000000"
+    },
+    "cooking_history": {
+      "times_cooked": 0,
+      "last_cooked_date": null
+    }
+  },
+  {
+    "recipe_id": "20000000-0000-4000-8000-000000000005",
+    "name": "Блины",
+    "instructions": "1. Смешать яйца, сахар и соль.\n2. Влить теплое молоко, постепенно добавляя муку, чтобы не было комков.\n3. Добавить растительное масло, перемешать.\n4. Жарить на раскаленной сковороде с двух сторон до золотистого цвета.\n5. Подавать со сливочным маслом, медом или сметаной.",
+    "current_ingredients": [
+      { "ingredient_id": "10000000-0000-4000-8000-000000000012", "name": "Молоко", "quantity": 500.0, "unit": "ml", "category": "dairy", "protein_type": null, "preparation_notes": "теплое" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000011", "name": "Яйца", "quantity": 2.0, "unit": "piece", "category": "protein", "protein_type": "other", "preparation_notes": null },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000010", "name": "Мука пшеничная", "quantity": 200.0, "unit": "g", "category": "grain", "protein_type": null, "preparation_notes": "просеять" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000031", "name": "Сахар", "quantity": 2.0, "unit": "tbsp", "category": "sugar_products", "protein_type": null, "preparation_notes": null },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000028", "name": "Растительное масло", "quantity": 2.0, "unit": "tbsp", "category": "oil", "protein_type": null, "preparation_notes": "в тесто" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000013", "name": "Сливочное масло", "quantity": 50.0, "unit": "g", "category": "dairy", "protein_type": null, "preparation_notes": "для смазывания" }
+    ],
+    "enhanced_ingredients": [],
+    "metadata": {
+      "difficulty": 2,
+      "prep_time_minutes": 15,
+      "cook_time_minutes": 30,
+      "rating": 5,
+      "category": "desserts",
+      "desired_frequency": "weekly",
+      "notes": "Идеальны на Масленицу",
+      "created_at": "2026-11-05T10:00:00.000000"
+    },
+    "cooking_history": {
+      "times_cooked": 0,
+      "last_cooked_date": null
+    }
+  },
+  {
+    "recipe_id": "20000000-0000-4000-8000-000000000006",
+    "name": "Салат Оливье",
+    "instructions": "1. Отварить картофель, морковь и яйца. Остудить и нарезать кубиками.\n2. Курицу отварить и также нарезать кубиками.\n3. Огурец нарезать кубиками.\n4. Смешать все ингредиенты с консервированным горошком.\n5. Заправить майонезом, посолить и поперчить по вкусу.",
+    "current_ingredients": [
+      { "ingredient_id": "10000000-0000-4000-8000-000000000001", "name": "Картофель", "quantity": 4.0, "unit": "piece", "category": "vegetable", "protein_type": null, "preparation_notes": "отварить" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000003", "name": "Морковь", "quantity": 2.0, "unit": "piece", "category": "vegetable", "protein_type": null, "preparation_notes": "отварить" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000011", "name": "Яйца", "quantity": 4.0, "unit": "piece", "category": "protein", "protein_type": "other", "preparation_notes": "сварить вкрутую" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000019", "name": "Курица", "quantity": 300.0, "unit": "g", "category": "protein", "protein_type": "chicken", "preparation_notes": "отварить" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000007", "name": "Огурец", "quantity": 3.0, "unit": "piece", "category": "vegetable", "protein_type": null, "preparation_notes": "свежий или соленый" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000042", "name": "Горох", "quantity": 200.0, "unit": "g", "category": "pulse", "protein_type": null, "preparation_notes": "консервированный" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000034", "name": "Майонез", "quantity": 100.0, "unit": "g", "category": "seasoning", "protein_type": null, "preparation_notes": null }
+    ],
+    "enhanced_ingredients": [],
+    "metadata": {
+      "difficulty": 1,
+      "prep_time_minutes": 30,
+      "cook_time_minutes": 40,
+      "rating": 5,
+      "category": "salads",
+      "desired_frequency": "monthly",
+      "notes": "Главный салат на праздничном столе",
+      "created_at": "2026-11-05T10:00:00.000000"
+    },
+    "cooking_history": {
+      "times_cooked": 0,
+      "last_cooked_date": null
+    }
+  },
+  {
+    "recipe_id": "20000000-0000-4000-8000-000000000007",
+    "name": "Котлеты по-киевски",
+    "instructions": "1. Сливочное масло смешать с рубленым укропом и чесноком, сформировать батончики и заморозить.\n2. Куриное филе отбить, посолить и поперчить.\n3. Завернуть масло в филе, сформировать котлету.\n4. Обвалять в муке, затем во взбитом яйце, затем в панировочных сухарях.\n5. Обжарить во фритюре до золотистой корочки, затем довести в духовке 10 минут.",
+    "current_ingredients": [
+      { "ingredient_id": "10000000-0000-4000-8000-000000000019", "name": "Курица", "quantity": 600.0, "unit": "g", "category": "protein", "protein_type": "chicken", "preparation_notes": "филе" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000013", "name": "Сливочное масло", "quantity": 100.0, "unit": "g", "category": "dairy", "protein_type": null, "preparation_notes": "размягченное" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000023", "name": "Укроп", "quantity": 20.0, "unit": "g", "category": "herb", "protein_type": null, "preparation_notes": "мелко нарезать" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000011", "name": "Яйца", "quantity": 2.0, "unit": "piece", "category": "protein", "protein_type": "other", "preparation_notes": "взбить" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000041", "name": "Панировочные сухари", "quantity": 100.0, "unit": "g", "category": "grain", "protein_type": null, "preparation_notes": null },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000028", "name": "Растительное масло", "quantity": 200.0, "unit": "ml", "category": "oil", "protein_type": null, "preparation_notes": "для фритюра" }
+    ],
+    "enhanced_ingredients": [],
+    "metadata": {
+      "difficulty": 4,
+      "prep_time_minutes": 40,
+      "cook_time_minutes": 25,
+      "rating": 5,
+      "category": "main_dishes",
+      "desired_frequency": "rarely",
+      "notes": "Требует аккуратности при формировании",
+      "created_at": "2026-11-05T10:00:00.000000"
+    },
+    "cooking_history": {
+      "times_cooked": 0,
+      "last_cooked_date": null
+    }
+  },
+  {
+    "recipe_id": "20000000-0000-4000-8000-000000000008",
+    "name": "Щи из свежей капусты",
+    "instructions": "1. Сварить бульон из говядины.\n2. Добавить нарезанный картофель и варить 10 минут.\n3. Добавить нашинкованную капусту и варить до мягкости.\n4. Сделать зажарку из лука, моркови и томатной пасты, добавить в суп.\n5. Добавить лавровый лист, соль, перец. Дать настояться 15 минут.\n6. Подавать со сметаной и петрушкой.",
+    "current_ingredients": [
+      { "ingredient_id": "10000000-0000-4000-8000-000000000017", "name": "Говядина", "quantity": 400.0, "unit": "g", "category": "protein", "protein_type": "beef", "preparation_notes": "на кости" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000006", "name": "Капуста белокочанная", "quantity": 400.0, "unit": "g", "category": "vegetable", "protein_type": null, "preparation_notes": "нашинковать" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000001", "name": "Картофель", "quantity": 3.0, "unit": "piece", "category": "vegetable", "protein_type": null, "preparation_notes": "нарезать кубиками" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000002", "name": "Лук репчатый", "quantity": 1.0, "unit": "piece", "category": "vegetable", "protein_type": null, "preparation_notes": "нарезать" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000003", "name": "Морковь", "quantity": 1.0, "unit": "piece", "category": "vegetable", "protein_type": null, "preparation_notes": "натереть" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000035", "name": "Томатная паста", "quantity": 1.0, "unit": "tbsp", "category": "seasoning", "protein_type": null, "preparation_notes": null },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000014", "name": "Сметана", "quantity": 50.0, "unit": "g", "category": "dairy", "protein_type": null, "preparation_notes": "для подачи" }
+    ],
+    "enhanced_ingredients": [],
+    "metadata": {
+      "difficulty": 2,
+      "prep_time_minutes": 20,
+      "cook_time_minutes": 60,
+      "rating": 4,
+      "category": "soups_stews",
+      "desired_frequency": "weekly",
+      "notes": "Вкуснее на второй день",
+      "created_at": "2026-11-05T10:00:00.000000"
+    },
+    "cooking_history": {
+      "times_cooked": 0,
+      "last_cooked_date": null
+    }
+  },
+  {
+    "recipe_id": "20000000-0000-4000-8000-000000000009",
+    "name": "Сырники",
+    "instructions": "1. Творог протереть через сито или размять вилкой.\n2. Добавить яйцо, сахар, щепотку соли и муку. Замесить мягкое тесто.\n3. Сформировать шайбочки, обвалять в муке.\n4. Жарить на сковороде с растительным маслом на среднем огне до золотистой корочки с двух сторон.\n5. Подавать со сметаной или медом.",
+    "current_ingredients": [
+      { "ingredient_id": "10000000-0000-4000-8000-000000000015", "name": "Творог", "quantity": 400.0, "unit": "g", "category": "dairy", "protein_type": null, "preparation_notes": "сухой, 9%" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000011", "name": "Яйца", "quantity": 1.0, "unit": "piece", "category": "protein", "protein_type": "other", "preparation_notes": null },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000010", "name": "Мука пшеничная", "quantity": 3.0, "unit": "tbsp", "category": "grain", "protein_type": null, "preparation_notes": "плюс для панировки" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000031", "name": "Сахар", "quantity": 2.0, "unit": "tbsp", "category": "sugar_products", "protein_type": null, "preparation_notes": null },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000028", "name": "Растительное масло", "quantity": 2.0, "unit": "tbsp", "category": "oil", "protein_type": null, "preparation_notes": "для жарки" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000014", "name": "Сметана", "quantity": 100.0, "unit": "g", "category": "dairy", "protein_type": null, "preparation_notes": "для подачи" }
+    ],
+    "enhanced_ingredients": [],
+    "metadata": {
+      "difficulty": 2,
+      "prep_time_minutes": 15,
+      "cook_time_minutes": 15,
+      "rating": 5,
+      "category": "desserts",
+      "desired_frequency": "weekly",
+      "notes": "Идеальный завтрак",
+      "created_at": "2026-11-05T10:00:00.000000"
+    },
+    "cooking_history": {
+      "times_cooked": 0,
+      "last_cooked_date": null
+    }
+  },
+  {
+    "recipe_id": "20000000-0000-4000-8000-000000000010",
+    "name": "Жаркое в горшочках",
+    "instructions": "1. Свинину нарезать кубиками, обжарить до румяной корочки.\n2. Картофель и морковь нарезать кубиками, лук – полукольцами.\n3. Разложить по горшочкам слоями: мясо, лук, морковь, картофель, грибы.\n4. Залить сливками, добавить лавровый лист, соль и перец.\n5. Накрыть крышками и запекать в духовке при 180°C около 1 часа.",
+    "current_ingredients": [
+      { "ingredient_id": "10000000-0000-4000-8000-000000000018", "name": "Свинина", "quantity": 500.0, "unit": "g", "category": "protein", "protein_type": "pork", "preparation_notes": "нарезать кубиками" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000001", "name": "Картофель", "quantity": 6.0, "unit": "piece", "category": "vegetable", "protein_type": null, "preparation_notes": "нарезать кубиками" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000003", "name": "Морковь", "quantity": 2.0, "unit": "piece", "category": "vegetable", "protein_type": null, "preparation_notes": "нарезать кубиками" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000002", "name": "Лук репчатый", "quantity": 2.0, "unit": "piece", "category": "vegetable", "protein_type": null, "preparation_notes": "нарезать полукольцами" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000022", "name": "Грибы", "quantity": 200.0, "unit": "g", "category": "vegetable", "protein_type": null, "preparation_notes": "нарезать пластинками" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000036", "name": "Сливки", "quantity": 200.0, "unit": "ml", "category": "dairy", "protein_type": null, "preparation_notes": "20%" },
+      { "ingredient_id": "10000000-0000-4000-8000-000000000027", "name": "Лавровый лист", "quantity": 2.0, "unit": "piece", "category": "seasoning", "protein_type": null, "preparation_notes": null }
+    ],
+    "enhanced_ingredients": [],
+    "metadata": {
+      "difficulty": 2,
+      "prep_time_minutes": 30,
+      "cook_time_minutes": 60,
+      "rating": 5,
+      "category": "main_dishes",
+      "desired_frequency": "monthly",
+      "notes": "Подавать прямо в горшочках",
+      "created_at": "2026-11-05T10:00:00.000000"
+    },
+    "cooking_history": {
+      "times_cooked": 0,
+      "last_cooked_date": null
+    }
+  }
+]

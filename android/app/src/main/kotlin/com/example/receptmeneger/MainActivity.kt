@@ -1,0 +1,5 @@
+package com.example.receptmeneger
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity : FlutterActivity()
